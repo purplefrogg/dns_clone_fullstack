@@ -1,7 +1,12 @@
-import { type NextPage } from "next";
+import { type NextPage } from 'next'
+import { CatalogCategories } from '~/components/catalogCategories'
 
 const Home: NextPage = () => {
-  return <>qwd</>;
-};
+  return (
+    <>
+      <CatalogCategories />
+    </>
+  )
+}
 
-export default Home;
+export default Home
