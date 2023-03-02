@@ -14,6 +14,7 @@ model Category {
     id            Int        @id @default(autoincrement())
     title         String
     slug          String     @unique
+    image         String?
     parentId      Int?
     parent        Category?  @relation("parentSubCategories", fields: [parentId], references: [id])
     subCategories Category[] @relation("parentSubCategories")

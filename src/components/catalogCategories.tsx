@@ -1,4 +1,5 @@
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import Link from 'next/link'
 import { useState } from 'react'
 import { api } from '~/utils/api'
 
@@ -24,6 +25,7 @@ export const CatalogCategories = () => {
             <div
               onMouseEnter={() => setSubCatalog(category.id)}
               key={category.id}
+              className={subCatalog === category.id ? 'text-orange-400' : ''}
             >
               {category.title}
             </div>
@@ -35,7 +37,13 @@ export const CatalogCategories = () => {
             {data
               ?.find((category) => category.id === subCatalog)
               ?.subCategories.map((subCategory) => (
-                <div key={subCategory.id}>{subCategory.title}</div>
+                <Link
+                  href={`/${subCategory.slug}`}
+                  className='block hover:text-orange-400'
+                  key={subCategory.id}
+                >
+                  {subCategory.title}
+                </Link>
               ))}
           </div>
         )}
