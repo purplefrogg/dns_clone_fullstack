@@ -1,15 +1,10 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import { useState } from 'react'
 import { api } from '~/utils/api'
 
-// export const getStaticProps: GetStaticProps = () => {
-//   const { data } = api.category.getAll.useQuery()
-//   return { props: { categories: data } }
-// }
-
 export const CatalogCategories = () => {
   const { data } = api.category.getAll.useQuery()
+
   const [subCatalog, setSubCatalog] = useState<number | null>()
   return (
     <div className=' '>
@@ -37,13 +32,23 @@ export const CatalogCategories = () => {
             {data
               ?.find((category) => category.id === subCatalog)
               ?.subCategories.map((subCategory) => (
-                <Link
-                  href={`/${subCategory.slug}`}
-                  className='block hover:text-orange-400'
-                  key={subCategory.id}
-                >
-                  {subCategory.title}
-                </Link>
+                <div key={subCategory.id}>
+                  <Link
+                    href={`catalog/${subCategory.slug}`}
+                    className='block font-semibold hover:text-orange-400'
+                  >
+                    {subCategory.title}
+                  </Link>
+                  {subCategory.subCategories.map((lvl3Category) => (
+                    <Link
+                      key={lvl3Category.id}
+                      href={`catalog/${lvl3Category.slug}`}
+                      className='block  text-sm hover:text-orange-400'
+                    >
+                      {lvl3Category.title}
+                    </Link>
+                  ))}
+                </div>
               ))}
           </div>
         )}

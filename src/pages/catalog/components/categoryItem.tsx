@@ -1,5 +1,6 @@
+import Link from 'next/link'
 import { useState } from 'react'
-import { RouterOutputs } from '~/utils/api'
+import { type RouterOutputs } from '~/utils/api'
 
 export const CategoryItem = ({
   category,
@@ -22,7 +23,9 @@ export const CategoryItem = ({
         <ul>
           {category.subCategories.map((subCategory) => (
             <li className='hover:text-orange-400' key={subCategory.id}>
-              {subCategory.title}
+              <Link href={`catalog/${subCategory.slug}`}>
+                {subCategory.title}
+              </Link>
             </li>
           ))}
         </ul>

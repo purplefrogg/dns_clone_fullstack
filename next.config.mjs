@@ -9,7 +9,15 @@
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-
+  async redirects() {
+    return [
+      {
+        source: '/catalog/lvl2',
+        destination: '/catalog',
+        permanent: true,
+      },
+    ]
+  },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
    * must comment the below `i18n` config out.
