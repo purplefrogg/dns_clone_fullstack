@@ -18,6 +18,6 @@ const MyApp = function ({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
   return getLayout(<Component {...pageProps} />)
-}
+} as AppType
 
-export default api.withTRPC(MyApp as AppType)
+export default api.withTRPC(MyApp)

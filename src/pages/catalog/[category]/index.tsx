@@ -1,4 +1,5 @@
 import { type NextPage } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type ReactElement } from 'react'
@@ -27,7 +28,14 @@ const Page: NextPageWithLayout = () => {
             key={id}
           >
             {image && (
-              <img className='h-48 w-48' src={image as string} alt='' />
+              <Image
+                className='h-48 w-48'
+                width={192}
+                height={192}
+                unoptimized
+                src={image}
+                alt=''
+              />
             )}
 
             {title}

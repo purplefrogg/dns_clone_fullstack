@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { type RouterOutputs } from '~/utils/api'
@@ -37,7 +38,15 @@ export const CategoryItem = ({
         }`}
       >
         {category.image && (
-          <img className='h-48 w-48' src={category.image as string} alt='' />
+          <Image
+            className='h-48 w-48'
+            width={192}
+            height={192}
+            unoptimized
+            priority
+            src={category.image}
+            alt=''
+          />
         )}
         {category.title}
       </div>
