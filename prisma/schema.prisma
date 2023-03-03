@@ -18,4 +18,15 @@ model Category {
     parentId      Int?
     parent        Category?  @relation("parentSubCategories", fields: [parentId], references: [id])
     subCategories Category[] @relation("parentSubCategories")
+    products      Product[]
+}
+
+model Product {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String
+    price       Int
+    image       String[]
+    categoryId  Int
+    category    Category @relation(fields: [categoryId], references: [id])
 }

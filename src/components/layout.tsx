@@ -6,7 +6,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Header />
-      <main className='m-auto max-w-6xl'>{children}</main>
+      <main className='m-auto max-w-6xl '>{children}</main>
       <Footer />
     </>
   )

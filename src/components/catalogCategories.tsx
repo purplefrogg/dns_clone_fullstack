@@ -42,7 +42,7 @@ export const CatalogCategories = () => {
                   {subCategory.subCategories.map((lvl3Category) => (
                     <Link
                       key={lvl3Category.id}
-                      href={`catalog/${lvl3Category.slug}`}
+                      href={`catalog/${subCategory.slug}/${lvl3Category.slug}`}
                       className='block  text-sm hover:text-orange-400'
                     >
                       {lvl3Category.title}

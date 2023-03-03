@@ -1,12 +1,10 @@
-import { type NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type ReactElement } from 'react'
-import { BreadCrumbs } from '~/components/breadCrumbs'
 import { Layout } from '~/components/layout'
 import { LayoutCatalog } from '~/components/layoutCatalog'
-import { NextPageWithLayout } from '~/pages/_app'
+import { type NextPageWithLayout } from '~/pages/_app'
 import { api } from '~/utils/api'
 
 const Page: NextPageWithLayout = () => {
@@ -15,7 +13,11 @@ const Page: NextPageWithLayout = () => {
   if (typeof category !== 'string') {
     return null
   }
-  const { data } = api.category.getSubCategories.useQuery(category)
+  const { data, isSuccess } = api.category.getSubCategories.useQuery(category)
+
+  if (!data && isSuccess) {
+    return <div>not found</div>
+  }
   return (
     <div className='flex flex-col gap-4'>
       <h1 className='text-3xl font-semibold'>{data?.title}</h1>
