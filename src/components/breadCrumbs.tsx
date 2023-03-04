@@ -1,9 +1,18 @@
-import { api } from '~/utils/api'
+import Link from 'next/link'
+import { type FC } from 'react'
 
-export const BreadCrumbs = ({}) => {
-  const context = api.useContext().ssrContext
+interface BreadCrumbsProps {
+  crumbs: { text: string; to: string }[]
+}
 
-  console.log(context?.asPath)
-
-  return <div className='flex gap-4'></div>
+export const BreadCrumbs: FC<BreadCrumbsProps> = ({ crumbs }) => {
+  return (
+    <div className='flex gap-4'>
+      {crumbs.map((crumb) => (
+        <Link key={crumb.to} href={crumb.to}>
+          {crumb.text}
+        </Link>
+      ))}
+    </div>
+  )
 }

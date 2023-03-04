@@ -4,8 +4,12 @@ import { api } from '~/utils/api'
 
 export const CatalogCategories = () => {
   const { data } = api.category.getAll.useQuery()
-
   const [subCatalog, setSubCatalog] = useState<number | null>()
+  if (!data) {
+    return null
+  }
+
+  const { categories } = data
   return (
     <div className=' '>
       {subCatalog && (
@@ -16,7 +20,7 @@ export const CatalogCategories = () => {
       )}
       <div className='relative z-50 m-2 flex gap-4 rounded-lg bg-white'>
         <div className=''>
-          {data?.map((category) => (
+          {categories?.map((category) => (
             <div
               onMouseEnter={() => setSubCatalog(category.id)}
               key={category.id}
@@ -29,7 +33,7 @@ export const CatalogCategories = () => {
 
         {subCatalog && (
           <div className='flex-1'>
-            {data
+            {categories
               ?.find((category) => category.id === subCatalog)
               ?.subCategories.map((subCategory) => (
                 <div key={subCategory.id}>

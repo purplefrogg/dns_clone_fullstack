@@ -7,13 +7,29 @@ export const productRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const category = await ctx.prisma.category.findFirst({
         where: { slug: input },
+        include: { parent: { include: { parent: true } } },
       })
       if (!category) {
         return null
       }
-      return ctx.prisma.product.findMany({
+      const crumbs = [{ text: 'Catalog', to: '/catalog' }]
+      const parent = category?.parent?.parent
+      if (parent)
+        crumbs.push({
+          text: parent.title,
+          to: `/catalog/${parent.slug}`,
+        })
+      if (category && category.parent) {
+        crumbs.push({
+          text: category.parent.title,
+          to: `/catalog/${category.parent.slug}`,
+        })
+      }
+
+      const product = await ctx.prisma.product.findMany({
         where: { categoryId: category.id },
       })
+      return { product, crumbs }
     }),
 
   getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
