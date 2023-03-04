@@ -1,7 +1,4 @@
-import { type ReactElement } from 'react'
-import { Layout } from '~/components/layout'
-import { LayoutCatalog } from '~/components/layoutCatalog'
-import { api, RouterOutputs } from '~/utils/api'
+import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../_app'
 import { CategoryItem } from '../../components/categoryItem'
 
@@ -15,11 +12,5 @@ const Page: NextPageWithLayout = () => {
     </div>
   )
 }
-Page.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <LayoutCatalog>{page}</LayoutCatalog>
-    </Layout>
-  )
-}
+
 export default Page

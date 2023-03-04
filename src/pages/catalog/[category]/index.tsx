@@ -1,9 +1,5 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { type ReactElement } from 'react'
-import { Layout } from '~/components/layout'
-import { LayoutCatalog } from '~/components/layoutCatalog'
+import { CategoryItem } from '~/components/categoryItem'
 import { type NextPageWithLayout } from '~/pages/_app'
 import { api } from '~/utils/api'
 
@@ -22,36 +18,12 @@ const Page: NextPageWithLayout = () => {
     <div className='flex flex-col gap-4'>
       <h1 className='text-3xl font-semibold'>{data?.title}</h1>
       <div className='flex flex-wrap gap-4'>
-        {data?.subCategories.map(({ id, image, title, slug }) => (
-          <Link
-            passHref
-            href={`${data.slug}/${slug}`}
-            className='flex h-64 w-64 flex-col items-center rounded-md bg-white p-4 text-center shadow hover:shadow-xl'
-            key={id}
-          >
-            {image && (
-              <Image
-                className='h-48 w-48'
-                width={192}
-                height={192}
-                unoptimized
-                src={image}
-                alt=''
-              />
-            )}
-
-            {title}
-          </Link>
+        {data?.subCategories.map((category) => (
+          <CategoryItem category={category} key={category.id} />
         ))}
       </div>
     </div>
   )
 }
-Page.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <LayoutCatalog>{page}</LayoutCatalog>
-    </Layout>
-  )
-}
+
 export default Page
