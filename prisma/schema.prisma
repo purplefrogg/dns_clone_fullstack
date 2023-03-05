@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Category {
-    id            Int        @id @default(autoincrement())
+    id            Int             @id @default(autoincrement())
     title         String
-    slug          String     @unique
+    slug          String          @unique
     image         String?
     parentId      Int?
-    parent        Category?  @relation("parentSubCategories", fields: [parentId], references: [id])
-    subCategories Category[] @relation("parentSubCategories")
+    parent        Category?       @relation("parentSubCategories", fields: [parentId], references: [id])
+    subCategories Category[]      @relation("parentSubCategories")
     products      Product[]
+    filters       ProductFilter[]
 }
 
 model Product {
@@ -29,4 +30,31 @@ model Product {
     image       String[]
     categoryId  Int
     category    Category @relation(fields: [categoryId], references: [id])
+    // ProductProperty ProductProperty[]
+}
+
+// model ProductProperty {
+//     id                   Int                    @id @default(autoincrement())
+//     title                String
+//     ProductId            Int
+//     product              Product                @relation(fields: [ProductId], references: [id])
+//     productPropertyField ProductPropertyField[]
+// }
+
+// model ProductPropertyField {
+//     id                Int             @id @default(autoincrement())
+//     title             String
+//     value             String
+//     ProductPropertyId Int
+//     productProperty   ProductProperty @relation(fields: [ProductPropertyId], references: [id])
+// }
+
+model ProductFilter {
+    id         Int      @id @default(autoincrement())
+    title      String
+    value      String
+    count      Int
+    type       String
+    CategoryId Int
+    category   Category @relation(fields: [CategoryId], references: [id])
 }

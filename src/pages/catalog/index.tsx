@@ -1,6 +1,6 @@
 import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../_app'
-import { CategoryItem } from '../../components/categoryItem'
+import { CategoryItem } from '../../components/catalogPage/categoryItem'
 import { BreadCrumbs } from '~/components/breadCrumbs'
 
 const Page: NextPageWithLayout = () => {

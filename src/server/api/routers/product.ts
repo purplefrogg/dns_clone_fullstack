@@ -1,16 +1,21 @@
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 
 export const productRouter = createTRPCRouter({
   getByCategory: publicProcedure
     .input(z.string())
+
     .query(async ({ ctx, input }) => {
       const category = await ctx.prisma.category.findFirst({
         where: { slug: input },
         include: { parent: { include: { parent: true } } },
       })
       if (!category) {
-        return null
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Category not found',
+        })
       }
       const crumbs = [{ text: 'Catalog', to: '/catalog' }]
       const parent = category?.parent?.parent
@@ -32,6 +37,24 @@ export const productRouter = createTRPCRouter({
       return { product, crumbs }
     }),
 
+  getFilter: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const category = await ctx.prisma.category.findFirst({
+      where: { slug: input },
+    })
+    if (!category) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Category not found',
+      })
+    }
+
+    const filterByPrice = await ctx.prisma.product.findMany({
+      where: { categoryId: category.id, price: { gt: 1000, lt: 2000 } },
+    })
+    return [
+      { title: 'Price', value: [1001, 2000], count: filterByPrice.length },
+    ]
+  }),
   getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.product.findFirst({ where: { id: input } })
   }),

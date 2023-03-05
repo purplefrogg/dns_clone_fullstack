@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { BreadCrumbs } from '~/components/breadCrumbs'
-import { CategoryItem } from '~/components/categoryItem'
+import { CategoryItem } from '~/components/catalogPage/categoryItem'
 import { type NextPageWithLayout } from '~/pages/_app'
 import { api } from '~/utils/api'
 
