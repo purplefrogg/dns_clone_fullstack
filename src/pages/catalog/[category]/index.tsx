@@ -11,16 +11,16 @@ const Page: NextPageWithLayout = () => {
     return null
   }
   const { data } = api.category.getSubCategories.useQuery(category)
-  if (!data || !data.categories) {
-    return <div>not found</div>
+  const { data: crumbs } = api.category.getCrumbs.useQuery(category)
+  if (!data || !crumbs) {
+    return <div>loading...</div>
   }
-  const { categories, crumbs } = data
   return (
     <div className='flex flex-col gap-4'>
       <BreadCrumbs crumbs={crumbs} />
-      <h1 className='text-3xl font-semibold'>{categories.title}</h1>
+      <h1 className='text-3xl font-semibold'>{data.title}</h1>
       <div className='flex flex-wrap gap-4'>
-        {categories.subCategories.map((category) => (
+        {data.subCategories.map((category) => (
           <CategoryItem category={category} key={category.id} />
         ))}
       </div>

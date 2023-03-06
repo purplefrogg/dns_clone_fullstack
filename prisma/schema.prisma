@@ -33,18 +33,18 @@ model Product {
 }
 
 model ProductProperty {
-    id                   Int                    @id @default(autoincrement())
-    title                String
-    productId            Int
-    product              Product                @relation(fields: [productId], references: [id])
-    ProductPropertyField ProductPropertyField[]
+    id            Int             @id @default(autoincrement())
+    title         String
+    productId     Int
+    product       Product         @relation(fields: [productId], references: [id])
+    PropertyField PropertyField[]
 }
 
-model ProductPropertyField {
-    id                Int             @id @default(autoincrement())
-    value             String
-    title             String
-    description       String
-    productPropertyId Int
-    productProperty   ProductProperty @relation(fields: [productPropertyId], references: [id])
+model PropertyField {
+    id          Int    @id @default(autoincrement())
+    value       String
+    title       String
+    description String
+
+    productProperty ProductProperty[]
 }

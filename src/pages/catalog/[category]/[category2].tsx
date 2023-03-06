@@ -1,39 +1,46 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { BreadCrumbs } from '~/components/breadCrumbs'
 import { ProductItem } from '~/components/catalogPage/[catalog]/productItem'
+import { Pagination } from '~/core/pagination'
 
 import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../../_app'
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter()
+  const { category2, page = 1 } = router.query
 
-  const { category2 } = router.query
-  if (typeof category2 !== 'string') {
-    return null
-  }
-  const { data } = api.product.getByCategory.useQuery(category2.toString())
-  const { data: property } = api.product.getFilter.useQuery(
-    category2.toString()
-  )
-  console.log(property)
+  const { data } = api.category.getProducts.useQuery({
+    slug: category2 as string,
+    page: +page,
+  })
+  const { data: crumbs } = api.category.getCrumbs.useQuery(category2 as string)
 
-  if (!data) {
-    return <div>loading...</div>
+  const onChangePage = (current: number) => {
+    router.query.page = current.toString()
+    void router.push({ pathname: router.pathname, query: router.query })
   }
-  const { product, crumbs } = data
+
+  if (!data || !crumbs) return <div>loading...</div>
   return (
     <>
       <BreadCrumbs crumbs={crumbs} />
       <div className='flex gap-4'>
         <div className='w-64'>filter</div>
-        <div className='flex flex-1 flex-col gap-4'>
-          {product &&
-            product.map((product) => (
-              <ProductItem product={product} key={product.id} />
-            ))}
+        <div className='flex flex-1 flex-col'>
+          <div className='flex flex-col gap-4'>
+            {data?.products &&
+              data.products.map((product) => (
+                <ProductItem product={product} key={product.id} />
+              ))}
+          </div>
+          <Pagination
+            total={data?._count.products}
+            pageSize={1}
+            current={+page}
+            onChange={onChangePage}
+          />
         </div>
       </div>
     </>
