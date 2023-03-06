@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { BreadCrumbs } from '~/components/breadCrumbs'
 import { ProductItem } from '~/components/catalogPage/[catalog]/productItem'

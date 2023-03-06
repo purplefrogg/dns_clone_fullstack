@@ -5,3 +5,9 @@
 body {
   @apply bg-neutral-100;
 }
+
+@layer components {
+  .block-element {
+    @apply rounded-lg bg-white p-2 shadow-md;
+  }
+}

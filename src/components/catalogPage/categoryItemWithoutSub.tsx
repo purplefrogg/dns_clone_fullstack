@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { type RouterOutputs } from '~/utils/api'
 
 type CategoryType = Exclude<
-  RouterOutputs['category']['getSubCategories']['categories'],
+  RouterOutputs['category']['getSubCategories'],
   null
 >['subCategories'][number]
 

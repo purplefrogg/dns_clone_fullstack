@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { type RouterOutputs } from '~/utils/api'
 
 type CategoryType =
   | RouterOutputs['category']['getAll']['categories'][number]
   | Exclude<
-      RouterOutputs['category']['getSubCategories']['categories'],
+      RouterOutputs['category']['getSubCategories'],
       null
     >['subCategories'][number]
 
@@ -16,7 +17,7 @@ export const CategoryItemWithSub = ({
   category: CategoryType
 }) => {
   const [onHover, setOnHover] = useState(false)
-
+  const path = useRouter().asPath
   return (
     <div
       className='relative h-64 w-64 rounded-md bg-white shadow'
@@ -37,7 +38,7 @@ export const CategoryItemWithSub = ({
         <ul>
           {category.subCategories.map((subCategory) => (
             <li className='hover:text-orange-400' key={subCategory.id}>
-              <Link href={`${category.slug}/${subCategory.slug}`}>
+              <Link href={`${path}/${subCategory.slug}`}>
                 {subCategory.title}
               </Link>
             </li>

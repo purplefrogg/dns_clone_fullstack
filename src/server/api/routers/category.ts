@@ -45,7 +45,10 @@ export const categoryRouter = createTRPCRouter({
         to: `/catalog/${category.parent.slug}`,
       })
     }
-    crumbs.push({ text: category.title })
+    crumbs.push({
+      text: category.title,
+      to: `${crumbs.at(-1)?.to ?? '/catalog'}/${category.slug}`,
+    })
     return crumbs
   }),
   getProducts: publicProcedure
