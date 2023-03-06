@@ -15,6 +15,10 @@ const Page: NextPageWithLayout = () => {
     return null
   }
   const { data } = api.product.getByCategory.useQuery(category2.toString())
+  const { data: property } = api.product.getFilter.useQuery(
+    category2.toString()
+  )
+  console.log(property)
 
   if (!data) {
     return <div>loading...</div>

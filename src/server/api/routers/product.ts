@@ -33,6 +33,7 @@ export const productRouter = createTRPCRouter({
 
       const product = await ctx.prisma.product.findMany({
         where: { categoryId: category.id },
+        include: { ProductProperty: true },
       })
       return { product, crumbs }
     }),
@@ -48,12 +49,12 @@ export const productRouter = createTRPCRouter({
       })
     }
 
-    const filterByPrice = await ctx.prisma.product.findMany({
-      where: { categoryId: category.id, price: { gt: 1000, lt: 2000 } },
+    const product = await ctx.prisma.product.findMany({
+      where: { categoryId: category.id },
+      select: { ProductProperty: true, id: true },
     })
-    return [
-      { title: 'Price', value: [1001, 2000], count: filterByPrice.length },
-    ]
+
+    return { product }
   }),
   getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.product.findFirst({ where: { id: input } })
