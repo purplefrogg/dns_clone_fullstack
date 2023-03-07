@@ -9,6 +9,7 @@
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+
   async redirects() {
     return [
       {

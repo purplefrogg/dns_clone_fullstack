@@ -1,13 +1,16 @@
+import { useSetAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type FC } from 'react'
+import { cartAtom } from '~/components/cart/cart.store'
 import { type RouterOutputs } from '~/utils/api'
 
 interface ProductItemProps {
-  product: RouterOutputs['product']['getByCategory']['product'][number]
+  product: RouterOutputs['category']['getProducts']['products'][number]
 }
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
+  const setCart = useSetAtom(cartAtom)
   return (
     <article
       className='flex gap-4 rounded-md bg-white  p-4 shadow'
@@ -29,7 +32,17 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
       >
         {product.name}
       </Link>
-      <div>{product.price}</div>
+      <div className='flex flex-col'>
+        {product.price}
+        <button
+          className='rounded-md bg-orange-400 px-2 py-1 text-white'
+          onClick={() => {
+            setCart((prev) => [...prev, product.id])
+          }}
+        >
+          buy
+        </button>
+      </div>
     </article>
   )
 }

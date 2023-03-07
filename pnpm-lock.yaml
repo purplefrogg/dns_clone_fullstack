@@ -2,11 +2,12 @@ lockfileVersion: 5.4
 
 specifiers:
   '@prisma/client': ^4.9.0
+  '@swc-jotai/react-refresh': ^0.0.4
   '@tanstack/react-query': ^4.20.2
-  '@trpc/client': ^10.9.0
+  '@trpc/client': ^10.13.2
   '@trpc/next': ^10.9.0
   '@trpc/react-query': ^10.9.0
-  '@trpc/server': ^10.9.0
+  '@trpc/server': ^10.13.2
   '@types/eslint': ^8.21.1
   '@types/node': ^18.14.0
   '@types/prettier': ^2.7.2
@@ -18,6 +19,8 @@ specifiers:
   classnames: ^2.3.2
   eslint: ^8.34.0
   eslint-config-next: ^13.2.1
+  jotai: ^2.0.3
+  jotai-trpc: ^0.5.0
   next: ^13.2.1
   postcss: ^8.4.14
   prettier: ^2.8.1
@@ -38,6 +41,8 @@ dependencies:
   '@trpc/react-query': 10.13.2_4d7irbdidsmzpcceffzhg76qwi
   '@trpc/server': 10.13.2
   classnames: 2.3.2
+  jotai: 2.0.3_react@18.2.0
+  jotai-trpc: 0.5.0_7ucly7yr4mehfla7eoslym6jxy
   next: 13.2.3_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -45,6 +50,7 @@ dependencies:
   zod: 3.20.6
 
 devDependencies:
+  '@swc-jotai/react-refresh': 0.0.4
   '@types/eslint': 8.21.1
   '@types/node': 18.14.2
   '@types/prettier': 2.7.2
@@ -297,6 +303,10 @@ packages:
 
   /@rushstack/eslint-patch/1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
+    dev: true
+
+  /@swc-jotai/react-refresh/0.0.4:
+    resolution: {integrity: sha512-t5GEMFWDi6XZe/jIprLRh3k9vk6SolC1Rd21KpLnOcJS+YkycoX6Isfs2NiTR+5b6vynWahASvr0PKcrfBBbNQ==}
     dev: true
 
   /@swc/helpers/0.4.14:
@@ -1827,6 +1837,30 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /jotai-trpc/0.5.0_7ucly7yr4mehfla7eoslym6jxy:
+    resolution: {integrity: sha512-v+tb2zk33/pHmveZwH9wfnVw0IxrGdw/XfQr+0Van8h0P3o1hxU8FkLGyDr0UUtJIRCNMmJZH8hI/MivjbVh+A==}
+    peerDependencies:
+      '@trpc/client': '>=10.0.0'
+      '@trpc/server': '>=10.0.0'
+      jotai: '>=1.11.0'
+    dependencies:
+      '@trpc/client': 10.13.2_@trpc+server@10.13.2
+      '@trpc/server': 10.13.2
+      jotai: 2.0.3_react@18.2.0
+    dev: false
+
+  /jotai/2.0.3_react@18.2.0:
+    resolution: {integrity: sha512-MMjhSPAL3RoeZD9WbObufRT2quThEAEknHHridf2ma8Ml7ZVQmUiHk0ssdbR3F0h3kcwhYqSGJ59OjhPge7RRg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /js-sdsl/4.3.0:
     resolution: {integrity: sha512-mifzlm2+5nZ+lEcLJMoBK0/IH/bDg8XnJfd/Wq6IP+xoCjLZsTOnV2QpxlVbX9bMnkl5PdEjNtBJ9Cj1NjifhQ==}
