@@ -25,7 +25,8 @@ export const getProducts = publicProcedure
         products: {
           orderBy: { [input.orderType]: input.orderDirection },
           take: 2,
-          skip: input.page - 1,
+          skip: input.page * 2 - 2,
+
           include: { ProductProperty: false },
         },
       },

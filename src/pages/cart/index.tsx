@@ -1,15 +1,9 @@
-import { useAtom } from 'jotai'
-import { cartAtom } from '~/components/cart/cart.store'
+import { Cart } from '~/components/cart/components/cart'
 
 const Page = () => {
-  const [store, setStore] = useAtom(cartAtom)
-  
   return (
     <div>
-      <h1>Cart</h1>
-      {store.map((id) => (
-        <div key={id}>{id}</div>
-      ))}
+      <Cart />
     </div>
   )
 }

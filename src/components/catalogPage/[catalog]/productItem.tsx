@@ -1,6 +1,7 @@
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { type FC } from 'react'
 import { cartAtom } from '~/components/cart/cart.store'
 import { type RouterOutputs } from '~/utils/api'
@@ -10,7 +11,8 @@ interface ProductItemProps {
 }
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
-  const setCart = useSetAtom(cartAtom)
+  const [cart, setCart] = useAtom(cartAtom)
+  const router = useRouter()
   return (
     <article
       className='flex gap-4 rounded-md bg-white  p-4 shadow'
@@ -37,10 +39,12 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
         <button
           className='rounded-md bg-orange-400 px-2 py-1 text-white'
           onClick={() => {
-            setCart((prev) => [...prev, product.id])
+            if (cart.includes(product.id)) {
+              void router.push('/cart')
+            } else setCart((prev) => [...prev, product.id])
           }}
         >
-          buy
+          {cart.includes(product.id) ? 'go to Cart' : 'buy'}
         </button>
       </div>
     </article>

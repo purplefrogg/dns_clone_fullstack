@@ -4,7 +4,7 @@ import { CategoryItemWithSub } from './categoryItemWithSub'
 
 type CategoryType =
   | Exclude<
-      RouterOutputs['category']['getSubCategories']['categories'],
+      RouterOutputs['category']['getSubCategories'],
       null
     >['subCategories'][number]
   | RouterOutputs['category']['getAll']['categories'][number]
