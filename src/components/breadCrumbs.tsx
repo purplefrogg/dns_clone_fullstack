@@ -7,16 +7,22 @@ interface BreadCrumbsProps {
 
 export const BreadCrumbs: FC<BreadCrumbsProps> = ({ crumbs }) => {
   return (
-    <div className='flex gap-4'>
-      {crumbs.map((crumb) =>
-        crumb.to ? (
-          <Link key={crumb.to} href={crumb.to}>
-            {crumb.text}
-          </Link>
-        ) : (
-          <span key={crumb.text}>{crumb.text}</span>
-        )
-      )}
+    <div className='flex'>
+      {crumbs.map((crumb) => (
+        <div key={crumb.to} className='group'>
+          {crumb.to ? (
+            <Link
+              className='transition-all hover:text-orange-400'
+              href={crumb.to}
+            >
+              {crumb.text}
+            </Link>
+          ) : (
+            <span className='text-neutral-500'>{crumb.text}</span>
+          )}
+          <span className='px-4 text-neutral-500 group-last:hidden'>{'>'}</span>
+        </div>
+      ))}
     </div>
   )
 }
