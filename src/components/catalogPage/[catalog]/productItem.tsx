@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type FC } from 'react'
-import { cartAtom } from '~/components/cart/cart.store'
+import { cartItems } from '~/components/cart/cart.store'
 import { type RouterOutputs } from '~/utils/api'
 
 interface ProductItemProps {
@@ -11,7 +11,7 @@ interface ProductItemProps {
 }
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
-  const [cart, setCart] = useAtom(cartAtom)
+  const [cart, setCart] = useAtom(cartItems)
   const router = useRouter()
   return (
     <article

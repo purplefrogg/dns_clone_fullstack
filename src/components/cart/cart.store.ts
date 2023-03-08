@@ -1,12 +1,16 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-export const cartAtom = atomWithStorage<number[]>('cartStorage', [])
-export const deleteCartItem = atom(
-  null, // it's a convention to pass `null` for the first argument
-  (get, set, update) => {
+
+export const cartItems = atomWithStorage<number[]>('cartStorage', [])
+export const cartItemsMount = atom(false)
+cartItemsMount.onMount = (setAtom) => setAtom(true)
+
+export const deleteCartItem = atom(null, (get, set, update) => {
+  const cart = get(cartItems)
+  if (cart) {
     set(
-      cartAtom,
-      get(cartAtom).filter((item) => item !== update)
+      cartItems,
+      cart.filter((item) => item !== update)
     )
   }
-)
+})

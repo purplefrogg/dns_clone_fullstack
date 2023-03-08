@@ -3,6 +3,7 @@ import { Cart } from '~/components/cart/components/cart'
 const Page = () => {
   return (
     <div>
+      <h1 className='text-2xl font-semibold'>Cart</h1>
       <Cart />
     </div>
   )
