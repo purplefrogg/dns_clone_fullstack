@@ -1,5 +1,5 @@
 import { type NextPage } from 'next'
-import { CatalogCategories } from '~/components/catalogCategories'
+import { CatalogCategories } from '~/components/catalog'
 
 const Home: NextPage = () => {
   return (

@@ -1,13 +1,10 @@
-import { useAtom } from 'jotai'
-import { cartItems, cartItemsMount, deleteCartItem } from '../cart.store'
-import { CartItem } from './cartItem'
+import { CartItem } from './components/cartItem'
 import { MdOutlineRemoveShoppingCart } from 'react-icons/md'
 import Link from 'next/link'
+import { useCartItems } from './hooks'
 
 export const Cart = () => {
-  const [store] = useAtom(cartItems)
-  const [storeMounted] = useAtom(cartItemsMount)
-  const [, deleteItem] = useAtom(deleteCartItem)
+  const { store, storeMounted, deleteItem } = useCartItems()
 
   const onDeleteCartItem = (id: number) => deleteItem(id)
   if (!storeMounted) return <div>loading...</div>

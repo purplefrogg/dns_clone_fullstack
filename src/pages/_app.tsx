@@ -3,7 +3,7 @@ import { type AppProps, type AppType } from 'next/app'
 import { api } from '~/utils/api'
 import { Provider } from 'jotai'
 import '~/styles/globals.css'
-import { Layout } from '~/components/layout'
+import { Layout } from '~/core/layout'
 import { type NextPage } from 'next'
 import { type ReactElement, type ReactNode } from 'react'
 
