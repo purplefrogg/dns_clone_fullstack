@@ -1,15 +1,19 @@
 import Image from 'next/image'
 import { type FC } from 'react'
 import { api } from '~/utils/api'
+import { useCartItems } from '../hooks'
 
 type CartItemProps = {
   id: number
   onDelete: (id: number) => void
+  onError: (id: number) => void
 }
 
-export const CartItem: FC<CartItemProps> = ({ id, onDelete }) => {
-  const { data } = api.product.getById.useQuery(id)
-
+export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
+  const { data, error } = api.product.getById.useQuery(id)
+  if (error) {
+    onError(id)
+  }
   if (!data)
     return (
       <div className='block-element flex justify-between gap-4'>

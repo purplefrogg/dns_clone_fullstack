@@ -4,12 +4,18 @@ import { publicProcedure } from '../../trpc'
 export const getById = publicProcedure
   .input(z.number())
   .query(({ ctx, input }) => {
-    return ctx.prisma.product.findUnique({
+    return ctx.prisma.product.findUniqueOrThrow({
       where: { id: input },
       include: {
         category: true,
+
         ProductProperty: {
-          select: { PropertyField: true, title: true },
+          include: {
+            PropertyField: {
+              include: { about: true },
+            },
+            title: true,
+          },
         },
       },
     })

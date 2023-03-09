@@ -31,7 +31,12 @@ export const Cart = () => {
         </div>
       )}
       {store.map((id) => (
-        <CartItem id={id} onDelete={onDeleteCartItem} key={id} />
+        <CartItem
+          id={id}
+          onDelete={onDeleteCartItem}
+          onError={deleteItem}
+          key={id}
+        />
       ))}
     </div>
   )

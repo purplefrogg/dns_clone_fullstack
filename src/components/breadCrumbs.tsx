@@ -9,7 +9,7 @@ export const BreadCrumbs: FC<BreadCrumbsProps> = ({ crumbs }) => {
   return (
     <div className='flex'>
       {crumbs.map((crumb) => (
-        <div key={crumb.to} className='group'>
+        <div key={crumb.text} className='group'>
           {crumb.to ? (
             <Link
               className='transition-all hover:text-orange-400'

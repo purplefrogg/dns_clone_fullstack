@@ -1,4 +1,4 @@
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -7,7 +7,7 @@ import { cartItems } from '~/modules/cart/cart.store'
 import { type RouterOutputs } from '~/utils/api'
 
 interface ProductItemProps {
-  product: RouterOutputs['category']['getProducts']['products'][number]
+  product: RouterOutputs['category']['getProducts']['category']['products'][number]
 }
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
