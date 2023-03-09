@@ -4,23 +4,34 @@ import { z } from 'zod'
 import { BreadCrumbs } from '~/components/breadCrumbs'
 import { ProductItem } from '~/components/catalogPage/[catalog]/productItem'
 import { Pagination } from '~/core/pagination'
+import { useRouterQuery } from '~/hooks/useRouterQuery'
+import { Filter } from '~/modules/category/components/filter/filter'
 
-import { api, type RouterInputs } from '~/utils/api'
+import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../../_app'
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter()
-
-  const { category2, page = 1, orderType, orderDirection } = router.query
+  const { query } = useRouterQuery([
+    'page',
+    'orderType',
+    'orderDirection',
+    'category2',
+    'maxPrice',
+    'minPrice',
+  ])
+  const { category2, page = 1, orderType, orderDirection } = query
 
   const { data, error, isError } = api.category.getProducts.useQuery({
-    slug: category2 as string,
+    slug: category2,
     page: z.number().catch(1).parse(+page),
-    orderType: orderType,
-    orderDirection:
-      orderDirection as RouterInputs['category']['getProducts']['orderDirection'],
+    orderType,
+    minPrice: query.minPrice ? +query.minPrice : undefined,
+    maxPrice: query.maxPrice ? +query.maxPrice : undefined,
+    orderDirection,
   })
-  const { data: crumbs } = api.category.getCrumbs.useQuery(category2 as string)
+
+  const { data: crumbs } = api.category.getCrumbs.useQuery(category2)
 
   const onChangePage = (current: number) => {
     router.query.page = current.toString()
@@ -33,18 +44,23 @@ const Page: NextPageWithLayout = () => {
     <>
       <BreadCrumbs crumbs={crumbs} />
       <div className='flex gap-4'>
-        <div className='w-64'>filter</div>
-        {data._count.products !== 0 ? (
+        <div className='w-64'>
+          <Filter
+            minPrice={data.productMinPrice?.price ?? 0}
+            maxPrice={data.productMaxPrice?.price ?? 0}
+          />
+        </div>
+        {data.category._count.products !== 0 ? (
           <div className='flex flex-1 flex-col'>
             <div className='flex flex-col gap-4'>
-              {data?.products &&
-                data.products.map((product) => (
+              {data.category?.products &&
+                data.category.products.map((product) => (
                   <ProductItem product={product} key={product.id} />
                 ))}
             </div>
             <Pagination
-              total={data?._count.products}
-              pageSize={2}
+              total={data.category?._count.products}
+              pageSize={1}
               current={+page}
               onChange={onChangePage}
             />

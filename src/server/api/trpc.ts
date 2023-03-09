@@ -35,6 +35,7 @@ import superjson from 'superjson'
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
+
   errorFormatter({ shape }) {
     return shape
   },

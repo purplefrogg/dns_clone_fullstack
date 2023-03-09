@@ -2,15 +2,14 @@ import { z } from 'zod'
 import { publicProcedure } from '../../../trpc'
 
 export const getCrumbs = publicProcedure
-  .input(z.string())
+  .input(z.string().optional())
   .query(async ({ ctx, input }) => {
-    const category = await ctx.prisma.category.findUnique({
+    const category = await ctx.prisma.category.findUniqueOrThrow({
       where: { slug: input },
       include: {
         parent: { include: { parent: true } },
       },
     })
-    if (!category) throw new Error('Category not found')
 
     const crumbs: { text: string; to?: string }[] = [
       { text: 'Catalog', to: '/catalog' },

@@ -5,6 +5,6 @@ import { getCrumbs } from './getCrumbs'
 
 export const productRouter = createTRPCRouter({
   getCrumbs,
-  getById: getById,
-  getByIds: getByIds,
+  getById,
+  getByIds,
 })
