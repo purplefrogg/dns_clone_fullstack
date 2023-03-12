@@ -11,27 +11,36 @@ import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../../_app'
 
 const Page: NextPageWithLayout = () => {
-  const router = useRouter()
-  const { query } = useRouterQuery([
+  const { query, router, rest } = useRouterQuery([
     'page',
     'orderType',
     'orderDirection',
     'category2',
     'maxPrice',
     'minPrice',
+    'category',
   ])
-  const { category2, page = 1, orderType, orderDirection } = query
 
-  const { data, error, isError } = api.category.getProducts.useQuery({
-    slug: category2,
-    page: z.number().catch(1).parse(+page),
-    orderType,
-    minPrice: query.minPrice ? +query.minPrice : undefined,
-    maxPrice: query.maxPrice ? +query.maxPrice : undefined,
-    orderDirection,
+  const selectedFilters = Object.entries(rest).map(([key, value]) => {
+    if (!value) return { key, value: [] }
+    if (Array.isArray(value)) return { key, value: value.map((v) => +v) }
+    return { key, value: [+value] }
   })
 
-  const { data: crumbs } = api.category.getCrumbs.useQuery(category2)
+  const { data, error, isError } = api.category.getProducts.useQuery({
+    slug: query.category2,
+    page: z
+      .number()
+      .catch(1)
+      .parse(+(query.page || 1)),
+    filter: selectedFilters,
+    orderType: query.orderType,
+    minPrice: query.minPrice ? +query.minPrice : undefined,
+    maxPrice: query.maxPrice ? +query.maxPrice : undefined,
+    orderDirection: query.orderDirection,
+  })
+
+  const { data: crumbs } = api.category.getCrumbs.useQuery(query.category2)
 
   const onChangePage = (current: number) => {
     router.query.page = current.toString()
@@ -46,6 +55,7 @@ const Page: NextPageWithLayout = () => {
       <div className='flex gap-4'>
         <div className='w-64'>
           <Filter
+            filter={data?.filter}
             minPrice={data.productMinPrice?.price ?? 0}
             maxPrice={data.productMaxPrice?.price ?? 0}
           />
@@ -61,7 +71,7 @@ const Page: NextPageWithLayout = () => {
             <Pagination
               total={data.category?._count.products}
               pageSize={1}
-              current={+page}
+              current={+(query.page || 1)}
               onChange={onChangePage}
             />
           </div>

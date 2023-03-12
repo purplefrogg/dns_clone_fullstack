@@ -12,7 +12,7 @@ export const getById = publicProcedure
         ProductProperty: {
           include: {
             PropertyField: {
-              include: { about: true },
+              include: { about: true, value: true },
             },
             title: true,
           },

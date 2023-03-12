@@ -5,6 +5,13 @@ import { type PrismaClient } from '@prisma/client'
 export const getProductsInput = z.object({
   slug: z.string().optional(),
   page: z.number(),
+  filter: z
+    .object({
+      key: z.string(),
+      value: z.array(z.number()),
+    })
+    .array()
+    .default([]),
   maxPrice: z.number().optional(),
   minPrice: z.number().optional(),
   orderType: z.enum(['price']).optional().default('price').catch('price'),
@@ -47,12 +54,15 @@ const orderedProducts = async ({
   orderDirection,
   prisma,
   page,
-  take = 1,
+  take = 4,
 }: orderedProductsInput) => {
   return {
     products: await prisma.product.findMany({
       where: { id: { in: productIds } },
       orderBy: { [orderType]: orderDirection },
+      include: {
+        ProductProperty: true,
+      },
       skip: page * take - take,
       take,
     }),
@@ -68,6 +78,7 @@ export const getProducts = publicProcedure
 
     const category = await ctx.prisma.category.findFirstOrThrow({
       where: { slug: input.slug },
+
       include: {
         parent: { include: { parent: true } },
         _count: { select: { products: true } },
@@ -77,11 +88,71 @@ export const getProducts = publicProcedure
               gte: input.minPrice,
               lte: input.maxPrice,
             },
+            AND: input.filter.map((filter) => ({
+              ProductProperty: {
+                some: {
+                  PropertyField: {
+                    some: {
+                      about: {
+                        slug: filter.key,
+                      },
+                      FieldValueId: { in: filter.value },
+                    },
+                  },
+                },
+              },
+            })),
           },
         },
       },
     })
+
     const productIds = category.products.map((product) => product.id)
+
+    const filter = await ctx.prisma.propertyFieldAbout.findMany({
+      where: {
+        PropertyField: {
+          some: {
+            value: {
+              PropertyField: {
+                some: {
+                  ProductProperty: {
+                    some: {
+                      productId: {
+                        in: productIds,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      include: {
+        PropertyField: {
+          where: {
+            value: {
+              PropertyField: {
+                some: {
+                  ProductProperty: {
+                    some: {
+                      productId: {
+                        in: productIds,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          select: {
+            value: true,
+          },
+        },
+      },
+    })
+
     const { productMaxPrice, productMinPrice } = await getMaxMinPrice(
       productIds,
       ctx.prisma
@@ -98,5 +169,5 @@ export const getProducts = publicProcedure
     category.products = ordered.products
     category._count.products = ordered.count
 
-    return { category, productMaxPrice, productMinPrice }
+    return { category, productMaxPrice, productMinPrice, filter }
   })

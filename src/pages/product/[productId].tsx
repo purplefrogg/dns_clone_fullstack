@@ -31,7 +31,7 @@ const Page: NextPageWithLayout = () => {
                 <div className='w-64 border-b-2 border-dotted '>
                   {field.about?.title}
                 </div>
-                <span>{field.value}</span>
+                <span>{field.value.value}</span>
               </div>
             ))}
           </div>
