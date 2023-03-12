@@ -6,11 +6,5 @@ export const getByIds = publicProcedure
   .query(async ({ ctx, input }) => {
     return ctx.prisma.product.findMany({
       where: { id: { in: input } },
-      include: {
-        category: true,
-        ProductProperty: {
-          select: { PropertyField: true, title: true },
-        },
-      },
     })
   })

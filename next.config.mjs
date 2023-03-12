@@ -11,13 +11,7 @@ const config = {
   reactStrictMode: true,
 
   async redirects() {
-    return [
-      {
-        source: '/catalog/lvl2',
-        destination: '/catalog',
-        permanent: true,
-      },
-    ]
+    return []
   },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you

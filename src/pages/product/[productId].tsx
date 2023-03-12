@@ -1,5 +1,7 @@
+import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { BreadCrumbs } from '~/components/breadCrumbs'
+import { recentOpenedItems } from '~/modules/recentOpened/store'
 
 import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../_app'
@@ -7,11 +9,16 @@ import { type NextPageWithLayout } from '../_app'
 const Page: NextPageWithLayout = () => {
   const router = useRouter()
   const { productId } = router.query
+  const [recentOpened, setRecentOpened] = useAtom(recentOpenedItems)
 
   if (typeof productId !== 'string') {
     void router.push('/404')
     return null
   }
+  if (!recentOpened.includes(+productId)) {
+    setRecentOpened([...recentOpened, +productId])
+  }
+
   const { data } = api.product.getById.useQuery(+productId)
   const { data: crumbs } = api.product.getCrumbs.useQuery(+productId)
 
