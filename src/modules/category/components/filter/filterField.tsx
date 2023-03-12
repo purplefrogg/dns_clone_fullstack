@@ -35,15 +35,20 @@ export const FilterField: FC<FilterFieldProps> = ({ title, inputs, slug }) => {
     <div>
       <h3>{title}</h3>
       <div className='flex gap-4'>
-        {inputs.map(({ value }) => (
-          <FilterFieldInput
-            checked={router.query[slug]?.includes(value.id.toString())}
-            value={value.id}
-            changeHandler={changeHandler}
-            title={value.value}
-            key={value.id}
-          />
-        ))}
+        {inputs.map(({ value }) => {
+          const checked = router.query[slug]?.includes(value.id.toString())
+          console.log(checked)
+
+          return (
+            <FilterFieldInput
+              checked={checked}
+              value={value.id}
+              changeHandler={changeHandler}
+              title={value.value}
+              key={value.id}
+            />
+          )
+        })}
       </div>
     </div>
   )

@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import { type FC } from 'react'
 import { api } from '~/utils/api'
-import { useCartItems } from '../hooks'
 
 type CartItemProps = {
   id: number

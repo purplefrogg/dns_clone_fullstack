@@ -24,7 +24,6 @@ export const Filter: FC<FilterProps> = (props) => {
     router.query.page = '1'
     void router.push({ pathname: router.pathname, query: router.query })
   }
-
   return (
     <form
       className='flex flex-col gap-4 rounded-md bg-white p-3'
@@ -40,6 +39,22 @@ export const Filter: FC<FilterProps> = (props) => {
           inputs={filter.PropertyField}
         />
       ))}
+      <button
+        onClick={() => {
+          void router.push({
+            pathname: router.pathname,
+            query: {
+              category: router.query.category,
+              category2: router.query.category2,
+              page: '1',
+            },
+          })
+        }}
+        type='reset'
+        className='rounded bg-orange-400 p-2 text-white'
+      >
+        reset
+      </button>
       <button className='rounded bg-orange-400 p-2 text-white' type='submit'>
         submit
       </button>

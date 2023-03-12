@@ -1,6 +1,4 @@
-import { atom, useAtom } from 'jotai'
-import { FC, useEffect } from 'react'
-import { useRouterQuery } from '~/hooks/useRouterQuery'
+import { type FC } from 'react'
 
 interface PricePropertyProps {
   minPrice: number
@@ -18,8 +16,6 @@ export const PriceProperty: FC<PricePropertyProps> = (props) => {
           className='rounded border border-neutral-400'
           name='minPrice'
           type='number'
-          min={props.minPrice}
-          max={props.maxPrice}
           defaultValue={props.minPrice}
           onChange={(e) => props.setMinPrice(+e.target.value)}
         />
@@ -31,8 +27,6 @@ export const PriceProperty: FC<PricePropertyProps> = (props) => {
           className='rounded border border-neutral-400'
           type='number'
           inputMode='numeric'
-          max={props.maxPrice}
-          min={props.minPrice}
           defaultValue={props.maxPrice}
           onChange={(e) => props.setMaxPrice(+e.target.value)}
         />

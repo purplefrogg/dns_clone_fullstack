@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { type FC, useState } from 'react'
 
 interface FilterFieldInputProps {
   title: string
@@ -12,14 +12,19 @@ export const FilterFieldInput: FC<FilterFieldInputProps> = ({
   value,
   checked,
   changeHandler,
-}) => (
-  <label className='flex items-center justify-center gap-1'>
-    <input
-      type='checkbox'
-      value={value}
-      defaultChecked={checked}
-      onChange={() => changeHandler(value.toString())}
-    />
-    {title}
-  </label>
-)
+}) => {
+  const [checkedState, setCheckedState] = useState<boolean>(!!checked)
+  return (
+    <label className='flex items-center justify-center gap-1'>
+      <input
+        type='checkbox'
+        checked={checkedState}
+        onChange={() => {
+          setCheckedState((p) => !p)
+          changeHandler(value.toString())
+        }}
+      />
+      {title}
+    </label>
+  )
+}
