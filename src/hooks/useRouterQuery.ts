@@ -17,7 +17,7 @@ interface UseRouterQueryReturn<T> {
 }
 
 export const useRouterQuery = <T extends queries[number]>(
-  queries: string[]
+  queries: T[]
 ): UseRouterQueryReturn<T> => {
   const router = useRouter()
   const query = queries.reduce(
@@ -25,7 +25,8 @@ export const useRouterQuery = <T extends queries[number]>(
     {} as Record<queries[number], string | undefined>
   )
   const rest = Object.entries(router.query)
-    .filter(([key]) => !queries.includes(key))
+
+    .filter(([key]) => !queries.includes(key as T))
     .reduce((obj, [key, value]) => {
       obj[key] = value
       return obj

@@ -11,7 +11,7 @@ import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../../_app'
 
 const Page: NextPageWithLayout = () => {
-  const { query, router, rest } = useRouterQuery([
+  const { router, query, rest } = useRouterQuery([
     'page',
     'orderType',
     'orderDirection',
@@ -70,7 +70,7 @@ const Page: NextPageWithLayout = () => {
             </div>
             <Pagination
               total={data.category?._count.products}
-              pageSize={1}
+              pageSize={4}
               current={+(query.page || 1)}
               onChange={onChangePage}
             />
