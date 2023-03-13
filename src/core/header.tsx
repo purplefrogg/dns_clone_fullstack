@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import { SignIn } from '~/modules/auth/signIn/signIn'
+import { SignUp } from '~/modules/auth/signUp/signUp'
 
 export const Header = () => {
   const navItems = [
     { title: 'comparison', link: '/comparison' },
     { title: 'favorite', link: '/favorite' },
     { title: 'cart', link: '/cart' },
-    { title: 'login', link: '/login' },
   ]
   return (
     <div className='bg-white shadow'>
@@ -27,6 +28,8 @@ export const Header = () => {
               {item.title}
             </Link>
           ))}
+          <SignUp />
+          <SignIn />
         </nav>
       </div>
     </div>

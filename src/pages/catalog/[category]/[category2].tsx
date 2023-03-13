@@ -26,18 +26,21 @@ const Page: NextPageWithLayout = () => {
     return { key, value: [+value] }
   })
 
-  const { data, error, isError } = api.category.getProducts.useQuery({
-    slug: query.category2,
-    page: z
-      .number()
-      .catch(1)
-      .parse(+(query.page || 1)),
-    filter: selectedFilters,
-    orderType: query.orderType,
-    minPrice: query.minPrice ? +query.minPrice : undefined,
-    maxPrice: query.maxPrice ? +query.maxPrice : undefined,
-    orderDirection: query.orderDirection,
-  })
+  const { data, error, isError } = api.category.getProducts.useQuery(
+    {
+      slug: query.category2,
+      page: z
+        .number()
+        .catch(1)
+        .parse(+(query.page || 1)),
+      filter: selectedFilters,
+      orderType: query.orderType,
+      minPrice: query.minPrice ? +query.minPrice : undefined,
+      maxPrice: query.maxPrice ? +query.maxPrice : undefined,
+      orderDirection: query.orderDirection,
+    },
+    { keepPreviousData: true }
+  )
 
   const { data: crumbs } = api.category.getCrumbs.useQuery(query.category2)
 

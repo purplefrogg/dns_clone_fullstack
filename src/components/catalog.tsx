@@ -18,7 +18,7 @@ export const CatalogCategories = () => {
           className={'fixed top-0 right-0 h-full w-full  bg-black opacity-30'}
         ></div>
       )}
-      <div className='relative z-50 m-2 flex gap-4 rounded-lg bg-white'>
+      <div className='relative z-10 m-2 flex gap-4 rounded-lg bg-white'>
         <div className=''>
           {categories?.map((category) => (
             <div

@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react'
+import { type FC, useState, useEffect } from 'react'
 
 interface FilterFieldInputProps {
   title: string
@@ -14,6 +14,9 @@ export const FilterFieldInput: FC<FilterFieldInputProps> = ({
   changeHandler,
 }) => {
   const [checkedState, setCheckedState] = useState<boolean>(!!checked)
+  useEffect(() => {
+    setCheckedState(!!checked)
+  }, [checked])
   return (
     <label className='flex items-center justify-center gap-1'>
       <input
