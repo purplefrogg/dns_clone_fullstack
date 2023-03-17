@@ -18,7 +18,6 @@ export const FilterField: FC<FilterFieldProps> = ({ title, inputs, slug }) => {
       if (typeof query === 'string') {
         if (query === value) {
           delete router.query[slug]
-          console.log(router.query)
         }
       } else if (query.includes(value)) {
         router.query[slug] = query.filter((v: string) => v !== value)
@@ -37,7 +36,6 @@ export const FilterField: FC<FilterFieldProps> = ({ title, inputs, slug }) => {
       <div className='flex gap-4'>
         {inputs.map(({ value }) => {
           const checked = router.query[slug]?.includes(value.id.toString())
-          console.log(checked)
 
           return (
             <FilterFieldInput

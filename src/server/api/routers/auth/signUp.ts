@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { publicProcedure } from '../../trpc'
+import bcrypt from 'bcrypt'
 
 export const signUp = publicProcedure
   .input(
@@ -22,19 +23,23 @@ export const signUp = publicProcedure
     if (userExists) {
       throw new TRPCError({
         message: 'User already exists',
-        code: 'BAD_REQUEST',
+        code: 'CONFLICT',
       })
     }
-
+    const hashedPassword = await bcrypt.hash(password, 5)
     const user = await ctx.prisma.user.create({
       data: {
         email,
-        password,
+        password: hashedPassword,
         name,
         phone,
         address,
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      },
     })
-
     return user
   })

@@ -1,37 +1,23 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1).
- * 2. You want to create a new middleware or type of procedure (see Part 3).
- *
- * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
- * need to use are documented accordingly near the end.
- */
-
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API.
- *
- * These allow you to access things when processing a request, like the database, the session, etc.
- */
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
-
 import { prisma } from '~/server/db'
+import { initTRPC, TRPCError } from '@trpc/server'
+import superjson from 'superjson'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './auth'
 
-type CreateContextOptions = Record<string, never>
+export const createTRPCContext = async ({
+  req,
+  res,
+}: CreateNextContextOptions) => {
+  const session = await getServerSession(req, res, authOptions)
 
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   return {
+    req,
+    res,
+    session,
     prisma,
   }
 }
-
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({})
-}
-
-import { initTRPC } from '@trpc/server'
-import superjson from 'superjson'
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -40,7 +26,17 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     return shape
   },
 })
-
 export const createTRPCRouter = t.router
-
+export const createMiddleware = t.middleware
+const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
+  }
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  })
+})
+export const authedProcedure = t.procedure.use(enforceUserIsAuthed)
 export const publicProcedure = t.procedure

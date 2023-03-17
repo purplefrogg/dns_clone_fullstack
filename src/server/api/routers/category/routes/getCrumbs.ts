@@ -4,7 +4,7 @@ import { publicProcedure } from '../../../trpc'
 export const getCrumbs = publicProcedure
   .input(z.string().optional())
   .query(async ({ ctx, input }) => {
-    const category = await ctx.prisma.category.findUniqueOrThrow({
+    const category = await ctx.prisma.category.findFirstOrThrow({
       where: { slug: input },
       include: {
         parent: { include: { parent: true } },

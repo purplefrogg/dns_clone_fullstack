@@ -1,13 +1,15 @@
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { SignIn } from '~/modules/auth/signIn/signIn'
-import { SignUp } from '~/modules/auth/signUp/signUp'
 
 export const Header = () => {
+  const { data, status } = useSession()
   const navItems = [
     { title: 'comparison', link: '/comparison' },
     { title: 'favorite', link: '/favorite' },
     { title: 'cart', link: '/cart' },
+    { title: 'profile', link: '/profile' },
   ]
+
   return (
     <div className='bg-white shadow'>
       <div className='m-auto flex max-w-6xl gap-4 p-2 '>
@@ -28,8 +30,14 @@ export const Header = () => {
               {item.title}
             </Link>
           ))}
-          <SignUp />
-          <SignIn />
+          {data ? (
+            <>
+              <div>{data.user.id}</div>
+              <button onClick={() => void signOut()}>sign out</button>
+            </>
+          ) : (
+            <button onClick={() => void signIn()}>sign in</button>
+          )}
         </nav>
       </div>
     </div>

@@ -6,6 +6,8 @@ import '~/styles/globals.css'
 import { Layout } from '~/core/layout'
 import { type NextPage } from 'next'
 import { type ReactElement, type ReactNode } from 'react'
+import { SessionProvider } from 'next-auth/react'
+import { type Session } from 'next-auth'
 
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -14,10 +16,17 @@ export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
-const MyApp = function ({ Component, pageProps }: AppPropsWithLayout) {
+const MyApp = function ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
-  return <Provider>{getLayout(<Component {...pageProps} />)}</Provider>
+  return (
+    <SessionProvider session={session as Session | null | undefined}>
+      <Provider>{getLayout(<Component {...pageProps} />)}</Provider>
+    </SessionProvider>
+  )
 } as AppType
 
 export default api.withTRPC(MyApp)

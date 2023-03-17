@@ -1,19 +1,12 @@
 import { type FC } from 'react'
-import { api } from '~/utils/api'
 
 interface SignUpFormProps {
   setShow: (show: boolean) => void
 }
 
 export const SignUpForm: FC<SignUpFormProps> = ({ setShow }) => {
-  const { mutate, error } = api.auth.signUp.useMutation()
-  const submitHandler = (inputs: { [k: string]: FormDataEntryValue }) => {
-    mutate({
-      name: inputs.name as string,
-      phone: inputs.phone as string,
-      password: inputs.password as string,
-      email: inputs.email as string,
-    })
+  const submitHandler = (_inputs: { [k: string]: FormDataEntryValue }) => {
+    return null
   }
   return (
     <div
@@ -57,7 +50,6 @@ export const SignUpForm: FC<SignUpFormProps> = ({ setShow }) => {
           Email
           <input type='email' name='email' required />
         </label>
-        {error && <div className='text-red-500'>{error.message}</div>}
         <button type='submit'>continue</button>
       </form>
     </div>

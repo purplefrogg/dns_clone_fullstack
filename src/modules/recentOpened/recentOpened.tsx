@@ -1,10 +1,10 @@
-import { FC } from 'react'
+import { type FC } from 'react'
 import { api } from '~/utils/api'
 import { useRecentOpenedItems } from './hooks'
 import { RecentOpenedItem } from './recentOpened.item'
 
 export const RecentOpened: FC = () => {
-  const { store, deleteItem, storeMounted } = useRecentOpenedItems()
+  const { store, deleteItem } = useRecentOpenedItems()
   const { data } = api.product.getByIds.useQuery(store)
   if (!data) {
     return <div>loading...</div>

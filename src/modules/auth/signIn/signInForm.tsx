@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { type FC } from 'react'
 import { api } from '~/utils/api'
 
@@ -6,9 +7,12 @@ interface SignInFormProps {
 }
 
 export const SignInForm: FC<SignInFormProps> = ({ setShow }) => {
+  const router = useRouter()
   const { mutate, error } = api.auth.signIn.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      sessionStorage.setItem('token', data)
       setShow(false)
+      void router.push('/profile')
     },
   })
 

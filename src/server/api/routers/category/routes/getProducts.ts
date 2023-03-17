@@ -74,8 +74,6 @@ const orderedProducts = async ({
 export const getProducts = publicProcedure
   .input(getProductsInput)
   .query(async ({ ctx, input }) => {
-    console.log(input.minPrice)
-
     const category = await ctx.prisma.category.findFirstOrThrow({
       where: { slug: input.slug },
 

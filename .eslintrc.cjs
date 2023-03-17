@@ -3,29 +3,41 @@ const config = {
   overrides: [
     {
       extends: [
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
       ],
-      files: ["*.ts", "*.tsx"],
+      files: ['*.ts', '*.tsx'],
       parserOptions: {
-        project: "tsconfig.json",
+        project: 'tsconfig.json',
       },
     },
   ],
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: "./tsconfig.json",
+    project: './tsconfig.json',
   },
-  plugins: ["@typescript-eslint"],
-  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  plugins: ['@typescript-eslint', 'unused-imports'],
+  extends: ['next/core-web-vitals', 'plugin:@typescript-eslint/recommended'],
   rules: {
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
       {
-        prefer: "type-imports",
-        fixStyle: "inline-type-imports",
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/consistent-type-imports': [
+      'warn',
+      {
+        prefer: 'type-imports',
+        fixStyle: 'inline-type-imports',
       },
     ],
   },
-};
+}
 
-module.exports = config;
+module.exports = config

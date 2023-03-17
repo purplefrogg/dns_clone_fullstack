@@ -1,13 +1,6 @@
-/**
- * This is the client-side entrypoint for your tRPC API. It is used to create the `api` object which
- * contains the Next.js App-wrapper, as well as your type-safe React Query hooks.
- *
- * We also create a few inference helpers for input and output types.
- */
-import { httpBatchLink, httpLink, loggerLink } from '@trpc/client'
+import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
-import { createTRPCJotai } from 'jotai-trpc'
 import superjson from 'superjson'
 
 import { type AppRouter } from '~/server/api/root'
@@ -18,22 +11,17 @@ const getBaseUrl = () => {
   return `http://127.0.0.1:${process.env.PORT ?? 3000}`
 }
 
-/** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
-  config() {
+  config({}) {
     return {
-      /**
-       * Transformer used for data de-serialization from the server.
-       *
-       * @see https://trpc.io/docs/data-transformers
-       */
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            keepPreviousData: true,
+          },
+        },
+      },
       transformer: superjson,
-      // abortOnUnmount: true,
-      /**
-       * Links used to determine request flow from client to server.
-       *
-       * @see https://trpc.io/docs/links
-       */
       links: [
         loggerLink({
           enabled: (opts) =>
@@ -46,33 +34,19 @@ export const api = createTRPCNext<AppRouter>({
       ],
     }
   },
-  /**
-   * Whether tRPC should await queries when server rendering pages.
-   *
-   * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
-   */
   ssr: true,
 })
 
-/**
- * Inference helper for inputs.
- *
- * @example type HelloInput = RouterInputs['example']['hello']
- */
 export type RouterInputs = inferRouterInputs<AppRouter>
 
-/**
- * Inference helper for outputs.
- *
- * @example type HelloOutput = RouterOutputs['example']['hello']
- */
 export type RouterOutputs = inferRouterOutputs<AppRouter>
 
-export const trpc = createTRPCJotai<AppRouter>({
+export const trpcVanilla = createTRPCProxyClient<AppRouter>({
   transformer: superjson,
+
   links: [
-    httpLink({
-      url: `${getBaseUrl()}/api/trpc`,
+    httpBatchLink({
+      url: `http://localhost:3000/api/trpc`,
     }),
   ],
 })

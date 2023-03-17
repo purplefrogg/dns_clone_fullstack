@@ -1,8 +1,7 @@
-import { createTRPCRouter } from '../../trpc'
-import { signIn } from './signIn'
-import { signUp } from './signUp'
+import { authedProcedure, createTRPCRouter } from '../../trpc'
 
 export const authRouter = createTRPCRouter({
-  signUp: signUp,
-  signIn: signIn,
+  getProfile: authedProcedure.query(({ ctx }) => {
+    return ctx.session.user
+  }),
 })
