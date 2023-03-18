@@ -11,7 +11,7 @@ const getBaseUrl = () => {
 }
 
 export const api = createTRPCNext<AppRouter>({
-  config({}) {
+  config({ ctx }) {
     return {
       queryClientConfig: {
         defaultOptions: {
@@ -32,6 +32,11 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            return {
+              ...ctx?.req?.headers,
+            }
+          },
         }),
       ],
     }

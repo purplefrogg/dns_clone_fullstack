@@ -49,5 +49,18 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
     },
   })
 })
+const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user || ctx.session.user.role !== 'ADMIN') {
+    console.log('ctx.session.user.role', ctx.session)
+
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
+  }
+  return next({
+    ctx: {
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  })
+})
 export const authedProcedure = t.procedure.use(enforceUserIsAuthed)
+export const adminProcedure = t.procedure.use(enforceUserIsAdmin)
 export const publicProcedure = t.procedure

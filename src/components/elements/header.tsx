@@ -7,6 +7,7 @@ export const Header = () => {
     { title: 'comparison', link: '/comparison' },
     { title: 'favorite', link: '/favorite' },
     { title: 'cart', link: '/cart' },
+    { title: 'admin', link: '/admin' },
     { title: 'profile', link: '/profile' },
   ]
 

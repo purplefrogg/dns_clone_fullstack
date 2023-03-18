@@ -1,10 +1,11 @@
 import { type DefaultSession } from 'next-auth'
-
+type UserRole = 'ADMIN' | 'USER'
 declare module 'next-auth' {
   interface User {
     id: number
     name: string
     email: string
+    role: UserRole
   }
 
   interface Session extends DefaultSession {
@@ -12,6 +13,7 @@ declare module 'next-auth' {
       id: number
       name: string
       email: string
+      role: UserRole
       // ...other properties
       // role: UserRole;
     }
@@ -25,5 +27,6 @@ declare module 'next-auth/jwt' {
     id: number
     name: string
     email: string
+    role: UserRole
   }
 }
