@@ -4,19 +4,29 @@ import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './auth'
+import { type Session } from 'next-auth'
 
+interface CreateInnerContextOptions extends Partial<CreateNextContextOptions> {
+  session: Session | null
+}
+
+export function createContextInner(opts?: CreateInnerContextOptions) {
+  return {
+    prisma,
+    ...opts,
+  }
+}
 export const createTRPCContext = async ({
   req,
   res,
 }: CreateNextContextOptions) => {
   const session = await getServerSession(req, res, authOptions)
 
-  return {
+  return createContextInner({
     req,
     res,
     session,
-    prisma,
-  }
+  })
 }
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
@@ -26,6 +36,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
     return shape
   },
 })
+
 export const createTRPCRouter = t.router
 export const createMiddleware = t.middleware
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {

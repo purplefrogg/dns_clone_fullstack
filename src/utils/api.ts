@@ -2,7 +2,6 @@ import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import superjson from 'superjson'
-
 import { type AppRouter } from '~/server/api/root'
 
 const getBaseUrl = () => {
@@ -18,6 +17,9 @@ export const api = createTRPCNext<AppRouter>({
         defaultOptions: {
           queries: {
             keepPreviousData: true,
+            retry: false,
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
           },
         },
       },
@@ -34,7 +36,7 @@ export const api = createTRPCNext<AppRouter>({
       ],
     }
   },
-  ssr: true,
+  ssr: false,
 })
 
 export type RouterInputs = inferRouterInputs<AppRouter>

@@ -1,12 +1,8 @@
 import { createTRPCRouter } from '~/server/api/trpc'
-import { getAll } from './routes'
-import { getCrumbs } from './routes'
-import { getProducts } from './routes'
-import { getSubCategories } from './routes'
+import { getAll, getProducts, getCategory } from './routes'
 
 export const categoryRouter = createTRPCRouter({
   getAll,
-  getSubCategories,
-  getCrumbs,
+  getCategory,
   getProducts,
 })

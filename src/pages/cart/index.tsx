@@ -1,12 +1,7 @@
-import { Cart } from '~/modules/cart/cart'
+import { Cart } from '~/templates/cart/cart'
 
 const Page = () => {
-  return (
-    <div>
-      <h1 className='text-2xl font-semibold'>Cart</h1>
-      <Cart />
-    </div>
-  )
+  return <Cart />
 }
 
 export default Page

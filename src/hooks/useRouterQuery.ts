@@ -8,6 +8,7 @@ export type queries = Array<
   | 'page'
   | 'category2'
   | 'category'
+  | 'productId'
 >
 
 interface UseRouterQueryReturn<T> {

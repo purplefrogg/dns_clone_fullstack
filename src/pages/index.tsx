@@ -1,6 +1,6 @@
 import { type NextPage } from 'next'
-import { CatalogCategories } from '~/components/catalog'
-import { RecentOpened } from '~/modules/recentOpened/recentOpened'
+import { CatalogCategories } from '~/components/modules/catalog/catalog'
+import { RecentOpened } from '~/components/modules/recentOpened/recentOpened'
 
 const Home: NextPage = () => {
   return (

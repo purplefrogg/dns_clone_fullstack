@@ -1,26 +1,6 @@
-import { api } from '~/utils/api'
 import { type NextPageWithLayout } from '../_app'
-import { CategoryItem } from '../../components/catalogPage/categoryItem'
-import { BreadCrumbs } from '~/components/breadCrumbs'
+import { Catalog_lvl_1 } from '~/templates/catalog/catalog.lvl.1'
 
-const Page: NextPageWithLayout = () => {
-  const { data } = api.category.getAll.useQuery()
-  if (!data) {
-    return <div>loading</div>
-  }
-  const { categories } = data
-  const crumbs = [{ text: 'Catalog', to: '/catalog' }]
-  return (
-    <>
-      <BreadCrumbs crumbs={crumbs} />
-
-      <div className='my-4 flex flex-wrap gap-4'>
-        {categories?.map((category) => (
-          <CategoryItem category={category} key={category.id} />
-        ))}
-      </div>
-    </>
-  )
-}
+const Page: NextPageWithLayout = () => <Catalog_lvl_1 />
 
 export default Page
