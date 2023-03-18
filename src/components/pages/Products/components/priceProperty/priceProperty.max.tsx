@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai'
 import { type FC } from 'react'
-import { maxPriceAtom } from './filter.store'
+import { maxPriceAtom } from '../filter/filter.store'
 
 export const MaxPrice: FC = () => {
   const [maxPrice, setMaxPrice] = useAtom(maxPriceAtom)

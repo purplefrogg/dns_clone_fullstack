@@ -1,10 +1,10 @@
-import { Product } from '@prisma/client'
+import { type Product } from '@prisma/client'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type FC } from 'react'
-import { cartItems } from '~/templates/cart/cart.store'
+import { cartItems } from '~/components/pages/cart/cart.store'
 
 interface ProductItemProps {
   product: Product

@@ -5,7 +5,7 @@ import {
   type NextPage,
 } from 'next'
 import { prisma } from '~/server/db'
-import { Product } from '~/templates/product/product'
+import { Product } from '~/components/pages/product/product'
 
 import { ssg } from '~/utils/ssg'
 export async function getStaticProps(

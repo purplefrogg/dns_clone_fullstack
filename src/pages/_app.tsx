@@ -3,11 +3,12 @@ import { type AppProps, type AppType } from 'next/app'
 import { api } from '~/utils/api'
 import { Provider } from 'jotai'
 import '~/styles/globals.css'
-import { Layout } from '~/core/layout'
+
 import { type NextPage } from 'next'
 import { type ReactElement, type ReactNode } from 'react'
 import { SessionProvider } from 'next-auth/react'
 import { type Session } from 'next-auth'
+import { Layout } from '~/components/layouts/layout'
 
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode

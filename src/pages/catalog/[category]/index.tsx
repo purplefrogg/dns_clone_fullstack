@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { type NextPageWithLayout } from '~/pages/_app'
-import { Catalog_lvl_2 } from '~/templates/catalog/catalog.lvl.2'
+import { Catalog_lvl_2 } from '~/components/pages/catalog/catalog.lvl.2'
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter()

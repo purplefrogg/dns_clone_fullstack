@@ -1,7 +1,7 @@
 import { type FieldValue, type PropertyFieldAbout } from '@prisma/client'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
-import { HTMLProps, type FC } from 'react'
+import { type HTMLProps, type FC } from 'react'
 import { priceRangeAtom } from './filter.store'
 import { FilterField } from './filterField'
 
@@ -37,7 +37,7 @@ export const Filter: FC<FilterProps> = ({ children, ...props }) => {
 
   return (
     <form
-      className='flex flex-col gap-4 rounded-md bg-white p-3'
+      className='flex w-64 flex-col gap-4 rounded-md bg-white p-3'
       onSubmit={submitHandler}
     >
       {children}

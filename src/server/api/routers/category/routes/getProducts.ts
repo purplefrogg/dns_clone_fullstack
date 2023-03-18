@@ -5,7 +5,7 @@ import { getCrumbs } from '~/server/api/shared/getCrumbs'
 
 export const getProductsInput = z.object({
   slug: z.string().optional(),
-  page: z.number(),
+  page: z.number().default(1),
   filter: z
     .object({
       key: z.string(),

@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { CategoryType } from './types'
+import { type CategoryType } from './types'
 
 export const CategoryItem = ({ category }: { category: CategoryType }) => {
   if (category.subCategories.length === 0) {

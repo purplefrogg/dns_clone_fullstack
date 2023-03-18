@@ -1,4 +1,4 @@
-import { Cart } from '~/templates/cart/cart'
+import { Cart } from '~/components/pages/cart/cart'
 
 const Page = () => {
   return <Cart />

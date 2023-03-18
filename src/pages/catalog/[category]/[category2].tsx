@@ -1,9 +1,9 @@
-import { ProductList } from '~/templates/Products/productList'
+import { Products } from '~/components/pages/Products/products'
 
 import { type NextPageWithLayout } from '../../_app'
 
 const Page: NextPageWithLayout = () => {
-  return <ProductList />
+  return <Products />
 }
 
 export default Page

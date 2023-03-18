@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 export const Header = () => {
-  const { data, status } = useSession()
+  const { data } = useSession()
   const navItems = [
     { title: 'comparison', link: '/comparison' },
     { title: 'favorite', link: '/favorite' },
