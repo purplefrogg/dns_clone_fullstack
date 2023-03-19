@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { SignUp } from '../modules/auth/signUp/signUp'
 
 export const Header = () => {
   const { data } = useSession()
@@ -25,6 +26,7 @@ export const Header = () => {
           placeholder='поиск по сайту'
           className='flex-1 rounded-lg bg-gray-100'
         />
+        <SignUp />
         <nav className='flex  items-center gap-2'>
           {navItems.map((item) => (
             <Link href={item.link} key={item.title}>

@@ -1,0 +1,92 @@
+import { type FC } from 'react'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { api, type RouterInputs } from '~/utils/api'
+
+type Inputs = RouterInputs['admin']['createProduct']
+export const ProductAdd: FC = () => {
+  const { data: categories } = api.admin.getCategories3lvl.useQuery()
+  const { mutate } = api.admin.createProduct.useMutation()
+  const {
+    register,
+    handleSubmit,
+
+    formState: { errors, isSubmitSuccessful, submitCount },
+  } = useForm<Inputs>({
+    criteriaMode: 'all',
+  })
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data)
+
+    mutate(data)
+  }
+
+  console.log(errors)
+  if (!categories) return <div>loading</div>
+  return (
+    <div>
+      <h1>Add Product</h1>
+      <form
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={handleSubmit(onSubmit)}
+        className='flex flex-col gap-2'
+      >
+        <label className='flex  '>
+          <span className='w-32'>name</span>
+          <input
+            type='text'
+            {...register('name', {
+              required: 'name is required',
+            })}
+          />
+          {errors.name && (
+            <span className='text-red-500'>{errors.name.message}</span>
+          )}
+        </label>
+        <label className='flex'>
+          <span className='w-32'>description</span>
+          <input
+            type='text'
+            {...register('description', {
+              required: 'description is required',
+            })}
+          />
+          {errors.description && (
+            <span className='text-red-500'>{errors.description.message}</span>
+          )}
+        </label>
+        <label className='flex'>
+          <span className='w-32'>price</span>
+          <input
+            type='number'
+            {...register('price', {
+              valueAsNumber: true,
+              required: 'price is required',
+            })}
+          />
+          {errors.price && (
+            <span className='text-red-500'>{errors.price.message}</span>
+          )}
+        </label>
+        <label className='flex'>
+          <span className='w-32'>categoryId</span>
+          <select
+            {...register('categoryId', {
+              valueAsNumber: true,
+              required: 'category is required',
+            })}
+          >
+            {categories?.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        {isSubmitSuccessful && (
+          <span className='text-green-400'>success {submitCount}</span>
+        )}
+        <button type='submit'>submit</button>
+      </form>
+    </div>
+  )
+}

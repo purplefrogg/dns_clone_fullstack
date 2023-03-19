@@ -34,8 +34,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "src/templates/product/product.property.item.tsxx",
-    "src/templates/product/product.property.item.tsxx"
   ],
   "exclude": [
     "node_modules"

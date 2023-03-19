@@ -12,10 +12,10 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
     onSuccess: () => {
       setShow(false)
       void utils.admin.getCategories.invalidate()
+      void utils.admin.getCategoriesWithout3lvl.invalidate()
     },
   })
-  const { data: categories } =
-    api.admin.getCategoriesWithout3lvlParents.useQuery()
+  const { data: categories } = api.admin.getCategoriesWithout3lvl.useQuery()
   return (
     <div
       onClick={(e) => {
@@ -29,11 +29,18 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
           e.preventDefault()
           const formData = new FormData(e.target as HTMLFormElement)
           const inputs = Object.fromEntries(formData)
-          if (!inputs.slug || !inputs.title || !inputs.parentId) return null
+          if (!inputs.title) return null
+
+          if (!inputs.parentId) {
+            return mutate({
+              title: inputs.title as string,
+              slug: inputs.slug as string,
+            })
+          }
           mutate({
             title: inputs.title as string,
             slug: inputs.slug as string,
-            parentId: +inputs.parentId,
+            parentId: inputs.parentId ? +inputs.parentId : undefined,
           })
         }}
         className='flex flex-col gap-2 rounded-lg bg-white p-4 shadow-xl'
@@ -48,7 +55,8 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
         </label>
         <label className='flex justify-between  gap-2'>
           parentId
-          <select name='parentId' required>
+          <select name='parentId'>
+            <option value=''>without Parent</option>
             {categories?.map((category) => (
               <option value={category.id} key={category.id}>
                 {category.title}
@@ -58,7 +66,7 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
         </label>
         <label className='flex justify-between  gap-2'>
           slug
-          <input type='text' name='slug' required minLength={3} />
+          <input type='text' name='slug' />
         </label>
         {error && <div className='text-red-500'>{error.message}</div>}
         <button type='submit'>continue</button>

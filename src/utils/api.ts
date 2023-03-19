@@ -33,9 +33,18 @@ export const api = createTRPCNext<AppRouter>({
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
           headers() {
-            return {
-              ...ctx?.req?.headers,
+            if (ctx?.req) {
+              const {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                connection: _connection,
+                ...headers
+              } = ctx?.req?.headers
+              return {
+                ...headers,
+                'x-ssr': '1',
+              }
             }
+            return {}
           },
         }),
       ],

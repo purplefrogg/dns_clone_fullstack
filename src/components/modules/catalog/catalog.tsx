@@ -7,11 +7,11 @@ import { CatalogBackground } from './catalog.background'
 export const CatalogCategories = () => {
   const { data, error } = api.category.getAll.useQuery()
   const [subCategory, setSubCategory] = useState<number | null>(null)
-  if (!data) {
-    return <div>loading...</div>
-  }
   if (error) {
     return <div>{error.message}</div>
+  }
+  if (!data) {
+    return <div>loading...</div>
   }
   const { categories } = data
   return (

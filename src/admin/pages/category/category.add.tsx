@@ -13,7 +13,12 @@ export const CategoryAdd = () => {
   }, [show])
   return (
     <>
-      <button onClick={() => setShow(true)}>add Category</button>
+      <button
+        className='rounded bg-green-300 p-2'
+        onClick={() => setShow(true)}
+      >
+        add Category
+      </button>
       {show && <CategoryForm setShow={(v) => setShow(v)} />}
     </>
   )
