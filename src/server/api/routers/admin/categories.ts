@@ -139,8 +139,65 @@ const createCategory = adminProcedure
     }
   })
 
+const getProductProperties = adminProcedure
+  .input(z.number())
+  .query(async ({ ctx, input }) => {
+    const ProductProperty = await ctx.prisma.productPropertyTitle.findMany({
+      where: {
+        ProductProperty: {
+          some: {
+            product: {
+              categoryId: input,
+            },
+          },
+        },
+      },
+    })
+    const withFields = ProductProperty.map(async (item) => {
+      return {
+        ...item,
+        fields: await ctx.prisma.propertyFieldAbout.findMany({
+          where: {
+            PropertyField: {
+              some: {
+                ProductProperty: {
+                  titleId: item.id,
+                },
+              },
+            },
+          },
+        }),
+      }
+    })
+    const withValues = withFields.map(async (item) => {
+      const { fields, ...title } = await item
+      const withV = fields.map(async (field) => {
+        return {
+          ...field,
+          values: await ctx.prisma.fieldValue.findMany({
+            where: {
+              PropertyField: {
+                some: {
+                  aboutId: title.id,
+                },
+              },
+            },
+          }),
+        }
+      })
+
+      return {
+        ...title,
+        fields: await Promise.all(withV),
+      }
+    })
+
+    return await Promise.all(withValues)
+  })
+
 export const categoriesRouter = {
   getCategories,
+  getProductProperties,
   deleteCategory,
   getCategories3lvl,
   getCategoriesWithout3lvl,

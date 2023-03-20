@@ -4,7 +4,7 @@ import { Table } from '~/admin/shared/table'
 import { api, RouterOutputs } from '~/utils/api'
 const useDeleteProps = (id: number) => {
   const utils = api.useContext()
-  const { mutate } = api.admin.deleteCategory.useMutation({
+  const { mutate } = api.admin.deleteProduct.useMutation({
     onSuccess: () => {
       void utils.admin.invalidate()
     },

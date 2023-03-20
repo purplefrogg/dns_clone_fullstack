@@ -18,11 +18,7 @@ const ColumnOfParent = ({ current }: { current?: string }) => {
   return (
     <div>
       <select className=''>
-        {current && (
-          <option value={current} selected>
-            {current}
-          </option>
-        )}
+        {current && <option value={current}>{current}</option>}
         <option value=''>without Parent</option>
         {data?.map((category) => (
           <option key={category.id} value={category.id}>

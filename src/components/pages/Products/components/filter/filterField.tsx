@@ -34,7 +34,7 @@ export const FilterField: FC<Props> = ({
     <div>
       <h3>{title}</h3>
       <div className='flex gap-4'>
-        {inputs.map(({ value }) => {
+        {inputs.map((value) => {
           const checked = router.query[slug]?.includes(value.id.toString())
 
           return (

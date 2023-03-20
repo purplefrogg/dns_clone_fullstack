@@ -1,5 +1,5 @@
 import { type FC } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { useForm, UseFormSetValue, type SubmitHandler } from 'react-hook-form'
 import { api, type RouterInputs } from '~/utils/api'
 
 type Inputs = RouterInputs['admin']['createProduct']
@@ -9,19 +9,21 @@ export const ProductAdd: FC = () => {
   const {
     register,
     handleSubmit,
-
+    control,
+    setValue,
+    watch,
     formState: { errors, isSubmitSuccessful, submitCount },
   } = useForm<Inputs>({
     criteriaMode: 'all',
   })
+  if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+    // console.log(data)
 
     mutate(data)
   }
 
-  console.log(errors)
-  if (!categories) return <div>loading</div>
+  const categoryId = watch('categoryId', categories?.[0]?.id)
   return (
     <div>
       <h1>Add Product</h1>
@@ -82,6 +84,7 @@ export const ProductAdd: FC = () => {
             ))}
           </select>
         </label>
+        <ProductProperties setValue={setValue} categoryId={categoryId} />
         {isSubmitSuccessful && (
           <span className='text-green-400'>success {submitCount}</span>
         )}
@@ -90,3 +93,59 @@ export const ProductAdd: FC = () => {
     </div>
   )
 }
+
+const ProductProperties: FC<{
+  categoryId: number
+  setValue: UseFormSetValue<Inputs>
+}> = ({ categoryId, setValue }) => {
+  const { data: properties } =
+    api.admin.getProductProperties.useQuery(categoryId)
+  if (!properties) return <div>loading</div>
+  return (
+    <div>
+      properties
+      {properties.map((tittle, propertyIndex) => (
+        <div key={tittle.id}>
+          <label className='flex'>
+            <span className='w-32 font-semibold'>{tittle.title}</span>
+            {tittle.fields.map((field, fieldIndex) => (
+              <div key={field.id}>
+                {field.title}
+                <select
+                  onChange={(e) => {
+                    setValue(
+                      `ProductProperty.${propertyIndex}.titleId`,
+                      tittle.id
+                    )
+                    setValue(
+                      `ProductProperty.${propertyIndex}.fields.${fieldIndex}.aboutId`,
+                      field.id
+                    )
+                    setValue(
+                      `ProductProperty.${propertyIndex}.fields.${fieldIndex}.value`,
+                      +e.currentTarget.value
+                    )
+                  }}
+                >
+                  <option value=''>not selected</option>
+                  {field.values.map((value) => (
+                    <option key={value.id} value={value.id}>
+                      {value.value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </label>
+        </div>
+      ))}
+    </div>
+  )
+}
+// ;<select>
+//   {field.values.map((value) => (
+//     <option key={value.id} value={value.id}>
+//       {value.value}
+//     </option>
+//   ))}
+// </select>

@@ -1,19 +1,19 @@
-import { type FieldValue, type PropertyFieldAbout } from '@prisma/client'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { type HTMLProps, type FC } from 'react'
+import { type RouterOutputs } from '~/utils/api'
 import { priceRangeAtom } from './filter.store'
 import { FilterField } from './filterField'
 
 interface FilterProps extends HTMLProps<HTMLDivElement> {
-  filter: (PropertyFieldAbout & {
-    PropertyField: {
-      value: FieldValue
-    }[]
-  })[]
+  filter: RouterOutputs['category']['getProducts']['filter']
 }
 
-export const Filter: FC<FilterProps> = ({ children, ...props }) => {
+export const Filter: FC<FilterProps> = ({
+  children,
+  filter: filters,
+  ...props
+}) => {
   const router = useRouter()
   const [priceRange] = useAtom(priceRangeAtom)
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,8 +41,8 @@ export const Filter: FC<FilterProps> = ({ children, ...props }) => {
       onSubmit={submitHandler}
     >
       {children}
-      {props.filter?.map((filter) => (
-        <FilterField key={filter.id} {...filter} />
+      {filters.map((filter) => (
+        <FilterField key={filter.slug} {...filter} />
       ))}
       <button
         onClick={resetHandler}

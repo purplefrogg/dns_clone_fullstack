@@ -58,49 +58,41 @@ const getFilter = async ({
   prisma: PrismaClient
   productIds: number[]
 }) => {
-  return await prisma.propertyFieldAbout.findMany({
+  const propertyFields = await prisma.propertyFieldAbout.findMany({
     where: {
       PropertyField: {
         some: {
-          value: {
-            PropertyField: {
-              some: {
-                ProductProperty: {
-                  some: {
-                    productId: {
-                      in: productIds,
-                    },
-                  },
-                },
-              },
+          ProductProperty: {
+            productId: {
+              in: productIds,
             },
           },
-        },
-      },
-    },
-    include: {
-      PropertyField: {
-        where: {
-          value: {
-            PropertyField: {
-              some: {
-                ProductProperty: {
-                  some: {
-                    productId: {
-                      in: productIds,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        select: {
-          value: true,
         },
       },
     },
   })
+
+  const filter = propertyFields.map(async (propertyField) => {
+    return {
+      title: propertyField.title,
+      slug: propertyField.slug,
+      PropertyField: await prisma.fieldValue.findMany({
+        where: {
+          PropertyField: {
+            some: {
+              ProductProperty: {
+                productId: {
+                  in: productIds,
+                },
+              },
+            },
+          },
+        },
+        select: { id: true, value: true },
+      }),
+    }
+  })
+  return await Promise.all(filter)
 }
 const orderedProducts = async ({
   productIds,

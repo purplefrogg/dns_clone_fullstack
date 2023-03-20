@@ -36,7 +36,7 @@ model Product {
 model ProductProperty {
     id            Int                  @id @default(autoincrement())
     productId     Int
-    product       Product              @relation(fields: [productId], references: [id])
+    product       Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
     PropertyField PropertyField[]
     titleId       Int
     title         ProductPropertyTitle @relation(fields: [titleId], references: [id])
@@ -48,6 +48,16 @@ model ProductPropertyTitle {
     ProductProperty ProductProperty[]
 }
 
+model PropertyField {
+    id                Int                @id @default(autoincrement())
+    aboutId           Int
+    about             PropertyFieldAbout @relation(fields: [aboutId], references: [id])
+    ProductPropertyId Int
+    ProductProperty   ProductProperty    @relation(fields: [ProductPropertyId], references: [id], onDelete: Cascade)
+    FieldValueId      Int
+    value             FieldValue         @relation(fields: [FieldValueId], references: [id])
+}
+
 model PropertyFieldAbout {
     id Int @id @default(autoincrement())
 
@@ -55,15 +65,6 @@ model PropertyFieldAbout {
     description   String
     slug          String          @unique
     PropertyField PropertyField[]
-}
-
-model PropertyField {
-    id              Int                @id @default(autoincrement())
-    aboutId         Int
-    about           PropertyFieldAbout @relation(fields: [aboutId], references: [id])
-    ProductProperty ProductProperty[]
-    FieldValueId    Int
-    value           FieldValue         @relation(fields: [FieldValueId], references: [id])
 }
 
 model FieldValue {
