@@ -1,15 +1,22 @@
 import { type FC } from 'react'
-import { useForm, UseFormSetValue, type SubmitHandler } from 'react-hook-form'
+import {
+  useForm,
+  type UseFormSetValue,
+  type SubmitHandler,
+} from 'react-hook-form'
 import { api, type RouterInputs } from '~/utils/api'
 
 type Inputs = RouterInputs['admin']['createProduct']
 export const ProductAdd: FC = () => {
-  const { data: categories } = api.admin.getCategories3lvl.useQuery()
+  const { data: categories } = api.admin.getCategories.useQuery({
+    onlyOneLevel: {
+      level: '3',
+    },
+  })
   const { mutate } = api.admin.createProduct.useMutation()
   const {
     register,
     handleSubmit,
-    control,
     setValue,
     watch,
     formState: { errors, isSubmitSuccessful, submitCount },
@@ -142,10 +149,3 @@ const ProductProperties: FC<{
     </div>
   )
 }
-// ;<select>
-//   {field.values.map((value) => (
-//     <option key={value.id} value={value.id}>
-//       {value.value}
-//     </option>
-//   ))}
-// </select>

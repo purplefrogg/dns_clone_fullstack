@@ -1,7 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { DeleteButton } from '~/admin/shared/deleteButton'
 import { Table } from '~/admin/shared/table'
-import { api, RouterOutputs } from '~/utils/api'
+import { api, type RouterOutputs } from '~/utils/api'
 const useDeleteProps = (id: number) => {
   const utils = api.useContext()
   const { mutate } = api.admin.deleteProduct.useMutation({

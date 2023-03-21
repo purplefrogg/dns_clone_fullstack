@@ -13,7 +13,12 @@ const useDeleteProps = (id: number) => {
   return () => mutate(id)
 }
 const ColumnOfParent = ({ current }: { current?: string }) => {
-  const { data } = api.admin.getCategoriesWithout3lvl.useQuery()
+  const { data } = api.admin.getCategories.useQuery({
+    onlyOneLevel: {
+      level: '3',
+      reverse: true,
+    },
+  })
 
   return (
     <div>
@@ -95,9 +100,9 @@ const columns = [
 ]
 export const CategoryList = () => {
   const { searchParam, search } = useSearch()
-  const { data, error } = api.admin.getCategories.useQuery({
-    searchParam: search ? searchParam : undefined,
-  })
+  const { data, error } = api.admin.getCategories.useQuery(
+    search ? searchParam : undefined
+  )
 
   if (!data) return null
   if (error) return <div>{error.message}</div>

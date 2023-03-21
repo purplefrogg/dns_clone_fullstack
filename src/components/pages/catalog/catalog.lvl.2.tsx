@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Catalog_lvl_2: FC<Props> = ({ categorySlug }) => {
-  const { data } = api.category.getCategory.useQuery(categorySlug)
+  const { data } = api.category.getBySlug.useQuery(categorySlug)
   if (!data) return <div>loading</div>
   const { category, crumbs } = data
   return (

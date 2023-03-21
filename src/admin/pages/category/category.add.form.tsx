@@ -12,10 +12,14 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
     onSuccess: () => {
       setShow(false)
       void utils.admin.getCategories.invalidate()
-      void utils.admin.getCategoriesWithout3lvl.invalidate()
     },
   })
-  const { data: categories } = api.admin.getCategoriesWithout3lvl.useQuery()
+  const { data: categories } = api.admin.getCategories.useQuery({
+    onlyOneLevel: {
+      level: '3',
+      reverse: true,
+    },
+  })
   return (
     <div
       onClick={(e) => {

@@ -1,9 +1,12 @@
-import { type PrismaClient } from '@prisma/client'
+import { prisma } from '~/server/db'
 type CrumbType = { text: string; to?: string }
-export const getCrumbs = async (
-  prisma: PrismaClient,
-  { categorySlug, lastWithTo }: { categorySlug: string; lastWithTo?: boolean }
-): Promise<CrumbType[]> => {
+export const getCrumbs = async ({
+  categorySlug,
+  lastWithTo,
+}: {
+  categorySlug: string
+  lastWithTo?: boolean
+}): Promise<CrumbType[]> => {
   const category = await prisma.category.findFirstOrThrow({
     where: { slug: categorySlug },
     include: {

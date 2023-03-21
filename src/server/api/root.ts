@@ -1,8 +1,8 @@
 import { createTRPCRouter } from '~/server/api/trpc'
-import { adminRouter } from './routers/admin/adminRouter'
-import { authRouter } from './routers/auth/authRouter'
-import { categoryRouter } from './routers/category/categoryRouter'
-import { productRouter } from './routers/product/productRouter'
+import { adminRouter } from './routers/admin/admin.controller'
+import { authRouter } from './routers/auth/auth.controller'
+import { categoryRouter } from './routers/category/category.controller'
+import { productRouter } from './routers/product/product.controller'
 
 export const appRouter = createTRPCRouter({
   category: categoryRouter,
