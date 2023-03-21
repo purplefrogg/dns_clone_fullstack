@@ -7,6 +7,7 @@ import {
 import { api, type RouterInputs } from '~/utils/api'
 
 type Inputs = RouterInputs['admin']['createProduct']
+
 export const ProductAdd: FC = () => {
   const { data: categories } = api.admin.getCategories.useQuery({
     onlyOneLevel: {
@@ -20,9 +21,7 @@ export const ProductAdd: FC = () => {
     setValue,
     watch,
     formState: { errors, isSubmitSuccessful, submitCount },
-  } = useForm<Inputs>({
-    criteriaMode: 'all',
-  })
+  } = useForm<Inputs>()
   if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     // console.log(data)

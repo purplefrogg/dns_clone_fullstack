@@ -61,6 +61,7 @@ const getCategories = adminProcedure
   .query(async ({ input }) => {
     return await adminService.getCategories(input)
   })
+
 export const adminRouter = createTRPCRouter({
   deleteCategory,
   getCategories,

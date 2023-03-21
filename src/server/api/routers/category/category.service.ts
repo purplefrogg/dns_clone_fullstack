@@ -178,13 +178,20 @@ const getCategoryArgsWhere = (
   if (input?.onlyOneLevel?.level === '3') {
     if (input.onlyOneLevel.reverse)
       return {
-        subCategories: {
-          some: {
-            parentId: {
-              not: null,
+        OR: [
+          {
+            parent: {
+              parent: {
+                is: null,
+              },
             },
           },
-        },
+          {
+            parent: {
+              is: null,
+            },
+          },
+        ],
       }
 
     return {

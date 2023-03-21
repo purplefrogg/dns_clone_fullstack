@@ -6,8 +6,11 @@ interface Props {
   add: boolean
 }
 
-export const ProductRoot: FC<Props> = ({ add }) => {
-  if (add) return <ProductAdd />
-
-  return <ProductList />
+export const ProductRoot: FC<Props> = ({}) => {
+  return (
+    <>
+      <ProductAdd />
+      <ProductList />
+    </>
+  )
 }
