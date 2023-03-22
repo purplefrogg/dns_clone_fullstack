@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@next-auth/prisma-adapter': ^1.0.5
   '@prisma/client': ^4.9.0
   '@swc-jotai/react-refresh': ^0.0.4
   '@tanstack/react-query': ^4.20.2
@@ -26,7 +25,6 @@ specifiers:
   eslint-config-next: ^13.2.1
   eslint-plugin-unused-imports: ^2.0.0
   jotai: ^2.0.3
-  jotai-trpc: ^0.5.0
   next: ^13.2.1
   next-auth: ^4.20.1
   postcss: ^8.4.14
@@ -43,7 +41,6 @@ specifiers:
   zod: ^3.20.6
 
 dependencies:
-  '@next-auth/prisma-adapter': 1.0.5_knaw3qxw4zwoiwojd3fn43zthi
   '@prisma/client': 4.11.0_prisma@4.11.0
   '@tanstack/react-query': 4.24.10_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-table': 8.7.9_biqbaboplfbrettd7655fr4n2y
@@ -56,7 +53,6 @@ dependencies:
   classnames: 2.3.2
   cookies-next: 2.1.1
   jotai: 2.0.3_react@18.2.0
-  jotai-trpc: 0.5.0_7ucly7yr4mehfla7eoslym6jxy
   next: 13.2.3_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.20.1_nvzgbose6yf6w7ijjprgspqefi
   react: 18.2.0
@@ -152,16 +148,6 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: false
-
-  /@next-auth/prisma-adapter/1.0.5_knaw3qxw4zwoiwojd3fn43zthi:
-    resolution: {integrity: sha512-VqMS11IxPXrPGXw6Oul6jcyS/n8GLOWzRMrPr3EMdtD6eOalM6zz05j08PcNiis8QzkfuYnCv49OvufTuaEwYQ==}
-    peerDependencies:
-      '@prisma/client': '>=2.26.0 || >=3'
-      next-auth: ^4
-    dependencies:
-      '@prisma/client': 4.11.0_prisma@4.11.0
-      next-auth: 4.20.1_nvzgbose6yf6w7ijjprgspqefi
     dev: false
 
   /@next/env/13.2.3:
@@ -2053,18 +2039,6 @@ packages:
 
   /jose/4.13.1:
     resolution: {integrity: sha512-MSJQC5vXco5Br38mzaQKiq9mwt7lwj2eXpgpRyQYNHYt2lq1PjkWa7DLXX0WVcQLE9HhMh3jPiufS7fhJf+CLQ==}
-    dev: false
-
-  /jotai-trpc/0.5.0_7ucly7yr4mehfla7eoslym6jxy:
-    resolution: {integrity: sha512-v+tb2zk33/pHmveZwH9wfnVw0IxrGdw/XfQr+0Van8h0P3o1hxU8FkLGyDr0UUtJIRCNMmJZH8hI/MivjbVh+A==}
-    peerDependencies:
-      '@trpc/client': '>=10.0.0'
-      '@trpc/server': '>=10.0.0'
-      jotai: '>=1.11.0'
-    dependencies:
-      '@trpc/client': 10.13.2_@trpc+server@10.13.2
-      '@trpc/server': 10.13.2
-      jotai: 2.0.3_react@18.2.0
     dev: false
 
   /jotai/2.0.3_react@18.2.0:

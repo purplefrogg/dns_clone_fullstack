@@ -30,13 +30,6 @@ export const Sidebar = () => {
       href: '/admin/products',
       label: 'Products',
       active: catchAll ? catchAll[0] === 'products' : false,
-      subLinks: [
-        {
-          href: '/admin/products/add',
-          label: 'Add product',
-          active: catchAll ? catchAll[1] === 'add' : false,
-        },
-      ],
     },
   ]
 
@@ -58,7 +51,7 @@ export const Sidebar = () => {
               {link.subLinks?.map((subLink) => (
                 <Link
                   className={cn(
-                    'ml-2 rounded px-2 hover:bg-blue-200',
+                    'ml-2   px-2 hover:bg-blue-200',
                     subLink.active && 'bg-blue-200'
                   )}
                   key={subLink.href}

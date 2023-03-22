@@ -4,10 +4,10 @@ import { CategoryList } from './categoryList'
 
 export const CategoryRoot = () => {
   return (
-    <div className='block-element '>
+    <>
       <CategorySearch />
       <CategoryList />
       <CategoryAdd />
-    </div>
+    </>
   )
 }

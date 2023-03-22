@@ -31,7 +31,7 @@ const Page: NextPageWithLayout = () => {
   if (!catchAll) return <AdminRoot />
   switch (catchAll[0]) {
     case 'products':
-      return <ProductRoot add={catchAll[1] === 'add'} />
+      return <ProductRoot />
     case 'category':
       return <CategoryRoot />
     default:

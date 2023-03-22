@@ -8,9 +8,5 @@ export const ProductList = () => {
   if (!data) return null
   if (error) return <div>{error.message}</div>
 
-  return (
-    <div className='block-element w-full'>
-      <Table data={data} columns={ProductListColumns} />
-    </div>
-  )
+  return <Table data={data} columns={ProductListColumns} />
 }

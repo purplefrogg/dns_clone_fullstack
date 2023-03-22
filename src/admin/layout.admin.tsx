@@ -7,8 +7,10 @@ export const LayoutAdmin: FC<PropsWithChildren> = ({ children }) => {
     <>
       <Header />
       <div className='m-auto mt-4 flex max-w-6xl gap-4'>
-        <Sidebar />
-        <main className='flex-1 overflow-x-auto'>{children}</main>
+        <div>
+          <Sidebar />
+        </div>
+        <main className='block-element flex-1 overflow-x-auto'>{children}</main>
       </div>
     </>
   )
