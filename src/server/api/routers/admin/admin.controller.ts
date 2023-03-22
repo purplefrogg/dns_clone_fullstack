@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { adminProcedure, createTRPCRouter } from '../../trpc'
 import { getCategoriesSchema } from '../category/category.dto'
@@ -62,7 +63,34 @@ const getCategories = adminProcedure
     return await adminService.getCategories(input)
   })
 
+const getUsers = adminProcedure.query(async ({ ctx }) => {
+  return ctx.prisma.user.findMany()
+})
+
+const deleteUser = adminProcedure
+  .input(z.number())
+  .mutation(async ({ ctx, input }) => {
+    const user = await ctx.prisma.user.findUniqueOrThrow({
+      where: {
+        id: input,
+      },
+    })
+    if (user.role === 'ADMIN') {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'You can not delete admin',
+      })
+    }
+    return ctx.prisma.user.delete({
+      where: {
+        id: input,
+      },
+    })
+  })
+
 export const adminRouter = createTRPCRouter({
+  deleteUsers: deleteUser,
+  getUsers,
   deleteCategory,
   getCategories,
   createCategory,

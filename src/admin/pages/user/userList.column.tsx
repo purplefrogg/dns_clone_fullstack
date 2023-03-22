@@ -1,11 +1,12 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { DeleteButton } from '~/admin/shared/deleteButton'
+// import { DeleteButton } from '~/admin/shared/deleteButton'
 import { api, type RouterOutputs } from '~/utils/api'
 
 const columnHelper =
-  createColumnHelper<RouterOutputs['admin']['getProductList'][number]>()
+  createColumnHelper<RouterOutputs['admin']['getUsers'][number]>()
 
-export const ProductListColumns = [
+export const UserListColumns = [
   columnHelper.accessor('id', {
     cell: (info) => info.getValue(),
     footer: (info) => info.column.id,
@@ -15,31 +16,31 @@ export const ProductListColumns = [
     header: () => 'Name',
     cell: (info) => info.renderValue(),
   }),
-  columnHelper.accessor('price', {
-    id: 'slug',
-    cell: (info) => <i>{info.getValue()}</i>,
-    header: () => <span>price</span>,
-  }),
-  columnHelper.accessor('category', {
-    id: 'category',
-    cell: (info) => {
-      const category = info.getValue()
-      return <i>{category ? category.title : 'not selected'}</i>
-    },
-    header: () => <span>Category</span>,
-  }),
-  columnHelper.accessor('description', {
-    header: () => 'Description',
+  columnHelper.accessor('email', {
+    header: () => 'Email',
     cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor('role', {
+    header: () => 'Role',
+    cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor('address', {
+    header: () => 'Address',
+    cell: (info) => info.renderValue() || 'N/A',
+  }),
+
+  columnHelper.accessor('createdAt', {
+    header: () => 'Created At',
+    cell: (info) => info.getValue().toISOString(),
   }),
   columnHelper.accessor('id', {
     id: 'delete',
-    header: () => '',
+    header: () => 'delete',
     cell: (info) => {
       const utils = api.useContext()
-      const { mutate } = api.admin.deleteProduct.useMutation({
+      const { mutate } = api.admin.deleteUsers.useMutation({
         onSuccess: () => {
-          void utils.admin.invalidate()
+          void utils.admin.getUsers.invalidate()
         },
       })
 

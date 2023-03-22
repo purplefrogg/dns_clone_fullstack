@@ -7,6 +7,7 @@ import { type NextPageWithLayout } from '../_app'
 import { useRouter } from 'next/router'
 import { CategoryRoot } from '~/admin/pages/category/category'
 import { ProductRoot } from '~/admin/pages/product/product'
+import { UserRoot } from '~/admin/pages/user/user'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions)
@@ -32,6 +33,8 @@ const Page: NextPageWithLayout = () => {
   switch (catchAll[0]) {
     case 'products':
       return <ProductRoot />
+    case 'users':
+      return <UserRoot />
     case 'category':
       return <CategoryRoot />
     default:
