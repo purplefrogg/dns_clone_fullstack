@@ -195,15 +195,24 @@ const getCategoryArgsWhere = (
       }
 
     return {
-      NOT: {
-        subCategories: {
-          some: {
-            parentId: {
-              not: null,
+      AND: [
+        {
+          NOT: {
+            parent: {
+              parent: {
+                is: null,
+              },
             },
           },
         },
-      },
+        {
+          NOT: {
+            parent: {
+              is: null,
+            },
+          },
+        },
+      ],
     }
   }
 }

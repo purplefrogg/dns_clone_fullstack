@@ -9,12 +9,17 @@ import { api, type RouterInputs } from '~/utils/api'
 type Inputs = RouterInputs['admin']['createProduct']
 
 export const ProductAdd: FC = () => {
+  const utils = api.useContext()
   const { data: categories } = api.admin.getCategories.useQuery({
     onlyOneLevel: {
       level: '3',
     },
   })
-  const { mutate } = api.admin.createProduct.useMutation()
+  const { mutate } = api.admin.createProduct.useMutation({
+    onSuccess: () => {
+      void utils.admin.getProductList.invalidate()
+    },
+  })
   const {
     register,
     handleSubmit,
@@ -24,8 +29,6 @@ export const ProductAdd: FC = () => {
   } = useForm<Inputs>()
   if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // console.log(data)
-
     mutate(data)
   }
 
