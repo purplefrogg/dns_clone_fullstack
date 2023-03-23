@@ -1,5 +1,5 @@
 import { Pagination } from '~/components/elements/pagination'
-import { useRouterQuery } from '~/hooks/useRouterQuery'
+import { useRouterQuery } from '~/components/hooks/useRouterQuery'
 
 import { type RouterOutputs } from '~/utils/api'
 import { type FC } from 'react'

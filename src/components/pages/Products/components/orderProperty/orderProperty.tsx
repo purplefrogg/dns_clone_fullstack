@@ -1,4 +1,4 @@
-import { useRouterQuery } from '~/hooks/useRouterQuery'
+import { useRouterQuery } from '~/components/hooks/useRouterQuery'
 
 export const OrderProperty = () => {
   const { query, router } = useRouterQuery<'orderDirection' | 'orderType'>([

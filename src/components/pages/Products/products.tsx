@@ -1,5 +1,5 @@
 import { BreadCrumbs } from '~/components/elements/breadCrumbs'
-import { useRouterQuery } from '~/hooks/useRouterQuery'
+import { useRouterQuery } from '~/components/hooks/useRouterQuery'
 
 import { api } from '~/utils/api'
 import { type FC } from 'react'

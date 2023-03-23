@@ -1,8 +1,7 @@
 import { type AppProps, type AppType } from 'next/app'
-
 import { api } from '~/utils/api'
 import { Provider } from 'jotai'
-import '~/styles/globals.css'
+import '~/utils/globals.css'
 
 import { type NextPage } from 'next'
 import { type ReactElement, type ReactNode } from 'react'
