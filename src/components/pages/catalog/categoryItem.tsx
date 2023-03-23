@@ -27,7 +27,7 @@ const CategoryItemWithoutSub = ({ category }: { category: CategoryType }) => {
           height={192}
           unoptimized
           priority
-          src={category.image}
+          src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${category.image}`}
           alt=''
         />
       )}
@@ -82,7 +82,7 @@ export const CategoryItemWithSub = ({
             height={192}
             unoptimized
             priority
-            src={category.image}
+            src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${category.image}`}
             alt=''
           />
         )}

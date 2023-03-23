@@ -103,6 +103,8 @@ const deleteCategory = async (categoryId: number) => {
 }
 
 const createCategory = async (input: z.infer<typeof createCategorySchema>) => {
+  if (input.image)
+    input.image = await imageService({ image: input.image, path: 'categories' })
   try {
     const category = await prisma.category.create({
       data: {
@@ -131,21 +133,8 @@ const createCategory = async (input: z.infer<typeof createCategorySchema>) => {
 
 const createProduct = async (input: z.infer<typeof createProductSchema>) => {
   // console.log(v4())
-
-  if (input.image) {
-    const id = v4()
-    const [meta, img] = input.image.split(',')
-    if (!meta || !img)
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Image is not valid',
-      })
-    const buffer = Buffer.from(img, 'base64')
-    await minioClient.putObject('dnsclone', `/products/${id}`, buffer, {
-      'Content-type': meta?.split(';')[0]?.split(':')[1],
-    })
-    input.image = `dnsclone/products/${id}`
-  }
+  if (input.image)
+    input.image = await imageService({ image: input.image, path: 'products' })
 
   const product = await prisma.product.create({
     data: {
@@ -200,4 +189,23 @@ export const adminService = {
   addPropertyField,
   addFieldValue,
   createProduct,
+}
+
+interface IImageService {
+  path: string
+  image: string
+}
+const imageService = async ({ path, image }: IImageService) => {
+  const id = v4()
+  const [meta, img] = image.split(',')
+  if (!meta || !img)
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Image is not valid',
+    })
+  const buffer = Buffer.from(img, 'base64')
+  await minioClient.putObject('dnsclone', `/${path}/${id}`, buffer, {
+    'Content-type': meta?.split(';')[0]?.split(':')[1],
+  })
+  return `dnsclone/${path}/${id}`
 }

@@ -37,7 +37,13 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
   return (
     <div className='block-element flex justify-between'>
       {image[0] && (
-        <Image src={image[0]} alt={name} unoptimized width={120} height={120} />
+        <Image
+          src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${image[0]}`}
+          alt={name}
+          unoptimized
+          width={120}
+          height={120}
+        />
       )}
 
       <div>

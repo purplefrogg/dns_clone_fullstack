@@ -18,9 +18,9 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
       className='flex gap-4 rounded-md bg-white  p-4 shadow'
       key={product.id}
     >
-      {!product.image && (
+      {product.image[0] && (
         <Image
-          src={product.image[0]}
+          src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${product.image[0]}`}
           unoptimized
           priority
           alt={product.name}

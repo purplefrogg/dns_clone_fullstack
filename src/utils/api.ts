@@ -34,6 +34,7 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+
           headers() {
             console.log('ctx', ctx)
             if (ctx?.req) {

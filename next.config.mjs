@@ -17,6 +17,7 @@ const config = {
       },
     ],
   },
+
   async redirects() {
     return []
   },
