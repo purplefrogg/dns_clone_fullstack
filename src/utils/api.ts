@@ -3,6 +3,7 @@ import { createTRPCNext } from '@trpc/next'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import superjson from 'superjson'
 import { type AppRouter } from '~/server/api/root'
+import { customLink } from './toast.link'
 
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return '' // browser should use relative url
@@ -25,6 +26,7 @@ export const api = createTRPCNext<AppRouter>({
       },
       transformer: superjson,
       links: [
+        customLink,
         loggerLink({
           enabled: (opts) =>
             process.env.NODE_ENV === 'development' ||
@@ -33,6 +35,7 @@ export const api = createTRPCNext<AppRouter>({
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
           headers() {
+            console.log('ctx', ctx)
             if (ctx?.req) {
               const {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars

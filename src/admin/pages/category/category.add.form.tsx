@@ -26,7 +26,7 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
         e.stopPropagation()
         setShow(false)
       }}
-      className='absolute top-0 right-0 z-50 flex h-full w-full items-center justify-center bg-neutral-300 bg-opacity-50'
+      className='absolute top-0 right-0 flex h-full w-full items-center justify-center bg-neutral-300 bg-opacity-50'
     >
       <form
         onSubmit={(e) => {

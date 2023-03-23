@@ -1,4 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table'
+import { FC } from 'react'
 import { DeleteButton } from '~/admin/shared/deleteButton'
 // import { DeleteButton } from '~/admin/shared/deleteButton'
 import { api, type RouterOutputs } from '~/utils/api'
@@ -36,19 +37,24 @@ export const UserListColumns = [
   columnHelper.accessor('id', {
     id: 'delete',
     header: () => 'delete',
-    cell: (info) => {
-      const utils = api.useContext()
-      const { mutate } = api.admin.deleteUsers.useMutation({
-        onSuccess: () => {
-          void utils.admin.getUsers.invalidate()
-        },
-      })
-
-      return (
-        <>
-          <DeleteButton deleteHandler={() => mutate(info.getValue())} />
-        </>
-      )
-    },
+    cell: (info) => (
+      <>
+        <DeleteButtonWrap id={info.getValue()} />
+      </>
+    ),
   }),
 ]
+const DeleteButtonWrap: FC<{ id: number }> = ({ id }) => {
+  const utils = api.useContext()
+  const { mutate } = api.admin.deleteUsers.useMutation({
+    onSuccess: () => {
+      void utils.admin.getUsers.invalidate()
+    },
+  })
+
+  return (
+    <>
+      <DeleteButton deleteHandler={() => mutate(id)} />
+    </>
+  )
+}
