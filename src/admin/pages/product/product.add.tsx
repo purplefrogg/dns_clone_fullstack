@@ -1,4 +1,5 @@
-import { type FC } from 'react'
+/* eslint-disable @next/next/no-img-element */
+import { useState, type FC } from 'react'
 import {
   useForm,
   type UseFormSetValue,
@@ -29,6 +30,8 @@ export const ProductAdd: FC = () => {
   } = useForm<Inputs>()
   if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    // console.log(data)
+    //
     mutate(data)
   }
 
@@ -65,6 +68,7 @@ export const ProductAdd: FC = () => {
             <span className='text-red-500'>{errors.description.message}</span>
           )}
         </label>
+        <ImageProperty setImage={(img: string) => setValue('image', img)} />
         <label className='flex'>
           <span className='w-32'>price</span>
           <input
@@ -148,6 +152,44 @@ const ProductProperties: FC<{
           </label>
         </div>
       ))}
+    </div>
+  )
+}
+
+const ImageProperty: FC<{ setImage: (img: string) => void }> = ({
+  setImage,
+}) => {
+  const [fileDataURL, setFileDataURL] = useState<string | null>(null)
+
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0]
+    let fileReader: FileReader,
+      isCancel = false
+    if (file) {
+      fileReader = new FileReader()
+      fileReader.onload = (e) => {
+        if (e.target?.result && !isCancel) {
+          setFileDataURL(e.target.result.toString())
+          setImage(e.target.result.toString())
+        }
+      }
+      fileReader.readAsDataURL(file)
+    }
+    return () => {
+      isCancel = true
+      if (fileReader && fileReader.readyState === 1) {
+        fileReader.abort()
+      }
+    }
+  }
+
+  return (
+    <div className='flex flex-col'>
+      <label className='flex flex-col'>
+        <input onChange={changeHandler} type='file' accept='image/*' />
+        Выберите изображения для загрузки
+      </label>
+      {fileDataURL && <img className='h-96 w-96' src={fileDataURL} alt='' />}
     </div>
   )
 }

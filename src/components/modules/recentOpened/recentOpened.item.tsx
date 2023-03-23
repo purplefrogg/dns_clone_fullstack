@@ -3,7 +3,6 @@ import { type FC } from 'react'
 import { type RouterOutputs } from '~/utils/api'
 import { IoCloseOutline } from 'react-icons/io5'
 
-import img from '~/../public/img.jpg'
 import Link from 'next/link'
 interface RecentOpenedItemProps {
   product: RouterOutputs['product']['getByIds'][number]
@@ -28,8 +27,16 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
       >
         <Image
           height={200}
-          src={product.image[0] ?? img}
+          loader={({ src }) => src}
+          className='h-auto w-auto'
+          src={
+            product.image[0]
+              ? `${process.env.NEXT_PUBLIC_STATIC_URL}/${product.image[0]}`
+              : '/img.jpg'
+          }
+          width={200}
           unoptimized
+          priority
           alt={product.name}
         />
       </Link>

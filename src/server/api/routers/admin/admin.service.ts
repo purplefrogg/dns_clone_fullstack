@@ -3,8 +3,10 @@ import {
   type PropertyFieldAbout,
 } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
+import { v4 } from 'uuid'
 import { type z } from 'zod'
 import { prisma } from '~/server/db'
+import { minioClient } from '~/server/minio'
 import { type getCategoriesSchema } from '../category/category.dto'
 import { categoryService } from '../category/category.service'
 import {
@@ -128,6 +130,23 @@ const createCategory = async (input: z.infer<typeof createCategorySchema>) => {
 }
 
 const createProduct = async (input: z.infer<typeof createProductSchema>) => {
+  // console.log(v4())
+
+  if (input.image) {
+    const id = v4()
+    const [meta, img] = input.image.split(',')
+    if (!meta || !img)
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Image is not valid',
+      })
+    const buffer = Buffer.from(img, 'base64')
+    await minioClient.putObject('dnsclone', `/products/${id}`, buffer, {
+      'Content-type': meta?.split(';')[0]?.split(':')[1],
+    })
+    input.image = `dnsclone/products/${id}`
+  }
+
   const product = await prisma.product.create({
     data: {
       name: input.name,

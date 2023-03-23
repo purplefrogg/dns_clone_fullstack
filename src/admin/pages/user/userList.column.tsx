@@ -1,5 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table'
-import { FC } from 'react'
+import { type FC } from 'react'
 import { DeleteButton } from '~/admin/shared/deleteButton'
 // import { DeleteButton } from '~/admin/shared/deleteButton'
 import { api, type RouterOutputs } from '~/utils/api'

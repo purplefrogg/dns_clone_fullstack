@@ -18,10 +18,13 @@
     "@trpc/react-query": "^10.9.0",
     "@trpc/server": "^10.13.2",
     "@types/bcrypt": "^5.0.0",
+    "@types/minio": "^7.0.17",
+    "@types/uuid": "^9.0.1",
     "bcrypt": "^5.1.0",
     "classnames": "^2.3.2",
     "cookies-next": "^2.1.1",
     "jotai": "^2.0.3",
+    "minio": "^7.0.32",
     "next": "^13.2.1",
     "next-auth": "^4.20.1",
     "react": "18.2.0",
@@ -29,6 +32,7 @@
     "react-hook-form": "^7.43.7",
     "react-icons": "^4.8.0",
     "superjson": "1.9.1",
+    "uuid": "^9.0.0",
     "zod": "^3.20.6"
   },
   "devDependencies": {
