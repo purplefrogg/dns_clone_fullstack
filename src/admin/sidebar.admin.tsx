@@ -1,6 +1,6 @@
-import cn from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { cn } from '~/utils/cn'
 
 type LinksType = {
   active?: boolean
@@ -51,7 +51,7 @@ export const Sidebar = () => {
               {link.subLinks?.map((subLink) => (
                 <Link
                   className={cn(
-                    'ml-2   px-2 hover:bg-blue-200',
+                    'ml-2 px-2 hover:bg-blue-200',
                     subLink.active && 'bg-blue-200'
                   )}
                   key={subLink.href}

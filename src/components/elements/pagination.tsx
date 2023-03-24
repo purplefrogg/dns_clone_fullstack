@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import { type FC } from 'react'
+import { cn } from '~/utils/cn'
 
 interface PaginationProps {
   total: number
@@ -29,7 +29,7 @@ export const Pagination: FC<PaginationProps> = ({
       </button>
       {pagesArray.map((page) => (
         <button
-          className={classNames(page === current && 'text-orange-400')}
+          className={cn(page === current && 'text-orange-400')}
           key={page}
           onClick={() => handlePageChange(page)}
         >

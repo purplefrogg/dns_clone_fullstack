@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { IoIosArrowDown } from 'react-icons/io'
 import { useAtom } from 'jotai'
 import { subCategoryAtom } from '../modules/catalog/catalog'
-import { SignControl } from '../modules/auth/SignControl'
+import { SignControl } from '../modules/auth/signControl'
 export const Header = () => {
   const navItems = [
     { title: 'comparison', link: '/comparison' },
