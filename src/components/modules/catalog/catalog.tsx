@@ -19,7 +19,7 @@ export const CatalogCategories = () => {
   }
   const { categories } = data
   return (
-    <div className=' text-black'>
+    <>
       <CatalogBackground
         hide={() => setSubCategory(null)}
         isHide={!subCategory}
@@ -43,6 +43,6 @@ export const CatalogCategories = () => {
           }
         />
       </div>
-    </div>
+    </>
   )
 }

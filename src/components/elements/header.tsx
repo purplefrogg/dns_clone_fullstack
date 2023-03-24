@@ -1,12 +1,9 @@
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { IoIosArrowDown } from 'react-icons/io'
 import { useAtom } from 'jotai'
-import { CatalogCategories, subCategoryAtom } from '../modules/catalog/catalog'
-import { useRouter } from 'next/router'
+import { subCategoryAtom } from '../modules/catalog/catalog'
 import { SignControl } from '../modules/auth/SignControl'
 export const Header = () => {
-  const { data } = useSession()
   const navItems = [
     { title: 'comparison', link: '/comparison' },
     { title: 'favorite', link: '/favorite' },
@@ -41,27 +38,16 @@ export const Header = () => {
 }
 
 const ButtonShowCatalog = () => {
-  const router = useRouter()
-  const isHomePage = router.route === '/'
-  const [subCategory, setSubCategory] = useAtom(subCategoryAtom)
+  const [, setSubCategory] = useAtom(subCategoryAtom)
 
   return (
-    <>
-      <button
-        onClick={() => {
-          setSubCategory(-1)
-        }}
-        className='flex items-center justify-center gap-2 rounded bg-orange-500 px-2'
-      >
-        catalog <IoIosArrowDown />
-      </button>
-      {!isHomePage && subCategory && (
-        <div className='absolute top-16 left-0 w-full'>
-          <div className='relative  '>
-            <CatalogCategories />
-          </div>
-        </div>
-      )}
-    </>
+    <button
+      onClick={() => {
+        setSubCategory(-1)
+      }}
+      className='flex items-center justify-center gap-2 rounded bg-orange-500 px-2'
+    >
+      catalog <IoIosArrowDown />
+    </button>
   )
 }
