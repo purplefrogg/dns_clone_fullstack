@@ -14,7 +14,7 @@ export const MainCatalog: FC<MainCatalogProps> = ({
 }) => {
   if (!categories) return null
   return (
-    <div className=''>
+    <div className='w-52'>
       {categories?.map((category) => (
         <div
           onMouseEnter={() => setSubCategory(category.id)}
