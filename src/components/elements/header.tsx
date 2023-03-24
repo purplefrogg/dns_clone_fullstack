@@ -1,18 +1,16 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { SignUp } from '../modules/auth/signUp/signUp'
 import { IoIosArrowDown } from 'react-icons/io'
 import { useAtom } from 'jotai'
 import { CatalogCategories, subCategoryAtom } from '../modules/catalog/catalog'
 import { useRouter } from 'next/router'
+import { SignControl } from '../modules/auth/SignControl'
 export const Header = () => {
   const { data } = useSession()
   const navItems = [
     { title: 'comparison', link: '/comparison' },
     { title: 'favorite', link: '/favorite' },
     { title: 'cart', link: '/cart' },
-    { title: 'admin', link: '/admin' },
-    { title: 'profile', link: '/profile' },
   ]
 
   return (
@@ -29,21 +27,13 @@ export const Header = () => {
           placeholder='поиск по сайту'
           className='flex-1 rounded-lg bg-gray-100'
         />
-        <SignUp />
         <nav className='flex  items-center gap-2'>
+          <SignControl />
           {navItems.map((item) => (
             <Link href={item.link} key={item.title}>
               {item.title}
             </Link>
           ))}
-          {data ? (
-            <>
-              <div>{data.user.id}</div>
-              <button onClick={() => void signOut()}>sign out</button>
-            </>
-          ) : (
-            <button onClick={() => void signIn()}>sign in</button>
-          )}
         </nav>
       </div>
     </div>

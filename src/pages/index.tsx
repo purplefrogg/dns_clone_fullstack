@@ -5,7 +5,7 @@ import { RecentOpened } from '~/components/modules/recentOpened/recentOpened'
 const Home: NextPage = () => {
   return (
     <>
-      <div className='flex'>
+      <div className='mt-2 flex'>
         <div className='min-w-[224px]'>
           <CatalogCategories />
         </div>
