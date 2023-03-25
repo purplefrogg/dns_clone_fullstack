@@ -5,13 +5,12 @@ import { subCategoryAtom } from '../modules/catalog/catalog'
 import { SignControl } from '../modules/auth/signControl'
 import { HeaderSearch } from './header.search'
 import { NavItem } from './header.navItem'
-import { BsCart3 } from 'react-icons/bs'
 import { IoStatsChartOutline } from 'react-icons/io5'
+import { CartButton } from '../pages/cart/cart.button'
 export const Header = () => {
   const navItems = [
     { title: 'comparison', link: '/comparison', icon: IoStatsChartOutline },
     { title: 'favorite', link: '/favorite', icon: IoIosHeartEmpty },
-    { title: 'cart', link: '/cart', icon: BsCart3 },
   ]
 
   return (
@@ -30,6 +29,7 @@ export const Header = () => {
               {item.title}
             </NavItem>
           ))}
+          <CartButton />
           <SignControl />
         </nav>
       </div>

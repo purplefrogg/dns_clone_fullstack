@@ -7,6 +7,7 @@ import React, {
   type ReactNode,
 } from 'react'
 import { type IconType } from 'react-icons'
+import { cn } from '~/utils/cn'
 
 interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   Component?:
@@ -23,11 +24,15 @@ export const NavItem: FC<Props> = ({
   Component = Link,
   children,
   icon: Icon,
+  className,
   ...props
 }) => {
   return (
     <Component
-      className='flex cursor-pointer select-none flex-col items-center hover:text-neutral-500'
+      className={cn(
+        'flex cursor-pointer select-none flex-col items-center hover:text-neutral-500',
+        className
+      )}
       {...props}
     >
       {Icon && <Icon size={24} />}
