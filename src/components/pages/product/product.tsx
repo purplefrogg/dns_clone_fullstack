@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai'
-import Image from 'next/image'
 import { useEffect, type FC } from 'react'
 import { BreadCrumbs } from '~/components/elements/breadCrumbs'
+import { Image } from '~/components/elements/imageWrapper'
 import { recentOpenedItems } from '~/components/modules/recentOpened/recentOpened.store'
 import { api } from '~/utils/api'
 import { cn } from '~/utils/cn'
@@ -32,14 +32,11 @@ export const Product: FC<{ id: number }> = ({ id }) => {
       <h1 className='text-2xl font-semibold'>{product.name}</h1>
       <div className='block-element flex gap-2'>
         <Image
-          src={
-            product.image[0]
-              ? `${process.env.NEXT_PUBLIC_STATIC_URL}/${product.image[0]}`
-              : '/image_placeholder.jpg'
-          }
           width={500}
           height={500}
-          alt={`${product.name} image`}
+          className='h-96 w-[500px] object-cover'
+          alt={product.name + ' image'}
+          src={product.image[0]}
         />
         <div className='flex-1'>
           {product.name}

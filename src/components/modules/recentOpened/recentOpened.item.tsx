@@ -1,9 +1,14 @@
-import Image from 'next/image'
 import { type FC } from 'react'
 import { type RouterOutputs } from '~/utils/api'
-import { IoCloseOutline } from 'react-icons/io5'
-
+import { IoCartOutline, IoCloseOutline } from 'react-icons/io5'
 import Link from 'next/link'
+import { Image } from '~/components/elements/imageWrapper'
+import { useAtom } from 'jotai'
+import { cartItems } from '~/components/pages/cart/cart.store'
+import { cn } from '~/utils/cn'
+import { IoMdCheckmark } from 'react-icons/io'
+import { useRouter } from 'next/router'
+
 interface RecentOpenedItemProps {
   product: RouterOutputs['product']['getByIds'][number]
   deleteHandler: (id: number) => void
@@ -13,8 +18,11 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
   product,
   deleteHandler,
 }) => {
+  const [cart, setCart] = useAtom(cartItems)
+  const router = useRouter()
+  const isInCart = cart.includes(product.id)
   return (
-    <div className='block-element flex max-w-[250px] flex-col gap-2'>
+    <div className='block-element flex   flex-col justify-between gap-2'>
       <button
         className='absolute self-end rounded-full p-2 hover:bg-neutral-200'
         onClick={() => deleteHandler(product.id)}
@@ -22,27 +30,39 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
         <IoCloseOutline />
       </button>
       <Link
-        className='flex items-center justify-center self-center'
+        rel='prefetch'
+        className=' flex items-center justify-center self-center'
         href={`product/${product.id}`}
       >
         <Image
-          height={200}
-          loader={({ src }) => src}
-          className='h-auto w-auto'
-          src={
-            product.image[0]
-              ? `${process.env.NEXT_PUBLIC_STATIC_URL}/${product.image[0]}`
-              : '/img.jpg'
-          }
-          width={200}
-          unoptimized
+          height={120}
+          className='h-32 w-44'
+          src={product.image[0]}
           priority
+          width={120}
           alt={product.name}
         />
       </Link>
       <div className='flex flex-col gap-2'>
         <h3 className='text-center'>{product.name}</h3>
-        <span>{product.price}</span>
+        <div className='flex  items-center justify-between'>
+          <span className='text-lg'>{product.price}</span>
+          <div
+            onClick={() =>
+              isInCart
+                ? void router.push('/cart')
+                : setCart((p) => [...p, product.id])
+            }
+            className={cn(
+              'flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border',
+              isInCart
+                ? 'border-orange-400 text-orange-400'
+                : 'border-neutral-400 text-neutral-700'
+            )}
+          >
+            {isInCart ? <IoMdCheckmark /> : <IoCartOutline size={20} />}
+          </div>
+        </div>
       </div>
     </div>
   )

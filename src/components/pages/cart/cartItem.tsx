@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
+import { Image } from '~/components/elements/imageWrapper'
 import { api } from '~/utils/api'
-
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 type CartItemProps = {
   id: number
   onDelete: (id: number) => void
@@ -10,6 +10,7 @@ type CartItemProps = {
 
 export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
   const { data, error } = api.product.getById.useQuery(id)
+
   if (error) {
     onError(id)
   }
@@ -35,29 +36,48 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
   } = data
 
   return (
-    <div className='block-element flex justify-between'>
+    <div className='block-element flex justify-between gap-2'>
       {image[0] && (
         <Image
-          src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${image[0]}`}
+          src={image[0]}
           alt={name}
-          unoptimized
+          priority
+          className='h-48 w-48 object-contain'
           width={120}
           height={120}
         />
       )}
 
-      <div>
+      <div className='flex flex-1 flex-col'>
         {name}
         <button
           onClick={() => onDelete(id)}
-          className='rounded-md bg-orange-400 p-2'
+          className='w-fit rounded-md bg-orange-400 p-2'
         >
           delete
         </button>
       </div>
-      <div>
-        <span>{price}</span>
-      </div>
+      <CartPrice price={price} />
     </div>
+  )
+}
+
+const CartPrice = ({ price }: { price: number }) => {
+  const [quantity, setQuantity] = useState(1)
+
+  return (
+    <>
+      <div className='flex h-fit items-center justify-center gap-2 rounded-lg border border-neutral-300 p-2 text-neutral-700'>
+        <AiOutlineMinus
+          size={20}
+          onClick={() => setQuantity((p) => (p <= 1 ? p : p - 1))}
+        />
+        <span className='text-lg'>{quantity}</span>
+        <AiOutlinePlus size={20} onClick={() => setQuantity((p) => p + 1)} />
+      </div>
+      <div className='w-20 text-center'>
+        <span>{price * quantity}</span>
+      </div>
+    </>
   )
 }

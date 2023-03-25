@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { Image } from '~/components/elements/imageWrapper'
 import { type CategoryType } from './types'
 
 export const CategoryItem = ({ category }: { category: CategoryType }) => {
@@ -20,17 +20,15 @@ const CategoryItemWithoutSub = ({ category }: { category: CategoryType }) => {
         'flex h-64 w-64  flex-col items-center justify-center rounded-md bg-white p-4 text-center shadow'
       }
     >
-      {category.image && (
-        <Image
-          className='h-48 w-48'
-          width={192}
-          height={192}
-          unoptimized
-          priority
-          src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${category.image}`}
-          alt=''
-        />
-      )}
+      <Image
+        className='h-48 w-48'
+        width={192}
+        height={192}
+        priority
+        src={category.image}
+        alt=''
+      />
+
       {category.title}
     </Link>
   )
@@ -75,17 +73,14 @@ export const CategoryItemWithSub = ({
           onHover ? 'pointer-events-none absolute  left-4 top-0 opacity-0' : ''
         }`}
       >
-        {category.image && (
-          <Image
-            className='h-48 w-48'
-            width={192}
-            height={192}
-            unoptimized
-            priority
-            src={`${process.env.NEXT_PUBLIC_STATIC_URL}/${category.image}`}
-            alt=''
-          />
-        )}
+        <Image
+          className='h-48 w-48'
+          width={192}
+          height={192}
+          priority
+          src={category.image}
+          alt=''
+        />
         {category.title}
       </div>
     </div>
