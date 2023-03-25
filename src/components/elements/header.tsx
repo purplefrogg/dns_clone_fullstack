@@ -3,6 +3,7 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { useAtom } from 'jotai'
 import { subCategoryAtom } from '../modules/catalog/catalog'
 import { SignControl } from '../modules/auth/signControl'
+import { HeaderSearch } from './header.search'
 export const Header = () => {
   const navItems = [
     { title: 'comparison', link: '/comparison' },
@@ -19,11 +20,7 @@ export const Header = () => {
           </Link>
           <ButtonShowCatalog />
         </div>
-        <input
-          type='text'
-          placeholder='поиск по сайту'
-          className='flex-1 rounded-lg bg-gray-100'
-        />
+        <HeaderSearch />
         <nav className='flex  items-center gap-2'>
           <SignControl />
           {navItems.map((item) => (
