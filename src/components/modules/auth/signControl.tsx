@@ -3,6 +3,9 @@ import { SignUpForm } from './signUp.form'
 import * as Tabs from '@radix-ui/react-tabs'
 import { signOut, useSession } from 'next-auth/react'
 import { SignInForm } from './signIn.form'
+import { NavItem } from '~/components/elements/header.navItem'
+import { VscSignIn, VscSignOut } from 'react-icons/vsc'
+
 const TabsDemo: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
   return (
     <Tabs.Root className='h-64 w-96 rounded bg-white p-4' defaultValue='tab1'>
@@ -41,14 +44,24 @@ export const SignControl = () => {
       document.body.style.overflow = 'auto'
     }
   }, [show])
+  const onClickHandler = session.data?.user
+    ? () => {
+        void signOut()
+      }
+    : () => {
+        setShow(true)
+      }
   return (
     <>
-      {session.status === 'unauthenticated' && (
-        <button onClick={() => setShow(true)}>Sign Up</button>
-      )}
-      {session.status === 'authenticated' && (
-        <button onClick={() => void signOut()}>Sign Out</button>
-      )}
+      <NavItem
+        href=''
+        icon={session.data ? VscSignOut : VscSignIn}
+        onClick={onClickHandler}
+        Component={'div'}
+      >
+        {session.data?.user ? 'Sign Out' : 'Sign Up'}
+      </NavItem>
+
       {show && (
         <div
           onClick={() => setShow(false)}
