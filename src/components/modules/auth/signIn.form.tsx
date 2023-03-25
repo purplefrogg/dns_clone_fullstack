@@ -42,6 +42,7 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
   }
   return (
     <form
+      autoComplete='on'
       onSubmit={(e) => {
         e.preventDefault()
         const formData = new FormData(e.target as HTMLFormElement)
@@ -55,11 +56,17 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
     >
       <label className='flex justify-between  gap-2'>
         Email
-        <input type='email' name='email' required />
+        <input autoComplete='username' type='email' name='email' required />
       </label>
       <label className='flex justify-between  gap-2'>
         password
-        <input type='password' name='password' required minLength={3} />
+        <input
+          autoComplete='current-password'
+          type='password'
+          name='password'
+          required
+          minLength={3}
+        />
       </label>
       {error && (
         <div className='text-red-500'>Email or password are incorrect</div>
