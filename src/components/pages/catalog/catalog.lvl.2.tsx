@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { type FC } from 'react'
 import { BreadCrumbs } from '~/components/elements/breadCrumbs'
 import { api } from '~/utils/api'
@@ -13,6 +14,10 @@ export const Catalog_lvl_2: FC<Props> = ({ categorySlug }) => {
   const { category, crumbs } = data
   return (
     <div className='flex flex-col gap-4'>
+      <Head>
+        <title>catalog of {category.title}.</title>
+        <meta name='description' content={category.title} />
+      </Head>
       <BreadCrumbs crumbs={crumbs} />
       {data && (
         <>

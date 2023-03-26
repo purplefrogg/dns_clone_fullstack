@@ -1,4 +1,5 @@
 import { useAtom } from 'jotai'
+import Head from 'next/head'
 import { useEffect, type FC } from 'react'
 import { BreadCrumbs } from '~/components/elements/breadCrumbs'
 import { Image } from '~/components/elements/imageWrapper'
@@ -29,6 +30,10 @@ export const Product: FC<{ id: number }> = ({ id }) => {
   const { product, crumbs, properties } = data
   return (
     <div className='flex flex-col gap-4'>
+      <Head>
+        <title>{product.name}</title>
+        <meta name='description' content={product.description} />
+      </Head>
       <BreadCrumbs crumbs={crumbs} />
       <h1 className='text-2xl font-semibold'>{product.name}</h1>
       <div className='block-element flex gap-2'>
