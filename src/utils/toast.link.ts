@@ -11,10 +11,8 @@ export const customLink: TRPCLink<AppRouter> = () => {
 
     // each link needs to return an observable which propagates results
     return observable((observer) => {
-      console.log('performing operation:', op)
       const unsubscribe = next(op).subscribe({
         next(value) {
-          console.log('we received value', value)
           observer.next(value)
         },
         error(err) {

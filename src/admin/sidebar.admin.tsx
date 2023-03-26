@@ -13,7 +13,6 @@ type LinksType = {
 export const Sidebar = () => {
   const router = useRouter()
   const { catchAll } = router.query
-  console.log('catchAll', catchAll)
   const links: LinksType[] = [
     { href: '/admin', label: 'Home', active: !catchAll },
     {

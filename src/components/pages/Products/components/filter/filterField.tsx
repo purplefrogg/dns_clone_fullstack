@@ -5,11 +5,7 @@ import { FilterFieldInput } from './filterFieldInput'
 
 type Props = RouterOutputs['category']['getProducts']['filter'][number]
 
-export const FilterField: FC<Props> = ({
-  title,
-  PropertyField: inputs,
-  slug,
-}) => {
+export const FilterField: FC<Props> = ({ title, values: inputs, slug }) => {
   const router = useRouter()
 
   const changeHandler = (value: string) => {

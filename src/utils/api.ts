@@ -36,7 +36,6 @@ export const api = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
 
           headers() {
-            console.log('ctx', ctx)
             if (ctx?.req) {
               const {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars

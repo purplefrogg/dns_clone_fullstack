@@ -1,5 +1,7 @@
 import {
   type ProductPropertyTitle,
+  type PropertyField,
+  type ProductProperty,
   type PropertyFieldAbout,
 } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
@@ -10,24 +12,32 @@ import { minioClient } from '~/server/minio'
 import { type getCategoriesSchema } from '../category/category.dto'
 import { categoryService } from '../category/category.service'
 import {
+  type createPropertySchema,
+  type createPropertyFieldSchema,
   type createCategorySchema,
   type createProductSchema,
 } from './admin.dto'
 
 // receive array of productPropertyTitle and return array of productPropertyTitle with fields
 const addPropertyField = async (
-  productPropertyTitle: ProductPropertyTitle[]
+  productProperty: (ProductProperty & {
+    title: ProductPropertyTitle
+  })[]
 ) => {
   return await Promise.all(
-    productPropertyTitle.map(async (item) => {
+    productProperty.map(async (item) => {
       return {
         ...item,
-        fields: await prisma.propertyFieldAbout.findMany({
+        title: item.title,
+        fieldAbout: await prisma.propertyFieldAbout.findMany({
+          include: {
+            PropertyField: true,
+          },
           where: {
             PropertyField: {
               some: {
                 ProductProperty: {
-                  titleId: item.id,
+                  id: item.id,
                 },
               },
             },
@@ -41,23 +51,28 @@ const addPropertyField = async (
 // receive array of productPropertyTitle with fields
 // return array of productPropertyTitle with values
 const addFieldValue = async (
-  productPropertyTitle: {
-    fields: PropertyFieldAbout[]
+  productProperty: {
+    title: ProductPropertyTitle
+    fieldAbout: (PropertyFieldAbout & {
+      PropertyField: PropertyField[]
+    })[]
     id: number
-    title: string
+    productId: number | null
+    titleId: number
+    categoryId: number | null
   }[]
 ) => {
   return await Promise.all(
-    productPropertyTitle.map(async (item) => {
-      const { fields, ...title } = item
-      const withV = fields.map(async (field) => {
+    productProperty.map(async (item) => {
+      const { fieldAbout, ...property } = item
+      const withV = fieldAbout.map(async (about) => {
         return {
-          ...field,
+          ...about,
           values: await prisma.fieldValue.findMany({
             where: {
               PropertyField: {
                 some: {
-                  aboutId: title.id,
+                  id: { in: about.PropertyField.map((f) => f.id) },
                 },
               },
             },
@@ -66,23 +81,20 @@ const addFieldValue = async (
       })
 
       return {
-        ...title,
-        fields: await Promise.all(withV),
+        ...property,
+        fieldAbout: await Promise.all(withV),
       }
     })
   )
 }
 
 const getProductPropertyTitle = async (categoryId: number) => {
-  return await prisma.productPropertyTitle.findMany({
+  return await prisma.productProperty.findMany({
     where: {
-      ProductProperty: {
-        some: {
-          product: {
-            categoryId,
-          },
-        },
-      },
+      categoryId,
+    },
+    include: {
+      title: true,
     },
   })
 }
@@ -132,7 +144,6 @@ const createCategory = async (input: z.infer<typeof createCategorySchema>) => {
 }
 
 const createProduct = async (input: z.infer<typeof createProductSchema>) => {
-  // console.log(v4())
   if (input.image)
     input.image = await imageService({ image: input.image, path: 'products' })
 
@@ -181,6 +192,47 @@ const getCategories = async (input: z.infer<typeof getCategoriesSchema>) => {
   })
 }
 
+const createProperty = async (input: z.infer<typeof createPropertySchema>) => {
+  return await prisma.productProperty.create({
+    data: {
+      Category: {
+        connect: {
+          id: input.categoryId,
+        },
+      },
+      title: {
+        create: {
+          title: input.title,
+        },
+      },
+    },
+  })
+}
+const createPropertyField = async (
+  input: z.infer<typeof createPropertyFieldSchema>
+) => {
+  return await prisma.propertyField.create({
+    data: {
+      value: {
+        create: {
+          value: input.value,
+        },
+      },
+      about: {
+        create: {
+          title: input.title,
+          description: input.description,
+          slug: input.slug,
+        },
+      },
+      ProductProperty: {
+        connect: {
+          id: input.propertyId,
+        },
+      },
+    },
+  })
+}
 export const adminService = {
   getCategories,
   deleteCategory,
@@ -188,6 +240,8 @@ export const adminService = {
   getProductPropertyTitle,
   addPropertyField,
   addFieldValue,
+  createProperty,
+  createPropertyField,
   createProduct,
 }
 

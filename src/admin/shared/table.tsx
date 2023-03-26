@@ -38,7 +38,7 @@ export const Table: FC<Props> = ({ columns, data }) => {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
+          <tr className='odd:bg-neutral-50x' key={row.id}>
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -22,3 +22,15 @@ export const createProductSchema = z.object({
     )
     .optional(),
 })
+export const createPropertySchema = z.object({
+  title: z.string(),
+  categoryId: z.number(),
+})
+
+export const createPropertyFieldSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  value: z.string(),
+  slug: z.string(),
+  propertyId: z.number(),
+})

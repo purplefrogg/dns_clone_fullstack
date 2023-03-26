@@ -2,7 +2,12 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { adminProcedure, createTRPCRouter } from '../../trpc'
 import { getCategoriesSchema } from '../category/category.dto'
-import { createCategorySchema, createProductSchema } from './admin.dto'
+import {
+  createCategorySchema,
+  createProductSchema,
+  createPropertyFieldSchema,
+  createPropertySchema,
+} from './admin.dto'
 import { adminService } from './admin.service'
 
 const deleteCategory = adminProcedure
@@ -20,11 +25,9 @@ const createCategory = adminProcedure
 const getProductProperties = adminProcedure
   .input(z.number())
   .query(async ({ input }) => {
-    const productPropertyTitle = await adminService.getProductPropertyTitle(
-      input
-    )
+    const productProperty = await adminService.getProductPropertyTitle(input)
     const withFields = await adminService.addFieldValue(
-      await adminService.addPropertyField(productPropertyTitle)
+      await adminService.addPropertyField(productProperty)
     )
     return withFields
   })
@@ -88,14 +91,29 @@ const deleteUser = adminProcedure
     })
   })
 
+const createProperty = adminProcedure
+  .input(createPropertySchema)
+  .mutation(async ({ input }) => {
+    return await adminService.createProperty(input)
+  })
+
+const createPropertyField = adminProcedure
+  .input(createPropertyFieldSchema)
+  .mutation(async ({ input }) => {
+    return await adminService.createPropertyField(input)
+  })
+
 export const adminRouter = createTRPCRouter({
   deleteUsers: deleteUser,
+
   getUsers,
   deleteCategory,
   getCategories,
   createCategory,
   getProductProperties,
-  createProduct,
   getProductList,
   deleteProduct,
+  createProduct,
+  createProperty,
+  createPropertyField,
 })

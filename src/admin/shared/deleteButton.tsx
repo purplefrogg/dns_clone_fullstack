@@ -10,7 +10,7 @@ export const DeleteButton = ({
       onClick={deleteHandler}
       className='cursor-pointer rounded hover:text-red-500'
     >
-      <BiTrash />
+      <BiTrash size={18} />
     </div>
   )
 }

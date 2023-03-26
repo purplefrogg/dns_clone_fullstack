@@ -35,7 +35,7 @@ interface orderedProductsInput {
   take?: number
 }
 const getFilter = async ({ productIds }: { productIds: number[] }) => {
-  const propertyFields = await prisma.propertyFieldAbout.findMany({
+  const propertyFieldAboutList = await prisma.propertyFieldAbout.findMany({
     where: {
       PropertyField: {
         some: {
@@ -48,20 +48,17 @@ const getFilter = async ({ productIds }: { productIds: number[] }) => {
       },
     },
   })
+  console.log(propertyFieldAboutList)
 
-  const filter = propertyFields.map(async (propertyField) => {
+  const filter = propertyFieldAboutList.map(async (propertyFieldAbout) => {
     return {
-      title: propertyField.title,
-      slug: propertyField.slug,
-      PropertyField: await prisma.fieldValue.findMany({
+      title: propertyFieldAbout.title,
+      slug: propertyFieldAbout.slug,
+      values: await prisma.fieldValue.findMany({
         where: {
           PropertyField: {
             some: {
-              ProductProperty: {
-                productId: {
-                  in: productIds,
-                },
-              },
+              aboutId: propertyFieldAbout.id,
             },
           },
         },
