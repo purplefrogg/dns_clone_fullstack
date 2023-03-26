@@ -3,7 +3,7 @@ import { type RouterOutputs } from '~/utils/api'
 import { ProductPropertyItem } from './product.property.item'
 
 interface Props {
-  properties: RouterOutputs['product']['getById']['product']['ProductProperty']
+  properties: RouterOutputs['product']['getById']['properties']
 }
 
 export const ProductPropertyList: FC<Props> = ({ properties }) => {

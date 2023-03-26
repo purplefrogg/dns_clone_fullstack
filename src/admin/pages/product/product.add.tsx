@@ -34,6 +34,9 @@ export const ProductAdd: FC = () => {
   } = useForm<Inputs>()
   if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    data.ProductProperty = data.ProductProperty.filter((item) => !!item)
+    // console.log(data)
+
     mutate(data)
   }
 
@@ -99,7 +102,6 @@ export const ProductAdd: FC = () => {
             ))}
           </select>
         </label>
-        <PropertyAdd categoryId={categoryId} />
         {isSubmitSuccessful && (
           <span className='text-green-400'>success {submitCount}</span>
         )}
@@ -109,6 +111,7 @@ export const ProductAdd: FC = () => {
       {!!categoryId && (
         <ProductProperties setValue={setValue} categoryId={categoryId} />
       )}
+      <PropertyAdd categoryId={categoryId} />
     </div>
   )
 }
@@ -117,52 +120,57 @@ const ProductProperties: FC<{
   categoryId: number
   setValue: UseFormSetValue<Inputs>
 }> = ({ categoryId, setValue }) => {
-  const { data: properties } =
-    api.admin.getProductProperties.useQuery(categoryId)
-  if (!properties) return <div>loading</div>
+  const { data } = api.admin.getProductProperties.useQuery(categoryId)
+  if (!data) return <div>loading</div>
   return (
     <div>
       properties
-      {properties.map((property, propertyIndex) => (
-        <div key={property.id}>
-          <FieldAdd propertyId={property.id} />
-          <label className='flex'>
-            <span className='w-32 font-semibold'>{property.title.title}</span>
-            {property.fieldAbout.map((field, fieldIndex) => (
-              <div key={field.id}>
-                {field.title}
-                <select
-                  onChange={(e) => {
-                    setValue(
-                      `ProductProperty.${propertyIndex}.titleId`,
-                      property.titleId
-                    )
-                    setValue(
-                      `ProductProperty.${propertyIndex}.fields.${fieldIndex}.aboutId`,
-                      field.id
-                    )
-                    setValue(
-                      `ProductProperty.${propertyIndex}.fields.${fieldIndex}.value`,
-                      +e.currentTarget.value
-                    )
-                  }}
-                >
-                  <option value=''>not selected</option>
-                  {field.values.map((value) => (
-                    <option key={value.id} value={value.id}>
-                      {value.value}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ))}
-          </label>
-        </div>
-      ))}
+      {data.map((property, index) => {
+        return (
+          <div className='gap4 flex' key={property.id}>
+            <span className='w-36'>{property.title.title}</span>
+            <div>
+              {property.field.map((item) => (
+                <div className='flex gap-2' key={item.id}>
+                  {item.about.title}
+                  <input
+                    type='text'
+                    onChange={(e) => {
+                      const value = e.currentTarget.value
+
+                      setValue(`ProductProperty.${item.id}.value`, value)
+                      setValue(`ProductProperty.${item.id}.fieldId`, item.id)
+                    }}
+                    list={item.about.slug}
+                  />
+                  <select
+                    onChange={(e) => {
+                      setValue(`ProductProperty.${item.id}.fieldId`, item.id)
+
+                      setValue(
+                        `ProductProperty.${item.id}.valueId`,
+                        +e.currentTarget.value
+                      )
+                    }}
+                    id={item.about.slug}
+                  >
+                    <option>not select</option>
+                    {item.FieldValue.map(({ id, value }) => (
+                      <option key={id} value={id}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+              <FieldAdd propertyId={property.id} />
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }
-
 const PropertyAdd: FC<{ categoryId: number }> = ({ categoryId }) => {
   const [adding, setAdding] = useState(false)
   const [text, setText] = useState('')

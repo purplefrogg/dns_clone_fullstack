@@ -2,7 +2,7 @@ import { type FC, useState, useEffect } from 'react'
 
 interface FilterFieldInputProps {
   title: string
-  value: number
+  value: string
   checked?: boolean
   changeHandler: (value: string) => void
 }
@@ -24,7 +24,7 @@ export const FilterFieldInput: FC<FilterFieldInputProps> = ({
         checked={checkedState}
         onChange={() => {
           setCheckedState((p) => !p)
-          changeHandler(value.toString())
+          changeHandler(value)
         }}
       />
       {title}

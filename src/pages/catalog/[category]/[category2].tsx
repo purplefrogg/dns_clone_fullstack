@@ -1,9 +1,13 @@
+import { type NextPage } from 'next'
 import { Products } from '~/components/pages/Products/products'
 
-import { type NextPageWithLayout } from '../../_app'
+const Page: NextPage<{ categorySlug: string }> = ({ categorySlug }) => {
+  return <Products categorySlug={categorySlug} />
+}
 
-const Page: NextPageWithLayout = () => {
-  return <Products />
+Page.getInitialProps = (ctx) => {
+  const { query } = ctx
+  return { categorySlug: query.category2 as string }
 }
 
 export default Page

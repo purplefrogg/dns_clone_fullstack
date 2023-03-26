@@ -12,70 +12,68 @@ datasource db {
 }
 
 model Category {
-    id            Int               @id @default(autoincrement())
+    id            Int        @id @default(autoincrement())
     title         String
-    slug          String            @unique
+    slug          String     @unique
     image         String?
     parentId      Int?
-    parent        Category?         @relation("parentSubCategories", fields: [parentId], references: [id])
-    subCategories Category[]        @relation("parentSubCategories")
+    parent        Category?  @relation("parentSubCategories", fields: [parentId], references: [id])
+    subCategories Category[] @relation("parentSubCategories")
     products      Product[]
-    properties    ProductProperty[]
+    properties    Property[]
 }
 
 model Product {
-    id              Int               @id @default(autoincrement())
-    name            String
-    description     String
-    price           Int
-    image           String[]
-    categoryId      Int
-    category        Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-    ProductProperty ProductProperty[]
+    id          Int          @id @default(autoincrement())
+    name        String
+    description String
+    price       Int
+    image       String[]
+    categoryId  Int
+    category    Category     @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+    FieldValue  FieldValue[]
 }
 
-model ProductProperty {
-    id            Int                  @id @default(autoincrement())
-    productId     Int?
-    product       Product?             @relation(fields: [productId], references: [id], onDelete: Cascade)
-    PropertyField PropertyField[]
-    titleId       Int
-    title         ProductPropertyTitle @relation(fields: [titleId], references: [id])
-    Category      Category?            @relation(fields: [categoryId], references: [id])
-    categoryId    Int?
+model Property {
+    id         Int           @id @default(autoincrement())
+    field      Field[]
+    titleId    Int
+    title      PropertyTitle @relation(fields: [titleId], references: [id])
+    category   Category?     @relation(fields: [categoryId], references: [id])
+    categoryId Int?
 }
 
-model ProductPropertyTitle {
-    id              Int               @id @default(autoincrement())
-    title           String
-    ProductProperty ProductProperty[]
+model PropertyTitle {
+    id       Int        @id @default(autoincrement())
+    title    String
+    property Property[]
 }
 
-model PropertyField {
-    id                Int                @id @default(autoincrement())
-    aboutId           Int
-    about             PropertyFieldAbout @relation(fields: [aboutId], references: [id])
-    ProductPropertyId Int
-    ProductProperty   ProductProperty    @relation(fields: [ProductPropertyId], references: [id], onDelete: Cascade)
-    FieldValueId      Int
-    value             FieldValue         @relation(fields: [FieldValueId], references: [id])
+model Field {
+    id         Int        @id @default(autoincrement())
+    aboutId    Int
+    about      FieldAbout @relation(fields: [aboutId], references: [id])
+    propertyId Int
+    property   Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+    FieldValue FieldValue[]
 }
 
-model PropertyFieldAbout {
+model FieldAbout {
     id Int @id @default(autoincrement())
 
     title         String
     description   String
-    slug          String          @unique
-    PropertyField PropertyField[]
+    slug          String  @unique
+    PropertyField Field[]
 }
 
 model FieldValue {
-    id Int @id @default(autoincrement())
-
-    value String
-
-    PropertyField PropertyField[]
+    id      Int       @id @default(autoincrement())
+    value   String
+    Product Product[]
+    fieldId Int
+    field   Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade)
 }
 
 //User  

@@ -3,11 +3,12 @@ import { type FC } from 'react'
 import { type RouterOutputs } from '~/utils/api'
 import { FilterFieldInput } from './filterFieldInput'
 
-type Props = RouterOutputs['category']['getProducts']['filter'][number]
+type Props =
+  RouterOutputs['category']['getProducts']['properties'][number]['field'][number]
 
-export const FilterField: FC<Props> = ({ title, values: inputs, slug }) => {
+export const FilterField: FC<Props> = ({ about, FieldValue }) => {
   const router = useRouter()
-
+  const { slug, title } = about
   const changeHandler = (value: string) => {
     const query = router.query[slug]
     if (query) {
@@ -29,14 +30,14 @@ export const FilterField: FC<Props> = ({ title, values: inputs, slug }) => {
   return (
     <div>
       <h3>{title}</h3>
-      <div className='flex gap-4'>
-        {inputs.map((value) => {
-          const checked = router.query[slug]?.includes(value.id.toString())
+      <div className='flex flex-wrap gap-4'>
+        {FieldValue.map((value) => {
+          const checked = router.query[slug]?.includes(value.value)
 
           return (
             <FilterFieldInput
               checked={checked}
-              value={value.id}
+              value={value.value}
               changeHandler={changeHandler}
               title={value.value}
               key={value.id}

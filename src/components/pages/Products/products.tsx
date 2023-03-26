@@ -10,7 +10,9 @@ import { useAtom } from 'jotai'
 import { maxPriceAtom, minPriceAtom } from './components/filter/filter.store'
 import { ProductList } from './components/productList/productList'
 
-export const Products: FC = () => {
+export const Products: FC<{ categorySlug: string }> = ({ categorySlug }) => {
+  console.log(categorySlug)
+
   const { query, rest } = useRouterQuery([
     'page',
     'orderType',
@@ -20,17 +22,17 @@ export const Products: FC = () => {
     'minPrice',
     'category',
   ])
+  const [, setMaxPrice] = useAtom(maxPriceAtom)
+  const [, setMinPrice] = useAtom(minPriceAtom)
 
   const selectedFilters = Object.entries(rest).map(([key, value]) => {
     if (!value) return { key, value: [] }
-    if (Array.isArray(value)) return { key, value: value.map((v) => +v) }
-    return { key, value: [+value] }
+    if (Array.isArray(value)) return { key, value }
+    return { key, value: [value] }
   })
-  const [, setMaxPrice] = useAtom(maxPriceAtom)
-  const [, setMinPrice] = useAtom(minPriceAtom)
   const { data, error, isError } = api.category.getProducts.useQuery(
     {
-      slug: query.category2,
+      slug: categorySlug,
       page: +(query.page || 1),
       filter: selectedFilters,
       orderType: query.orderType,
@@ -48,11 +50,12 @@ export const Products: FC = () => {
 
   if (isError) return <div>{error.data?.code}</div>
   if (!data) return <div>loading...</div>
+
   return (
     <>
       <BreadCrumbs crumbs={data.crumbs} />
       <div className='flex gap-4'>
-        <Filter filter={data?.filter}>
+        <Filter filter={data?.properties}>
           <PriceProperty />
           <OrderProperty />
         </Filter>

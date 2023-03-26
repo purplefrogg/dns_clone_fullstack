@@ -24,12 +24,23 @@ const createCategory = adminProcedure
 
 const getProductProperties = adminProcedure
   .input(z.number())
-  .query(async ({ input }) => {
-    const productProperty = await adminService.getProductPropertyTitle(input)
-    const withFields = await adminService.addFieldValue(
-      await adminService.addPropertyField(productProperty)
-    )
-    return withFields
+  .query(({ input, ctx }) => {
+    return ctx.prisma.property.findMany({
+      where: {
+        categoryId: input,
+      },
+      select: {
+        title: true,
+        id: true,
+        field: {
+          select: {
+            about: true,
+            id: true,
+            FieldValue: true,
+          },
+        },
+      },
+    })
   })
 
 const createProduct = adminProcedure
@@ -41,11 +52,6 @@ const createProduct = adminProcedure
 const getProductList = adminProcedure.query(({ ctx }) => {
   return ctx.prisma.product.findMany({
     include: {
-      ProductProperty: {
-        include: {
-          PropertyField: true,
-        },
-      },
       category: true,
     },
   })
@@ -93,14 +99,42 @@ const deleteUser = adminProcedure
 
 const createProperty = adminProcedure
   .input(createPropertySchema)
-  .mutation(async ({ input }) => {
-    return await adminService.createProperty(input)
+  .mutation(async ({ input, ctx }) => {
+    return await ctx.prisma.property.create({
+      data: {
+        title: {
+          create: {
+            title: input.title,
+          },
+        },
+        category: {
+          connect: {
+            id: input.categoryId,
+          },
+        },
+      },
+    })
   })
 
 const createPropertyField = adminProcedure
   .input(createPropertyFieldSchema)
-  .mutation(async ({ input }) => {
-    return await adminService.createPropertyField(input)
+  .mutation(async ({ input, ctx }) => {
+    return await ctx.prisma.field.create({
+      data: {
+        property: {
+          connect: {
+            id: input.propertyId,
+          },
+        },
+        about: {
+          create: {
+            description: input.description,
+            title: input.title,
+            slug: input.slug,
+          },
+        },
+      },
+    })
   })
 
 export const adminRouter = createTRPCRouter({

@@ -6,7 +6,7 @@ import { priceRangeAtom } from './filter.store'
 import { FilterField } from './filterField'
 
 interface FilterProps extends HTMLProps<HTMLDivElement> {
-  filter: RouterOutputs['category']['getProducts']['filter']
+  filter: RouterOutputs['category']['getProducts']['properties']
 }
 
 export const Filter: FC<FilterProps> = ({
@@ -42,7 +42,12 @@ export const Filter: FC<FilterProps> = ({
     >
       {children}
       {filters.map((filter) => (
-        <FilterField key={filter.slug} {...filter} />
+        <div key={filter.id}>
+          {filter.title.title}
+          {filter.field.map((field) => (
+            <FilterField key={field.id} {...field} />
+          ))}
+        </div>
       ))}
       <button
         onClick={resetHandler}

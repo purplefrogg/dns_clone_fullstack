@@ -23,13 +23,41 @@ export const productRouter = createTRPCRouter({
       where: { id: input },
       include: {
         category: true,
+      },
+    })
 
-        ProductProperty: {
+    const properties = await ctx.prisma.property.findMany({
+      include: {
+        title: true,
+        field: {
           include: {
-            PropertyField: {
-              include: { about: true, value: true },
+            about: true,
+            FieldValue: {
+              take: 1,
+
+              where: {
+                Product: {
+                  some: {
+                    id: input,
+                  },
+                },
+              },
             },
-            title: true,
+          },
+        },
+      },
+      where: {
+        field: {
+          some: {
+            FieldValue: {
+              some: {
+                Product: {
+                  some: {
+                    id: input,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -39,7 +67,7 @@ export const productRouter = createTRPCRouter({
       lastWithTo: true,
     })
     crumbs.push({ text: product.name })
-    return { product, crumbs }
+    return { product, crumbs, properties }
   }),
   getByIds: publicProcedure
     .input(z.array(z.number()).default([]))

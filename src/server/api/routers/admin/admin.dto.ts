@@ -13,14 +13,17 @@ export const createProductSchema = z.object({
   image: z.string().optional(),
   description: z.string(),
   price: z.number(),
-  ProductProperty: z
-    .array(
-      z.object({
-        titleId: z.number(),
-        fields: z.array(z.object({ aboutId: z.number(), value: z.number() })),
+  ProductProperty: z.array(
+    z
+      .object({
+        valueId: z.number().optional(),
+        value: z.string().optional(),
+        fieldId: z.number(),
       })
-    )
-    .optional(),
+      .refine((data) => data.valueId || data.value, {
+        message: 'You must provide value or valueId',
+      })
+  ),
 })
 export const createPropertySchema = z.object({
   title: z.string(),

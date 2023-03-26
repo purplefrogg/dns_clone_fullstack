@@ -6,7 +6,7 @@ export const getProductsSchema = z.object({
   filter: z
     .object({
       key: z.string(),
-      value: z.array(z.number()),
+      value: z.array(z.string()),
     })
     .array()
     .default([]),
