@@ -30,7 +30,6 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
     const signInReturn: SignInReturnType = (await signIn('credentials', {
       redirect: false,
       email,
-
       password,
     })) as SignInReturnType
     if (signInReturn.ok) {

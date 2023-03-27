@@ -4,7 +4,11 @@ import { api } from '~/utils/api'
 export const SignUpForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
-  const { mutate, error } = api.auth.signUp.useMutation()
+  const { mutate, error } = api.auth.signUp.useMutation({
+    onSuccess: () => {
+      closeWindow()
+    },
+  })
   const submitHandler = (inputs: { [k: string]: FormDataEntryValue }) => {
     mutate({
       name: inputs.name as string,
@@ -12,7 +16,6 @@ export const SignUpForm: FC<{ closeWindow: () => void }> = ({
       password: inputs.password as string,
       email: inputs.email as string,
     })
-    closeWindow()
   }
   return (
     <form

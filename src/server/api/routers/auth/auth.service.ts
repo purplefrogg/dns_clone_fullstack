@@ -20,6 +20,7 @@ const signUp = async (input: z.infer<typeof signUpSchema>) => {
   const hashedPassword = await hash(password, 5)
   const user = await prisma.user.create({
     data: {
+      role: 'ADMIN',
       email,
       password: hashedPassword,
       name,
