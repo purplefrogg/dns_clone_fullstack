@@ -6,7 +6,7 @@ import { atom, useAtom } from 'jotai'
 import { useTrans } from '~/components/hooks/useTrans'
 import { useBlockScroll } from '~/components/hooks/useBlockScroll'
 const FormTabs: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
-  const text = useTrans<['header.sign-up', 'header.sign-in']>({
+  const text = useTrans({
     keys: ['header.sign-up', 'header.sign-in'],
   })
 

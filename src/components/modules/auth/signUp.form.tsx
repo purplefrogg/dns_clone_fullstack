@@ -5,16 +5,7 @@ import { api } from '~/utils/api'
 export const SignUpForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
-  const text = useTrans<
-    [
-      'form.name',
-      'form.surname',
-      'form.phone',
-      'form.password',
-      'form.email',
-      'form.continue'
-    ]
-  >({
+  const text = useTrans({
     keys: [
       'form.name',
       'form.surname',

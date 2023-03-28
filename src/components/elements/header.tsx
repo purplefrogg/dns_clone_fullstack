@@ -7,24 +7,36 @@ import { HeaderSearch } from './header.search'
 import { NavItem } from './header.navItem'
 import { IoStatsChartOutline } from 'react-icons/io5'
 import { CartButton } from '../pages/cart/cart.button'
-import useTranslation from 'next-translate/useTranslation'
-import { FC } from 'react'
+import { type FC } from 'react'
 import { useRouter } from 'next/router'
+import { useTrans } from '../hooks/useTrans'
 export const Header = () => {
   const router = useRouter()
 
-  const { t } = useTranslation('common')
-  const dns = t('header.dns')
-  const comparison = t('header.comparison')
-  const favorite = t('header.favorite')
-  const cart = t('header.cart')
-  const placeholder = t('header.search-placeholder')
-  const catalog = t('header.catalog')
-  const signInTitle = t('header.sign-in')
-  const signOutTitle = t('header.sign-out')
+  const text = useTrans({
+    keys: [
+      'header.dns',
+      'header.comparison',
+      'header.favorite',
+      'header.cart',
+      'header.search-placeholder',
+      'header.catalog',
+      'header.sign-in',
+      'header.sign-out',
+    ],
+  })
+
   const navItems = [
-    { title: comparison, link: '/comparison', icon: IoStatsChartOutline },
-    { title: favorite, link: '/favorite', icon: IoIosHeartEmpty },
+    {
+      title: text['header.comparison'],
+      link: '/comparison',
+      icon: IoStatsChartOutline,
+    },
+    {
+      title: text['header.favorite'],
+      link: '/favorite',
+      icon: IoIosHeartEmpty,
+    },
   ]
 
   return (
@@ -32,19 +44,22 @@ export const Header = () => {
       <div className='m-auto flex max-w-6xl gap-4 p-2 '>
         <div className='flex gap-4 rounded-lg bg-orange-400 px-4 py-2 text-white'>
           <Link className='text-3xl font-bold ' href={'/'}>
-            {dns}
+            {text['header.dns']}
           </Link>
-          <ButtonShowCatalog title={catalog} />
+          <ButtonShowCatalog title={text['header.catalog']} />
         </div>
-        <HeaderSearch placeholder={placeholder} />
+        <HeaderSearch placeholder={text['header.search-placeholder']} />
         <nav className='each flex items-center gap-2 [&>*]:w-20 [&>*]:flex-1'>
           {navItems.map((item) => (
             <NavItem href={item.link} icon={item.icon} key={item.title}>
               {item.title}
             </NavItem>
           ))}
-          <CartButton title={cart} />
-          <SignControl signIn={signInTitle} signOut={signOutTitle} />
+          <CartButton title={text['header.cart']} />
+          <SignControl
+            signIn={text['header.sign-in']}
+            signOut={text['header.sign-out']}
+          />
         </nav>
         <Link href={router.asPath} locale='en'>
           en
