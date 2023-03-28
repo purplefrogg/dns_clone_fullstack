@@ -28,11 +28,7 @@ export const HeaderSearch = ({ placeholder }: { placeholder: string }) => {
         className=' peer flex-1 rounded-lg bg-gray-100 px-4'
       />
       {search && (
-        <div
-          className='absolute
-       
-      top-16 hidden w-full flex-col rounded bg-white  group-active:flex  peer-focus-within:flex'
-        >
+        <div className='absolute top-16 z-10 hidden w-full flex-col rounded bg-white  group-active:flex  peer-focus-within:flex'>
           {data?.length === 0 && (
             <div className='flex flex-col items-center text-center'>
               <TbMoodEmpty className='text-neutral-600' size={50} /> there is no

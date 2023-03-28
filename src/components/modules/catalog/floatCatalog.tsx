@@ -9,8 +9,8 @@ export const FloatCatalog = () => {
   return (
     <>
       {!isHomePage && subCategory && (
-        <div className=' mx-auto  w-full  max-w-6xl text-black'>
-          <div className='absolute top-16 z-10 w-full  max-w-6xl  text-black'>
+        <div className=' sticky top-16  mx-auto w-full max-w-6xl'>
+          <div className=' z-10 w-full  max-w-6xl  text-black'>
             <CatalogCategories />
           </div>
         </div>

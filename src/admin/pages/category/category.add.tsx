@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useBlockScroll } from '~/components/hooks/useBlockScroll'
 import { CategoryForm } from './category.add.form'
 
 export const CategoryAdd = () => {
   const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    if (show) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-  }, [show])
+  useBlockScroll(show)
   return (
     <>
       <button

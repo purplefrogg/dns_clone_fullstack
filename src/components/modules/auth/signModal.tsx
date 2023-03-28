@@ -1,9 +1,10 @@
-import { type FC, useEffect } from 'react'
+import { type FC } from 'react'
 import { SignUpForm } from './signUp.form'
 import * as Tabs from '@radix-ui/react-tabs'
 import { SignInForm } from './signIn.form'
 import { atom, useAtom } from 'jotai'
 import { useTrans } from '~/components/hooks/useTrans'
+import { useBlockScroll } from '~/components/hooks/useBlockScroll'
 const FormTabs: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
   const text = useTrans<['header.sign-up', 'header.sign-in']>({
     keys: ['header.sign-up', 'header.sign-in'],
@@ -38,14 +39,7 @@ const FormTabs: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
 export const signModalAtom = atom<boolean>(false)
 export const SignModal = () => {
   const [show, setShow] = useAtom(signModalAtom)
-
-  useEffect(() => {
-    if (show) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'auto'
-    }
-  }, [show])
+  useBlockScroll(show)
   if (!show) return null
   return (
     <div

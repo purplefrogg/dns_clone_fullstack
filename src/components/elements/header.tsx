@@ -28,7 +28,7 @@ export const Header = () => {
   ]
 
   return (
-    <div className='bg-white shadow'>
+    <div className='sticky top-0 bg-white shadow'>
       <div className='m-auto flex max-w-6xl gap-4 p-2 '>
         <div className='flex gap-4 rounded-lg bg-orange-400 px-4 py-2 text-white'>
           <Link className='text-3xl font-bold ' href={'/'}>
