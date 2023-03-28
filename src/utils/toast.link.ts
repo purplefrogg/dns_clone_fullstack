@@ -1,6 +1,6 @@
 import { type TRPCLink } from '@trpc/client'
 import { observable } from '@trpc/server/observable'
-import { toastCall } from '~/components/modules/toaster/toaster'
+import { toast } from '~/components/modules/toaster/toaster'
 import { type AppRouter } from '~/server/api/root'
 
 export const customLink: TRPCLink<AppRouter> = () => {
@@ -16,7 +16,7 @@ export const customLink: TRPCLink<AppRouter> = () => {
           observer.next(value)
         },
         error(err) {
-          toastCall({ message: err.message, type: 'error' })
+          toast({ message: err.message, type: 'error' })
           observer.error(err)
         },
         complete() {

@@ -62,6 +62,7 @@ export const productRouter = createTRPCRouter({
         },
       },
     })
+
     const crumbs = await getCrumbs({
       categorySlug: product.category.slug,
       lastWithTo: true,

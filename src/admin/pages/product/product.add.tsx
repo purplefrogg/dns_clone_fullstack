@@ -34,8 +34,11 @@ export const ProductAdd: FC = () => {
   } = useForm<Inputs>()
   if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    data.ProductProperty = data.ProductProperty.filter((item) => !!item)
-
+    if (data.ProductProperty) {
+      data.ProductProperty = data.ProductProperty.filter((item) => !!item)
+    } else {
+      data.ProductProperty = []
+    }
     mutate(data)
   }
 

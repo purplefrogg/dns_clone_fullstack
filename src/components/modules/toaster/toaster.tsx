@@ -4,7 +4,7 @@ import { type ToastType, addToastAtom, ToastListAtom } from './toaster.store'
 
 const listeners: ((toast: ToastType) => void)[] = []
 
-export const toastCall = (toast: ToastType) => {
+export const toast = (toast: ToastType) => {
   if (!listeners[0]) return
   listeners[0](toast)
 }

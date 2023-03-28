@@ -50,12 +50,11 @@ model PropertyTitle {
 }
 
 model Field {
-    id         Int        @id @default(autoincrement())
+    id         Int          @id @default(autoincrement())
     aboutId    Int
-    about      FieldAbout @relation(fields: [aboutId], references: [id])
+    about      FieldAbout   @relation(fields: [aboutId], references: [id])
     propertyId Int
-    property   Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-
+    property   Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
     FieldValue FieldValue[]
 }
 

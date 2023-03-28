@@ -8,6 +8,7 @@ import { prisma } from '~/server/db'
 import { Product } from '~/components/pages/product/product'
 
 import { ssg } from '~/utils/ssg'
+
 export async function getStaticProps(
   context: GetStaticPropsContext<{ id: string }>
 ) {
