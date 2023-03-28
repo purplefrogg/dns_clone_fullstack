@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { type HTMLProps, type FC } from 'react'
+import { useTrans } from '~/components/hooks/useTrans'
 import { type RouterOutputs } from '~/utils/api'
 import { priceRangeAtom } from './filter.store'
 import { FilterField } from './filterField'
@@ -9,11 +10,7 @@ interface FilterProps extends HTMLProps<HTMLDivElement> {
   filter: RouterOutputs['category']['getProducts']['properties']
 }
 
-export const Filter: FC<FilterProps> = ({
-  children,
-  filter: filters,
-  ...props
-}) => {
+export const Filter: FC<FilterProps> = ({ children, filter: filters }) => {
   const router = useRouter()
   const [priceRange] = useAtom(priceRangeAtom)
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +31,7 @@ export const Filter: FC<FilterProps> = ({
       },
     })
   }
+  const text = useTrans({ nameSpace: 'filter', keys: ['reset', 'submit'] })
 
   return (
     <form
@@ -54,10 +52,10 @@ export const Filter: FC<FilterProps> = ({
         type='reset'
         className='rounded bg-orange-400 p-2 text-white'
       >
-        reset
+        {text.reset}
       </button>
       <button className='rounded bg-orange-400 p-2 text-white' type='submit'>
-        submit
+        {text.submit}
       </button>
     </form>
   )

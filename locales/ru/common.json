@@ -11,7 +11,8 @@
         "catalog": "Каталог",
         "search": "Поиск",
         "search-placeholder": "Поиск по сайту",
-        "dns": "ДНС"
+        "dns": "ДНС",
+        "search-empty": "Ничего не найдено"
     },
     "form": {
         "name": "Имя",

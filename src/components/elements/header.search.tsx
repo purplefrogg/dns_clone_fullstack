@@ -2,7 +2,11 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { TbMoodEmpty } from 'react-icons/Tb'
-export const HeaderSearch = ({ placeholder }: { placeholder: string }) => {
+import { useTrans } from '../hooks/useTrans'
+export const HeaderSearch = () => {
+  const text = useTrans({
+    keys: ['header.search-placeholder', 'header.search-empty'],
+  })
   const [search, setSearch] = useState('')
   const { data, refetch } = api.product.search.useQuery(search, {
     enabled: false,
@@ -24,15 +28,15 @@ export const HeaderSearch = ({ placeholder }: { placeholder: string }) => {
         type='text'
         onChange={(e) => setSearch(e.target.value)}
         value={search}
-        placeholder={placeholder}
+        placeholder={text['header.search-placeholder']}
         className=' peer flex-1 rounded-lg bg-gray-100 px-4'
       />
       {search && (
-        <div className='absolute top-16 z-10 hidden w-full flex-col rounded bg-white  group-active:flex  peer-focus-within:flex'>
+        <div className='absolute top-16 z-10 hidden w-full flex-col rounded bg-white  shadow-2xl  group-active:flex peer-focus-within:flex'>
           {data?.length === 0 && (
             <div className='flex flex-col items-center text-center'>
-              <TbMoodEmpty className='text-neutral-600' size={50} /> there is no
-              product
+              <TbMoodEmpty className='text-neutral-600' size={50} />
+              {text['header.search-empty']}
             </div>
           )}
           {data?.map((item) => (

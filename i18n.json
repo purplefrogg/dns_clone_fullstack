@@ -12,8 +12,8 @@
             "home",
             "example"
         ],
-        "/about": [
-            "about"
+        "/catalog/[category]/[category2]": [
+            "filter"
         ]
     }
 }

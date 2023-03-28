@@ -1,10 +1,15 @@
 import { useRouterQuery } from '~/components/hooks/useRouterQuery'
+import { useTrans } from '~/components/hooks/useTrans'
 
 export const OrderProperty = () => {
   const { query, router } = useRouterQuery<'orderDirection' | 'orderType'>([
     'orderType',
     'orderDirection',
   ])
+  const { priceLowToHigh, priceHighToLow } = useTrans({
+    nameSpace: 'filter',
+    keys: ['priceLowToHigh', 'priceHighToLow'],
+  })
 
   return (
     <select
@@ -23,8 +28,8 @@ export const OrderProperty = () => {
         })
       }}
     >
-      <option value={'price-desc'}>Price high to low</option>
-      <option value={'price-asc'}>Price low to high</option>
+      <option value={'price-desc'}>{priceHighToLow}</option>
+      <option value={'price-asc'}>{priceLowToHigh}</option>
     </select>
   )
 }

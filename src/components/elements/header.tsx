@@ -19,7 +19,7 @@ export const Header = () => {
       'header.comparison',
       'header.favorite',
       'header.cart',
-      'header.search-placeholder',
+
       'header.catalog',
       'header.sign-in',
       'header.sign-out',
@@ -48,7 +48,7 @@ export const Header = () => {
           </Link>
           <ButtonShowCatalog title={text['header.catalog']} />
         </div>
-        <HeaderSearch placeholder={text['header.search-placeholder']} />
+        <HeaderSearch />
         <nav className='each flex items-center gap-2 [&>*]:w-20 [&>*]:flex-1'>
           {navItems.map((item) => (
             <NavItem href={item.link} icon={item.icon} key={item.title}>

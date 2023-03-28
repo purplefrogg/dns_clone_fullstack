@@ -12,7 +12,8 @@
         "catalog": "Catalog",
         "search": "Search",
         "search-placeholder": "Search",
-        "dns": "DNS"
+        "dns": "DNS",
+        "search-empty": "No results found"
     },
     "form": {
         "name": "Name",
