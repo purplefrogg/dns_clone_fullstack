@@ -68,7 +68,6 @@ const createCategory = async (input: z.infer<typeof createCategorySchema>) => {
 const createProduct = async (input: z.infer<typeof createProductSchema>) => {
   if (input.image)
     input.image = await imageService({ image: input.image, path: 'products' })
-  console.log(input.ProductProperty)
 
   const product = await prisma.product.create({
     data: {

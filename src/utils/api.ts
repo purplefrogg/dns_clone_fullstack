@@ -19,7 +19,7 @@ export const api = createTRPCNext<AppRouter>({
           queries: {
             keepPreviousData: true,
             retry: false,
-            refetchOnMount: false,
+            refetchOnMount: true,
             refetchOnWindowFocus: false,
           },
         },
@@ -53,7 +53,7 @@ export const api = createTRPCNext<AppRouter>({
       ],
     }
   },
-  ssr: false,
+  ssr: true,
 })
 
 export type RouterInputs = inferRouterInputs<AppRouter>

@@ -13,7 +13,7 @@ type SignInReturnType = {
 export const SignInForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
-  const text = useTrans<['form.password', 'form.email', 'form.continue']>({
+  const text = useTrans({
     keys: ['form.password', 'form.email', 'form.continue'],
   })
   const [error, setError] = useState<string | null>(null)

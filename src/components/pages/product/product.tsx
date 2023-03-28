@@ -12,7 +12,6 @@ import { ProductPropertyList } from './product.property.list'
 export const Product: FC<{ id: number }> = ({ id }) => {
   const [recentOpened, setRecentOpened] = useAtom(recentOpenedItems)
   const { data, isError } = api.product.getById.useQuery(id)
-  console.log(data)
 
   useEffect(() => {
     if (data && !recentOpened.includes(data.product.id)) {

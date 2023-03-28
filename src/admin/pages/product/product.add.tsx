@@ -35,7 +35,6 @@ export const ProductAdd: FC = () => {
   if (!categories) return <div>loading</div>
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     data.ProductProperty = data.ProductProperty.filter((item) => !!item)
-    // console.log(data)
 
     mutate(data)
   }

@@ -21,14 +21,13 @@ export const Products: FC = () => {
     'category',
   ])
 
-  const [, setMaxPrice] = useAtom(maxPriceAtom)
-  const [, setMinPrice] = useAtom(minPriceAtom)
-
   const selectedFilters = Object.entries(rest).map(([key, value]) => {
     if (!value) return { key, value: [] }
     if (Array.isArray(value)) return { key, value }
     return { key, value: [value] }
   })
+  const [, setMaxPrice] = useAtom(maxPriceAtom)
+  const [, setMinPrice] = useAtom(minPriceAtom)
   const { data, error, isError } = api.category.getProducts.useQuery(
     {
       slug: query.category2,
