@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { type HTMLProps, type FC } from 'react'
-import { useTrans } from '~/components/hooks/useTrans'
+import { useTranslate } from '~/components/hooks/useTrans'
 import { type RouterOutputs } from '~/utils/api'
 import { priceRangeAtom } from './filter.store'
 import { FilterField } from './filterField'
@@ -31,7 +31,7 @@ export const Filter: FC<FilterProps> = ({ children, filter: filters }) => {
       },
     })
   }
-  const text = useTrans({ nameSpace: 'filter', keys: ['reset', 'submit'] })
+  const text = useTranslate({ nameSpace: 'filter', keys: ['reset', 'submit'] })
 
   return (
     <form

@@ -11,13 +11,6 @@ export const CatalogCategories = () => {
   const [subCategory, setSubCategory] = useAtom(subCategoryAtom)
   const { data, error } = api.category.getAll.useQuery()
 
-  if (error) {
-    return <div>{error.message}</div>
-  }
-  if (!data) {
-    return <div>loading...</div>
-  }
-  const { categories } = data
   return (
     <>
       <CatalogBackground
@@ -30,18 +23,23 @@ export const CatalogCategories = () => {
           subCategory ? 'absolute max-h-96 w-full max-w-6xl' : ''
         )}
       >
-        <MainCatalog
-          categories={categories}
-          subCategory={subCategory}
-          setSubCategory={setSubCategory}
-        />
-        <SubCatalog
-          onSelectCategory={() => setSubCategory(null)}
-          categories={
-            categories?.find((category) => category.id === subCategory)
-              ?.subCategories
-          }
-        />
+        {error && <div>{error.message}</div>}
+        {data && (
+          <>
+            <MainCatalog
+              categories={data.categories}
+              subCategory={subCategory}
+              setSubCategory={setSubCategory}
+            />
+            <SubCatalog
+              onSelectCategory={() => setSubCategory(null)}
+              categories={
+                data.categories?.find((category) => category.id === subCategory)
+                  ?.subCategories
+              }
+            />
+          </>
+        )}
       </div>
     </>
   )

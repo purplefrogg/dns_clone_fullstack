@@ -30,7 +30,7 @@ export const NavItem: FC<Props> = ({
   return (
     <Component
       className={cn(
-        'flex cursor-pointer select-none flex-col items-center hover:text-neutral-500',
+        'flex cursor-pointer select-none flex-col items-center hover:text-orange-400/80',
         className
       )}
       {...props}

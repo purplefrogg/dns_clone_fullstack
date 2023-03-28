@@ -13,7 +13,14 @@
             "example"
         ],
         "/catalog/[category]/[category2]": [
+            "catalog",
             "filter"
+        ],
+        "/product/[id]": [
+            "product"
+        ],
+        "/cart": [
+            "cart"
         ]
     }
 }

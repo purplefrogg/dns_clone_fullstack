@@ -2,10 +2,10 @@ import { type NextPage } from 'next'
 import Head from 'next/head'
 import { CatalogCategories } from '~/components/modules/catalog/catalog'
 import { RecentOpened } from '~/components/modules/recentOpened/recentOpened'
-import { useTrans } from '~/components/hooks/useTrans'
+import { useTranslate } from '~/components/hooks/useTrans'
 
 const Home: NextPage = () => {
-  const { title } = useTrans({ keys: ['title'] })
+  const { title } = useTranslate({ keys: ['title'] })
   return (
     <>
       <Head>

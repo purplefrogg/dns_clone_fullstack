@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { type FC } from 'react'
 import { Image } from '~/components/elements/imageWrapper'
+import { useTranslate } from '~/components/hooks/useTrans'
 import { cartItems } from '~/components/pages/cart/cart.store'
 
 interface ProductItemProps {
@@ -14,6 +15,10 @@ interface ProductItemProps {
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
   const [cart, setCart] = useAtom(cartItems)
   const router = useRouter()
+  const text = useTranslate({
+    nameSpace: 'catalog',
+    keys: ['goToCart', 'buy'],
+  })
   return (
     <article
       className='flex gap-4 rounded-md bg-white  p-4 shadow'
@@ -43,7 +48,7 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
             } else setCart((prev) => [...prev, product.id])
           }}
         >
-          {cart.includes(product.id) ? 'go to Cart' : 'buy'}
+          {cart.includes(product.id) ? text.goToCart : text.buy}
         </button>
       </div>
     </article>

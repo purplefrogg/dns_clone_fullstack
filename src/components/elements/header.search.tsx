@@ -2,9 +2,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { TbMoodEmpty } from 'react-icons/Tb'
-import { useTrans } from '../hooks/useTrans'
+import { useTranslate } from '../hooks/useTrans'
 export const HeaderSearch = () => {
-  const text = useTrans({
+  const text = useTranslate({
     keys: ['header.search-placeholder', 'header.search-empty'],
   })
   const [search, setSearch] = useState('')

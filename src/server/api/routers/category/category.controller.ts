@@ -5,7 +5,7 @@ import { getProductsSchema } from './category.dto'
 import { categoryService } from './category.service'
 
 export const categoryRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async ({}) => {
+  getAll: publicProcedure.query(async () => {
     const categories = await categoryService.getCategory({
       input: {
         onlyOneLevel: {

@@ -1,6 +1,6 @@
 import { signIn } from 'next-auth/react'
 import { type FC, useState } from 'react'
-import { useTrans } from '~/components/hooks/useTrans'
+import { useTranslate } from '~/components/hooks/useTrans'
 type SignInReturnType = {
   error: string | undefined
 
@@ -13,7 +13,7 @@ type SignInReturnType = {
 export const SignInForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
-  const text = useTrans({
+  const text = useTranslate({
     keys: ['form.password', 'form.email', 'form.continue'],
   })
   const [error, setError] = useState<string | null>(null)

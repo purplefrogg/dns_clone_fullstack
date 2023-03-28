@@ -2,6 +2,7 @@ import { useState, type FC } from 'react'
 import { Image } from '~/components/elements/imageWrapper'
 import { api } from '~/utils/api'
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
+import { useTranslate } from '~/components/hooks/useTrans'
 type CartItemProps = {
   id: number
   onDelete: (id: number) => void
@@ -10,7 +11,10 @@ type CartItemProps = {
 
 export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
   const { data, error } = api.product.getById.useQuery(id)
-
+  const text = useTranslate({
+    nameSpace: 'cart',
+    keys: ['delete'],
+  })
   if (error) {
     onError(id)
   }
@@ -23,7 +27,7 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
         <div className='flex w-full flex-col gap-2'>
           <div className='h-4 w-full rounded-md bg-neutral-300 '></div>
           <button className='self-end rounded-md bg-orange-400 p-2'>
-            delete
+            {text.delete}
           </button>
         </div>
         <div className='h-4 w-16 rounded-md bg-neutral-300 '></div>
@@ -54,7 +58,7 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
           onClick={() => onDelete(id)}
           className='w-fit rounded-md bg-orange-400 p-2'
         >
-          delete
+          {text.delete}
         </button>
       </div>
       <CartPrice price={price} />

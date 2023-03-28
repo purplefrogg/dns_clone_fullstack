@@ -1,11 +1,11 @@
 import { type FC } from 'react'
-import { useTrans } from '~/components/hooks/useTrans'
+import { useTranslate } from '~/components/hooks/useTrans'
 import { api } from '~/utils/api'
 
 export const SignUpForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
-  const text = useTrans({
+  const text = useTranslate({
     keys: [
       'form.name',
       'form.surname',

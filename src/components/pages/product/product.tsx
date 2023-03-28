@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useEffect, type FC } from 'react'
 import { BreadCrumbs } from '~/components/elements/breadCrumbs'
 import { Image } from '~/components/elements/imageWrapper'
+import { useTranslate } from '~/components/hooks/useTrans'
 import { recentOpenedItems } from '~/components/modules/recentOpened/recentOpened.store'
 import { api } from '~/utils/api'
 import { cn } from '~/utils/cn'
@@ -12,7 +13,10 @@ import { ProductPropertyList } from './product.property.list'
 export const Product: FC<{ id: number }> = ({ id }) => {
   const [recentOpened, setRecentOpened] = useAtom(recentOpenedItems)
   const { data, isError } = api.product.getById.useQuery(id)
-
+  const text = useTranslate({
+    nameSpace: 'product',
+    keys: ['features', 'description'],
+  })
   useEffect(() => {
     if (data && !recentOpened.includes(data.product.id)) {
       setRecentOpened([...recentOpened, data.product.id])
@@ -49,12 +53,14 @@ export const Product: FC<{ id: number }> = ({ id }) => {
         </div>
       </div>
       <div className='block-element flex flex-col gap-4 p-4'>
-        <h2 className='text-xl font-semibold '>Features {product.name}</h2>
+        <h2 className='text-xl font-semibold '>
+          {text.features} {product.name}
+        </h2>
         <ProductPropertyList properties={properties} />
       </div>
 
       <div className='block-element flex flex-col gap-4'>
-        <h2 className='text-lg font-semibold'>Description</h2>
+        <h2 className='text-lg font-semibold'>{text.description}</h2>
         <p>{product.description}</p>
       </div>
     </div>
@@ -64,6 +70,10 @@ export const Product: FC<{ id: number }> = ({ id }) => {
 const ProductBuy: FC<{ price: number; id: number }> = ({ price, id }) => {
   const [cart, setCart] = useAtom(cartItems)
   const isInCart = cart.includes(id)
+  const text = useTranslate({
+    nameSpace: 'product',
+    keys: ['addToCart', 'removeFromCart'],
+  })
   const addToCart = () => {
     if (isInCart) {
       setCart(cart.filter((item) => item !== id))
@@ -81,7 +91,7 @@ const ProductBuy: FC<{ price: number; id: number }> = ({ price, id }) => {
         )}
         onClick={addToCart}
       >
-        {isInCart ? 'remove from cart' : 'add to cart'}
+        {isInCart ? text.removeFromCart : text.addToCart}
       </button>
     </div>
   )

@@ -1,11 +1,11 @@
 import { useAtom } from 'jotai'
 import { type FC } from 'react'
-import { useTrans } from '~/components/hooks/useTrans'
+import { useTranslate } from '~/components/hooks/useTrans'
 import { minPriceAtom } from '../filter/filter.store'
 
 export const MinPrice: FC = () => {
   const [minPrice, setMinPrice] = useAtom(minPriceAtom)
-  const { from } = useTrans({ nameSpace: 'filter', keys: ['from'] })
+  const { from } = useTranslate({ nameSpace: 'filter', keys: ['from'] })
   return (
     <label className='flex w-56 justify-between'>
       {from}

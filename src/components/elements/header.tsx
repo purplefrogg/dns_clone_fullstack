@@ -9,11 +9,13 @@ import { IoStatsChartOutline } from 'react-icons/io5'
 import { CartButton } from '../pages/cart/cart.button'
 import { type FC } from 'react'
 import { useRouter } from 'next/router'
-import { useTrans } from '../hooks/useTrans'
+import { useTranslate } from '../hooks/useTrans'
+import { cn } from '~/utils/cn'
+
 export const Header = () => {
   const router = useRouter()
 
-  const text = useTrans({
+  const text = useTranslate({
     keys: [
       'header.dns',
       'header.comparison',
@@ -37,7 +39,7 @@ export const Header = () => {
       link: '/favorite',
       icon: IoIosHeartEmpty,
     },
-  ]
+  ] as const
 
   return (
     <div className='sticky top-0 bg-white shadow'>
@@ -61,12 +63,26 @@ export const Header = () => {
             signOut={text['header.sign-out']}
           />
         </nav>
-        <Link href={router.asPath} locale='en'>
-          en
-        </Link>
-        <Link href={router.asPath} locale='ru'>
-          ru
-        </Link>
+        <div
+          className={
+            'group flex flex-col justify-center gap-1 hover:text-orange-400'
+          }
+        >
+          <Link
+            className={cn(router.locale === 'en' && 'hidden')}
+            href={router.asPath}
+            locale='en'
+          >
+            en
+          </Link>
+          <Link
+            className={cn(router.locale === 'ru' && 'hidden')}
+            href={router.asPath}
+            locale='ru'
+          >
+            ru
+          </Link>
+        </div>
       </div>
     </div>
   )
