@@ -2,12 +2,15 @@ import { type NextPage } from 'next'
 import Head from 'next/head'
 import { CatalogCategories } from '~/components/modules/catalog/catalog'
 import { RecentOpened } from '~/components/modules/recentOpened/recentOpened'
+import useTranslation from 'next-translate/useTranslation'
 
 const Home: NextPage = () => {
+  const { t } = useTranslation('common')
+  const title = t('title')
   return (
     <>
       <Head>
-        <title>Home page</title>
+        <title>{title}</title>
         <meta name='description' content='home page' />
       </Head>
       <div className='mt-2 flex'>

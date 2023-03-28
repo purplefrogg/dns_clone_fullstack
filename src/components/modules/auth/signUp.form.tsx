@@ -1,9 +1,30 @@
 import { type FC } from 'react'
+import { useTrans } from '~/components/hooks/useTrans'
 import { api } from '~/utils/api'
 
 export const SignUpForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
+  const text = useTrans<
+    [
+      'form.name',
+      'form.surname',
+      'form.phone',
+      'form.password',
+      'form.email',
+      'form.continue'
+    ]
+  >({
+    keys: [
+      'form.name',
+      'form.surname',
+      'form.phone',
+      'form.password',
+      'form.email',
+
+      'form.continue',
+    ],
+  })
   const { mutate, error } = api.auth.signUp.useMutation({
     onSuccess: () => {
       closeWindow()
@@ -31,27 +52,27 @@ export const SignUpForm: FC<{ closeWindow: () => void }> = ({
       }}
     >
       <label className='flex justify-between gap-2'>
-        name
+        {text['form.name']}
         <input type='text' name='name' required />
       </label>
       <label className='flex justify-between  gap-2'>
-        Surname
+        {text['form.surname']}
         <input type='text' name='surname' required />
       </label>
       <label className='flex justify-between  gap-2'>
-        phone
+        {text['form.phone']}
         <input type='number' name='phone' required />
       </label>
       <label className='flex justify-between  gap-2'>
-        password
+        {text['form.password']}
         <input type='password' name='password' required minLength={3} />
       </label>
       <label className='flex justify-between  gap-2'>
-        Email
+        {text['form.email']}
         <input type='email' name='email' required />
       </label>
       {error && <div className='text-red-500'>{error.message}</div>}
-      <button type='submit'>continue</button>
+      <button type='submit'>{text['form.continue']}</button>
     </form>
   )
 }

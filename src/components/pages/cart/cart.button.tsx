@@ -3,7 +3,7 @@ import { NavItem } from '~/components/elements/header.navItem'
 import { cartItems } from './cart.store'
 import { BsCart3 } from 'react-icons/bs'
 
-export const CartButton = () => {
+export const CartButton = ({ title }: { title: string }) => {
   const [cart] = useAtom(cartItems)
 
   return (
@@ -18,7 +18,7 @@ export const CartButton = () => {
             {cart.length}
           </span>
         )}
-        Cart
+        {title}
       </NavItem>
     </>
   )

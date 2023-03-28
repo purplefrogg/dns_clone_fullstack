@@ -10,9 +10,7 @@ import { useAtom } from 'jotai'
 import { maxPriceAtom, minPriceAtom } from './components/filter/filter.store'
 import { ProductList } from './components/productList/productList'
 
-export const Products: FC<{ categorySlug: string }> = ({ categorySlug }) => {
-  console.log(categorySlug)
-
+export const Products: FC = () => {
   const { query, rest } = useRouterQuery([
     'page',
     'orderType',
@@ -22,6 +20,7 @@ export const Products: FC<{ categorySlug: string }> = ({ categorySlug }) => {
     'minPrice',
     'category',
   ])
+
   const [, setMaxPrice] = useAtom(maxPriceAtom)
   const [, setMinPrice] = useAtom(minPriceAtom)
 
@@ -32,7 +31,7 @@ export const Products: FC<{ categorySlug: string }> = ({ categorySlug }) => {
   })
   const { data, error, isError } = api.category.getProducts.useQuery(
     {
-      slug: categorySlug,
+      slug: query.category2,
       page: +(query.page || 1),
       filter: selectedFilters,
       orderType: query.orderType,

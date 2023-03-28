@@ -1,30 +1,21 @@
 import { signIn } from 'next-auth/react'
 import { type FC, useState } from 'react'
+import { useTrans } from '~/components/hooks/useTrans'
 type SignInReturnType = {
-  /**
-   * Will be different error codes,
-   * depending on the type of error.
-   */
   error: string | undefined
-  /**
-   * HTTP status code,
-   * hints the kind of error that happened.
-   */
+
   status: number
-  /**
-   * `true` if the signin was successful
-   */
+
   ok: boolean
-  /**
-   * `null` if there was an error,
-   * otherwise the url the user
-   * should have been redirected to.
-   */
+
   url: string | null
 }
 export const SignInForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
 }) => {
+  const text = useTrans<['form.password', 'form.email', 'form.continue']>({
+    keys: ['form.password', 'form.email', 'form.continue'],
+  })
   const [error, setError] = useState<string | null>(null)
   const signInHandler = async (email: string, password: string) => {
     const signInReturn: SignInReturnType = (await signIn('credentials', {
@@ -54,11 +45,11 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
       }}
     >
       <label className='flex justify-between  gap-2'>
-        Email
+        {text['form.email']}
         <input autoComplete='username' type='email' name='email' required />
       </label>
       <label className='flex justify-between  gap-2'>
-        password
+        {text['form.password']}
         <input
           autoComplete='current-password'
           type='password'
@@ -70,7 +61,7 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
       {error && (
         <div className='text-red-500'>Email or password are incorrect</div>
       )}
-      <button type='submit'>continue</button>
+      <button type='submit'>{text['form.continue']}</button>
     </form>
   )
 }

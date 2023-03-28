@@ -3,8 +3,12 @@ import { NavItem } from '~/components/elements/header.navItem'
 import { VscSignIn, VscSignOut } from 'react-icons/vsc'
 import { useAtom } from 'jotai'
 import { signModalAtom } from './signModal'
+import { type FC } from 'react'
 
-export const SignControl = () => {
+export const SignControl: FC<{
+  signIn: string
+  signOut: string
+}> = (props) => {
   const session = useSession()
 
   const [, setShow] = useAtom(signModalAtom)
@@ -23,7 +27,7 @@ export const SignControl = () => {
       onClick={onClickHandler}
       Component={'div'}
     >
-      {session.data?.user ? 'Sign Out' : 'Sign Up'}
+      {session.data?.user ? props.signOut : props.signIn}
     </NavItem>
   )
 }

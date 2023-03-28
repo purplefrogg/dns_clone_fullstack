@@ -1,0 +1,26 @@
+{
+    "title": "DNS CLONE",
+    "description": "DNS CLONE",
+    "variable-example": "Using a variable {{count}}",
+    "header": {
+        "comparison": "Comparison",
+        "cart": "Cart",
+        "sign-in": "Sign in",
+        "sign-up": "Sign up",
+        "sign-out": "Sign out",
+        "favorite": "Favorite",
+        "catalog": "Catalog",
+        "search": "Search",
+        "search-placeholder": "Search",
+        "dns": "DNS"
+    },
+    "form": {
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "surname": "Surname",
+        "phone": "Phone",
+        "address": "Address",
+        "continue": "Continue"
+    }
+}

@@ -3,7 +3,12 @@ import { SignUpForm } from './signUp.form'
 import * as Tabs from '@radix-ui/react-tabs'
 import { SignInForm } from './signIn.form'
 import { atom, useAtom } from 'jotai'
+import { useTrans } from '~/components/hooks/useTrans'
 const FormTabs: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
+  const text = useTrans<['header.sign-up', 'header.sign-in']>({
+    keys: ['header.sign-up', 'header.sign-in'],
+  })
+
   return (
     <Tabs.Root className='h-64 w-96 rounded bg-white p-4' defaultValue={'tab1'}>
       <Tabs.List className='flex justify-around'>
@@ -11,13 +16,13 @@ const FormTabs: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
           className='  border-black p-2 text-base data-[state=active]:border-b-2'
           value='tab1'
         >
-          Sign Up
+          {text['header.sign-up']}
         </Tabs.Trigger>
         <Tabs.Trigger
           className='  border-black p-2 text-base data-[state=active]:border-b-2'
           value='tab2'
         >
-          Sign In
+          {text['header.sign-in']}
         </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content className='TabsContent' value='tab1'>

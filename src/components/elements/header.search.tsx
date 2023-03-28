@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { TbMoodEmpty } from 'react-icons/Tb'
-export const HeaderSearch = () => {
+export const HeaderSearch = ({ placeholder }: { placeholder: string }) => {
   const [search, setSearch] = useState('')
   const { data, refetch } = api.product.search.useQuery(search, {
     enabled: false,
@@ -24,7 +24,7 @@ export const HeaderSearch = () => {
         type='text'
         onChange={(e) => setSearch(e.target.value)}
         value={search}
-        placeholder='search product'
+        placeholder={placeholder}
         className=' peer flex-1 rounded-lg bg-gray-100 px-4'
       />
       {search && (
