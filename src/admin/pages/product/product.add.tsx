@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, type FC } from 'react'
+import { type InputHTMLAttributes, useState, type FC } from 'react'
 import {
   useForm,
   type UseFormSetValue,
@@ -12,7 +12,7 @@ import { InputField } from '~/admin/shared/inputField'
 import { api, type RouterInputs } from '~/utils/api'
 
 type Inputs = RouterInputs['admin']['createProduct']
-
+type InputOmit = Omit<Inputs, 'image' | 'categoryId' | 'ProductProperty'>
 export const ProductAdd: FC = () => {
   const utils = api.useContext()
   const { data: categories } = api.admin.getCategories.useQuery({
@@ -41,54 +41,88 @@ export const ProductAdd: FC = () => {
     }
     mutate(data)
   }
-
+  const inputs: ({
+    title: keyof InputOmit
+    Input: (props: InputHTMLAttributes<HTMLInputElement>) => JSX.Element
+  } & Record<string, unknown>)[] = [
+    {
+      title: 'name',
+      error: errors.name,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('name', {
+            required: 'name is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'nameRu',
+      error: errors.name,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('nameRu', {
+            required: 'name is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'description',
+      error: errors.description,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('description', {
+            required: 'description is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'descriptionRu',
+      error: errors.description,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('descriptionRu', {
+            required: 'description is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'price',
+      error: errors.price,
+      type: 'number',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('price', {
+            valueAsNumber: true,
+            required: 'price is required',
+          })}
+        />
+      ),
+    },
+  ]
   const categoryId = watch('categoryId', categories?.[0]?.id)
   return (
     <div>
       <h1>Add Product</h1>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-2'>
-        <InputField
-          title='name'
-          error={errors.name}
-          type='text'
-          Input={(props) => (
-            <input
-              {...props}
-              {...register('name', {
-                required: 'name is required',
-              })}
-            />
-          )}
-        />
-        <InputField
-          type='text'
-          Input={(props) => (
-            <input
-              {...props}
-              {...register('description', {
-                required: 'description is required',
-              })}
-            />
-          )}
-          title='description'
-          error={errors.description}
-        />
+        {inputs.map((input) => (
+          <InputField {...input} key={input.title} />
+        ))}
+
         <ImageProperty setImage={(img: string) => setValue('image', img)} />
 
-        <InputField
-          type={'number'}
-          error={errors.price}
-          Input={(props) => (
-            <input
-              {...props}
-              {...register('price', {
-                valueAsNumber: true,
-                required: 'price is required',
-              })}
-            />
-          )}
-          title='Price'
-        />
         <label className='flex'>
           <span className='w-32'>categoryId</span>
           <select
@@ -99,7 +133,7 @@ export const ProductAdd: FC = () => {
           >
             {categories?.map((category) => (
               <option key={category.id} value={category.id}>
-                {category.title}
+                {category.locale[0]?.title}
               </option>
             ))}
           </select>
@@ -127,14 +161,14 @@ const ProductProperties: FC<{
   return (
     <div>
       properties
-      {data.map((property, index) => {
+      {data.map((property) => {
         return (
           <div className='gap4 flex' key={property.id}>
-            <span className='w-36'>{property.title.title}</span>
+            <span className='w-36'>{property.title.locale[0]?.title}</span>
             <div>
               {property.field.map((item) => (
                 <div className='flex gap-2' key={item.id}>
-                  {item.about.title}
+                  {item.about.locale[0]?.title}
                   <input
                     type='text'
                     onChange={(e) => {
@@ -173,33 +207,39 @@ const ProductProperties: FC<{
     </div>
   )
 }
+
+type PropertyAddInputs = RouterInputs['admin']['createProperty']
 const PropertyAdd: FC<{ categoryId: number }> = ({ categoryId }) => {
   const [adding, setAdding] = useState(false)
-  const [text, setText] = useState('')
+
   const utils = api.useContext()
   const { mutate } = api.admin.createProperty.useMutation({
     onSuccess: () => {
       void utils.admin.getProductProperties.invalidate()
     },
   })
-  const addProperty = () => {
-    mutate({ title: text, categoryId })
-    setText('')
+  const { register, handleSubmit } = useForm<PropertyAddInputs>()
+  const onSubmit: SubmitHandler<PropertyAddInputs> = (data) => {
+    mutate({ ...data, categoryId })
     setAdding(false)
   }
   return (
     <div>
       {!adding && <h1 onClick={() => setAdding(true)}>Add Property</h1>}
       {adding && (
-        <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <input
             className='border border-gray-300'
-            value={text}
-            onChange={(e) => setText(e.currentTarget.value)}
             type='text'
+            {...register('titleEn')}
           />
-          <button onClick={addProperty}>add</button>
-        </div>
+          <input
+            className='border border-gray-300'
+            type='text'
+            {...register('titleRu')}
+          />
+          <button type='submit'>add</button>
+        </form>
       )}
     </div>
   )
@@ -228,63 +268,68 @@ const FieldAdd: FC<{ propertyId: number }> = ({ propertyId }) => {
 
     setAdding(false)
   }
+  const inputs = [
+    {
+      title: 'value',
+      error: errors.value,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('value', {
+            required: 'value is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'value',
+      error: errors.value,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('value', {
+            required: 'value is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'description',
+      errors: errors.description,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('description', {
+            required: 'description is required',
+          })}
+        />
+      ),
+    },
+    {
+      title: 'slug',
+      error: errors.slug,
+      type: 'text',
+      Input: (props: InputHTMLAttributes<HTMLInputElement>) => (
+        <input
+          {...props}
+          {...register('slug', {
+            required: 'slug is required',
+          })}
+        />
+      ),
+    },
+  ]
   return (
     <div>
       {!adding && <h1 onClick={() => setAdding(true)}>Add Property</h1>}
       {adding && (
         <form onSubmit={handleSubmit(addField)}>
-          <InputField
-            title='title'
-            error={errors.title}
-            type='text'
-            Input={(props) => (
-              <input
-                {...props}
-                {...register('title', {
-                  required: 'title is required',
-                })}
-              />
-            )}
-          />
-          <InputField
-            title='value'
-            error={errors.value}
-            type='text'
-            Input={(props) => (
-              <input
-                {...props}
-                {...register('value', {
-                  required: 'value is required',
-                })}
-              />
-            )}
-          />
-          <InputField
-            title='description'
-            error={errors.value}
-            type='text'
-            Input={(props) => (
-              <input
-                {...props}
-                {...register('description', {
-                  required: 'description is required',
-                })}
-              />
-            )}
-          />
-          <InputField
-            title='slug'
-            error={errors.value}
-            type='text'
-            Input={(props) => (
-              <input
-                {...props}
-                {...register('slug', {
-                  required: 'slug is required',
-                })}
-              />
-            )}
-          />
+          {inputs.map((input) => (
+            <InputField key={input.title} {...input} />
+          ))}
           <button type='submit'>add</button>
         </form>
       )}

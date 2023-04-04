@@ -41,7 +41,7 @@ export const Filter: FC<FilterProps> = ({ children, filter: filters }) => {
       {children}
       {filters.map((filter) => (
         <div key={filter.id}>
-          {filter.title.title}
+          {filter.title.locale[0]?.title}
           {filter.field.map((field) => (
             <FilterField key={field.id} {...field} />
           ))}

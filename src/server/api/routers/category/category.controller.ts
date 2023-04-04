@@ -5,19 +5,51 @@ import { getProductsSchema } from './category.dto'
 import { categoryService } from './category.service'
 
 export const categoryRouter = createTRPCRouter({
-  getAll: publicProcedure.query(async () => {
+  getAll: publicProcedure.query(async ({ ctx }) => {
     const categories = await categoryService.getCategory({
       input: {
         onlyOneLevel: {
           level: '1',
         },
       },
+      lang: ctx.lang,
     })
 
     return { categories, crumbs: [{ text: 'Catalog', to: '/catalog' }] }
   }),
-  getBySlug: publicProcedure.input(z.string()).query(async ({ input }) => {
-    return await categoryService.getBySlug(input)
+  getBySlug: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
+    const category = await ctx.prisma.category.findFirstOrThrow({
+      where: { slug: input },
+      include: {
+        locale: { where: { lang: ctx.lang } },
+        parent: { include: { parent: true } },
+        subCategories: {
+          include: {
+            locale: {
+              where: {
+                lang: ctx.lang,
+              },
+            },
+
+            subCategories: {
+              include: {
+                locale: {
+                  where: {
+                    lang: ctx.lang,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+
+    const crumbs = await getCrumbs({
+      categorySlug: category.slug,
+      lang: ctx.lang,
+    })
+    return { category, crumbs }
   }),
   getProducts: publicProcedure
     .input(getProductsSchema)
@@ -59,7 +91,15 @@ export const categoryRouter = createTRPCRouter({
 
       const properties = await ctx.prisma.property.findMany({
         include: {
-          title: true,
+          title: {
+            include: {
+              locale: {
+                where: {
+                  lang: ctx.lang,
+                },
+              },
+            },
+          },
 
           field: {
             include: {
@@ -74,7 +114,15 @@ export const categoryRouter = createTRPCRouter({
                   },
                 },
               },
-              about: true,
+              about: {
+                include: {
+                  locale: {
+                    where: {
+                      lang: ctx.lang,
+                    },
+                  },
+                },
+              },
             },
             where: {
               FieldValue: {
@@ -112,6 +160,7 @@ export const categoryRouter = createTRPCRouter({
       })
       const crumbs = await getCrumbs({
         categorySlug: category.slug,
+        lang: ctx.lang,
       })
       const productMaxPrice = Math.max(
         ...category.products.map((product) => product.price)
@@ -121,17 +170,28 @@ export const categoryRouter = createTRPCRouter({
       )
       const { page, orderDirection, orderType } = input
       const take = 4
-      const paginatedProducts = await ctx.prisma.product.findMany({
-        where: { id: { in: category.products.map((product) => product.id) } },
-        skip: page * take - take,
-        take,
-        orderBy: { [orderType]: orderDirection },
+      const paginatedProducts = await ctx.prisma.category.findUniqueOrThrow({
+        where: { id: category.id },
+        include: {
+          products: {
+            include: {
+              locale: {
+                where: {
+                  lang: ctx.lang,
+                },
+              },
+            },
+            skip: page * take - take,
+            take,
+            orderBy: { [orderType]: orderDirection },
+          },
+        },
       })
 
       return {
         category,
         productCount: category.products.length,
-        products: paginatedProducts,
+        products: paginatedProducts.products,
         properties,
         productMaxPrice,
         crumbs,

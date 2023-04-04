@@ -48,7 +48,14 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
           Title
           <input
             type='text'
-            {...register('title', { required: 'title is required' })}
+            {...register('titleEn', { required: 'title is required' })}
+          />
+        </label>
+        <label className='flex justify-between  gap-2'>
+          Title Ru
+          <input
+            type='text'
+            {...register('titleRu', { required: 'title is required' })}
           />
         </label>
         <ImageProperty setImage={(img: string) => setValue('image', img)} />
@@ -63,7 +70,7 @@ export const CategoryForm: FC<SignInFormProps> = ({ setShow }) => {
             <option value={without_parent}>without Parent</option>
             {categories?.map((category) => (
               <option value={category.id} key={category.id}>
-                {category.title}
+                {category.locale[0]?.title}
               </option>
             ))}
           </select>

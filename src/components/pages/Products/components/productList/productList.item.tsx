@@ -1,4 +1,3 @@
-import { type Product } from '@prisma/client'
 import { useAtom } from 'jotai'
 
 import Link from 'next/link'
@@ -7,9 +6,10 @@ import { type FC } from 'react'
 import { Image } from '~/components/elements/imageWrapper'
 import { useTranslate } from '~/components/hooks/useTrans'
 import { cartItems } from '~/components/pages/cart/cart.store'
+import { type RouterOutputs } from '~/utils/api'
 
 interface ProductItemProps {
-  product: Product
+  product: RouterOutputs['category']['getProducts']['products'][number]
 }
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
@@ -28,7 +28,7 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
         src={product.image[0]}
         className='h-32 w-44'
         priority
-        alt={product.name}
+        alt={product.locale[0]?.name ?? ''}
         width={160}
         height={160}
       />
@@ -36,7 +36,7 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
         href={`/product/${product.id}`}
         className='flex-1 text-base transition-all hover:text-orange-400'
       >
-        {product.name}
+        {product.locale[0]?.name}
       </Link>
       <div className='flex flex-col'>
         {product.price}

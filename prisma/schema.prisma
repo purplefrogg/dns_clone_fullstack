@@ -11,27 +11,50 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum language {
+    EN
+    RU
+}
+
 model Category {
-    id            Int        @id @default(autoincrement())
-    title         String
-    slug          String     @unique
+    id            Int                   @id @default(autoincrement())
+    slug          String                @unique
     image         String?
     parentId      Int?
-    parent        Category?  @relation("parentSubCategories", fields: [parentId], references: [id])
-    subCategories Category[] @relation("parentSubCategories")
+    parent        Category?             @relation("parentSubCategories", fields: [parentId], references: [id])
+    subCategories Category[]            @relation("parentSubCategories")
     products      Product[]
     properties    Property[]
+    locale        CategoryTranslation[]
+}
+
+model CategoryTranslation {
+    lang       language
+    title      String
+    Category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    categoryId Int
+
+    @@unique([categoryId, lang])
 }
 
 model Product {
-    id          Int          @id @default(autoincrement())
+    id         Int                  @id @default(autoincrement())
+    price      Int
+    image      String[]
+    categoryId Int
+    category   Category             @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+    FieldValue FieldValue[]
+    locale     ProductTranslation[]
+}
+
+model ProductTranslation {
+    lang        language
     name        String
     description String
-    price       Int
-    image       String[]
-    categoryId  Int
-    category    Category     @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-    FieldValue  FieldValue[]
+    Product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    productId   Int
+
+    @@unique([productId, lang])
 }
 
 model Property {
@@ -44,9 +67,18 @@ model Property {
 }
 
 model PropertyTitle {
-    id       Int        @id @default(autoincrement())
-    title    String
+    id       Int                        @id @default(autoincrement())
     property Property[]
+    locale   PropertyTitleTranslation[]
+}
+
+model PropertyTitleTranslation {
+    lang            language
+    title           String
+    PropertyTitle   PropertyTitle @relation(fields: [propertyTitleId], references: [id], onDelete: Cascade)
+    propertyTitleId Int
+
+    @@unique([propertyTitleId, lang])
 }
 
 model Field {
@@ -59,12 +91,22 @@ model Field {
 }
 
 model FieldAbout {
-    id Int @id @default(autoincrement())
+    id     Int                     @id @default(autoincrement())
+    locale FieldAboutTranslation[]
 
-    title         String
-    description   String
     slug          String  @unique
     PropertyField Field[]
+}
+
+model FieldAboutTranslation {
+    lang        language
+    title       String
+    description String
+
+    FieldAbout   FieldAbout @relation(fields: [fieldAboutId], references: [id], onDelete: Cascade)
+    fieldAboutId Int
+
+    @@unique([fieldAboutId, lang])
 }
 
 model FieldValue {

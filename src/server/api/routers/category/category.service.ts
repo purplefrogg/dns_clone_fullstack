@@ -1,7 +1,6 @@
-import { type Prisma } from '@prisma/client'
+import { type language, type Prisma } from '@prisma/client'
 import { type z } from 'zod'
 import { prisma } from '~/server/db'
-import { getCrumbs } from '../../shared/getCrumbs'
 import { type getCategoriesSchema } from './category.dto'
 
 const getCategoryArgsWhere = (
@@ -9,9 +8,13 @@ const getCategoryArgsWhere = (
 ): Prisma.CategoryWhereInput | undefined => {
   if (typeof input === 'string')
     return {
-      title: {
-        contains: input,
-        mode: 'insensitive',
+      locale: {
+        some: {
+          title: {
+            contains: input,
+            mode: 'insensitive',
+          },
+        },
       },
     }
   if (input?.onlyOneLevel?.level === '1') {
@@ -67,37 +70,41 @@ const getCategoryArgsWhere = (
     }
   }
 }
-const getCategory = ({
+const getCategory = async ({
+  lang,
   input,
 }: {
   input: z.infer<typeof getCategoriesSchema>
+  lang: language
 }) => {
-  return prisma.category.findMany({
+  return await prisma.category.findMany({
     where: categoryService.getCategoryArgsWhere(input),
     include: {
+      locale: {
+        where: {
+          lang: lang,
+        },
+      },
       subCategories: {
         include: {
-          subCategories: true,
+          locale: {
+            where: {
+              lang: lang,
+            },
+          },
+
+          subCategories: {
+            include: {
+              locale: true,
+            },
+          },
         },
       },
     },
   })
 }
-const getBySlug = async (slug: string) => {
-  const category = await prisma.category.findFirstOrThrow({
-    where: { slug },
-    include: {
-      parent: { include: { parent: true } },
-      subCategories: { include: { subCategories: true } },
-    },
-  })
-
-  const crumbs = await getCrumbs({ categorySlug: category.slug })
-  return { category, crumbs }
-}
 
 export const categoryService = {
   getCategoryArgsWhere,
   getCategory,
-  getBySlug,
 }

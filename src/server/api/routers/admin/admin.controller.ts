@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { adminProcedure, createTRPCRouter } from '../../trpc'
 import { getCategoriesSchema } from '../category/category.dto'
+import { categoryService } from '../category/category.service'
 import {
   createCategorySchema,
   createProductSchema,
@@ -24,23 +25,46 @@ const createCategory = adminProcedure
 
 const getProductProperties = adminProcedure
   .input(z.number())
-  .query(({ input, ctx }) => {
-    return ctx.prisma.property.findMany({
+  .query(async ({ input, ctx }) => {
+    const category = await ctx.prisma.category.findUnique({
       where: {
-        categoryId: input,
+        id: input,
       },
-      select: {
-        title: true,
-        id: true,
-        field: {
+      include: {
+        properties: {
           select: {
-            about: true,
+            title: {
+              select: {
+                locale: {
+                  where: {
+                    lang: ctx.lang,
+                  },
+                },
+              },
+            },
             id: true,
-            FieldValue: true,
+            field: {
+              select: {
+                about: {
+                  select: {
+                    slug: true,
+                    locale: {
+                      where: {
+                        lang: ctx.lang,
+                      },
+                    },
+                  },
+                },
+                id: true,
+                FieldValue: true,
+              },
+            },
           },
         },
       },
     })
+
+    return category?.properties
   })
 
 const createProduct = adminProcedure
@@ -53,6 +77,11 @@ const getProductList = adminProcedure.query(({ ctx }) => {
   return ctx.prisma.product.findMany({
     include: {
       category: true,
+      locale: {
+        where: {
+          lang: ctx.lang,
+        },
+      },
     },
   })
 })
@@ -68,8 +97,36 @@ const deleteProduct = adminProcedure
   })
 const getCategories = adminProcedure
   .input(getCategoriesSchema)
-  .query(async ({ input }) => {
-    return await adminService.getCategories(input)
+  .query(async ({ input, ctx }) => {
+    const categories = await ctx.prisma.category.findMany({
+      where: categoryService.getCategoryArgsWhere(input),
+      include: {
+        parent: {
+          include: {
+            locale: {
+              where: {
+                lang: ctx.lang,
+              },
+            },
+          },
+        },
+        subCategories: {
+          include: {
+            locale: {
+              where: {
+                lang: ctx.lang,
+              },
+            },
+          },
+        },
+        locale: {
+          where: {
+            lang: ctx.lang,
+          },
+        },
+      },
+    })
+    return categories
   })
 
 const getUsers = adminProcedure.query(async ({ ctx }) => {
@@ -104,7 +161,20 @@ const createProperty = adminProcedure
       data: {
         title: {
           create: {
-            title: input.title,
+            locale: {
+              createMany: {
+                data: [
+                  {
+                    lang: 'EN',
+                    title: input.titleEn,
+                  },
+                  {
+                    lang: 'RU',
+                    title: input.titleRu,
+                  },
+                ],
+              },
+            },
           },
         },
         category: {
@@ -128,8 +198,22 @@ const createPropertyField = adminProcedure
         },
         about: {
           create: {
-            description: input.description,
-            title: input.title,
+            locale: {
+              createMany: {
+                data: [
+                  {
+                    lang: 'EN',
+                    title: input.title,
+                    description: input.description,
+                  },
+                  {
+                    lang: 'RU',
+                    title: input.titleRu,
+                    description: input.descriptionRu,
+                  },
+                ],
+              },
+            },
             slug: input.slug,
           },
         },

@@ -10,7 +10,7 @@ type CartItemProps = {
 }
 
 export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
-  const { data, error } = api.product.getById.useQuery(id)
+  const { data, error } = api.product.getById.useQuery({ id })
   const text = useTranslate({
     nameSpace: 'cart',
     keys: ['delete'],
@@ -36,7 +36,7 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
     )
 
   const {
-    product: { name, image, price },
+    product: { locale, image, price },
   } = data
 
   return (
@@ -44,7 +44,7 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
       {image[0] && (
         <Image
           src={image[0]}
-          alt={name}
+          alt={locale[0]?.name ?? ''}
           priority
           className='h-48 w-48 object-contain'
           width={120}
@@ -53,7 +53,7 @@ export const CartItem: FC<CartItemProps> = ({ id, onDelete, onError }) => {
       )}
 
       <div className='flex flex-1 flex-col'>
-        {name}
+        {locale[0]?.name}
         <button
           onClick={() => onDelete(id)}
           className='w-fit rounded-md bg-orange-400 p-2'

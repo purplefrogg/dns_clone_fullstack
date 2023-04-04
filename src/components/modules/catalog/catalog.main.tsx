@@ -21,7 +21,7 @@ export const MainCatalog: FC<MainCatalogProps> = ({
           key={category.id}
           className={subCategory === category.id ? 'text-orange-400' : ''}
         >
-          {category.title}
+          {category.locale[0]?.title}
         </div>
       ))}
     </div>

@@ -40,7 +40,6 @@ export const Header = () => {
       icon: IoIosHeartEmpty,
     },
   ] as const
-
   return (
     <div className='sticky top-0 bg-white shadow'>
       <div className='m-auto flex max-w-6xl gap-4 p-2 '>
@@ -68,20 +67,18 @@ export const Header = () => {
             'group flex flex-col justify-center gap-1 hover:text-orange-400'
           }
         >
-          <Link
+          <a
             className={cn(router.locale === 'en' && 'hidden')}
             href={router.asPath}
-            locale='en'
           >
             en
-          </Link>
-          <Link
+          </a>
+          <a
             className={cn(router.locale === 'ru' && 'hidden')}
-            href={router.asPath}
-            locale='ru'
+            href={`/ru/${router.asPath}`}
           >
             ru
-          </Link>
+          </a>
         </div>
       </div>
     </div>

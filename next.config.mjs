@@ -31,5 +31,29 @@ const config = {
     locales: ['en', 'ru'],
     defaultLocale: 'en',
   },
+  headers: async () => {
+    return [
+      {
+        source: '/:path*',
+        locale: false,
+        headers: [
+          {
+            key: 'content-language',
+            value: 'en',
+          },
+        ],
+      },
+      {
+        source: '/ru/:path*',
+        locale: false,
+        headers: [
+          {
+            key: 'content-language',
+            value: 'ru',
+          },
+        ],
+      },
+    ]
+  },
 }
 export default nextTranslate(config)

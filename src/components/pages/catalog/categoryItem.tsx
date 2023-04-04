@@ -29,7 +29,7 @@ const CategoryItemWithoutSub = ({ category }: { category: CategoryType }) => {
         alt=''
       />
 
-      {category.title}
+      {category.locale[0]?.title}
     </Link>
   )
 }
@@ -56,13 +56,13 @@ export const CategoryItemWithSub = ({
           className='font-semibold hover:text-orange-400'
           href={`/catalog/${category.slug}`}
         >
-          {category.title}
+          {category.locale[0]?.title}
         </Link>
         <ul>
           {category.subCategories.map((subCategory) => (
             <li className='hover:text-orange-400' key={subCategory.id}>
               <Link href={`${path}/${subCategory.slug}`}>
-                {subCategory.title}
+                {subCategory.locale[0]?.title}
               </Link>
             </li>
           ))}
@@ -81,7 +81,7 @@ export const CategoryItemWithSub = ({
           src={category.image}
           alt=''
         />
-        {category.title}
+        {category.locale[0]?.title}
       </div>
     </div>
   )

@@ -1,30 +1,7 @@
-import { type Category } from '@prisma/client'
 import { createColumnHelper } from '@tanstack/react-table'
 import { DeleteButton } from '~/admin/shared/deleteButton'
 import { api, type RouterOutputs } from '~/utils/api'
 
-const ColumnOfParent = ({ current }: { current?: Category | null }) => {
-  const { data } = api.admin.getCategories.useQuery({
-    onlyOneLevel: {
-      level: '3',
-      reverse: true,
-    },
-  })
-
-  return (
-    <div>
-      <select className=''>
-        {current && <option value={current.title}>{current.title}</option>}
-        <option value=''>without Parent</option>
-        {data?.map((category) => (
-          <option key={category.id} value={category.id}>
-            {category.title}
-          </option>
-        ))}
-      </select>
-    </div>
-  )
-}
 const columnHelper =
   createColumnHelper<RouterOutputs['admin']['getCategories'][number]>()
 export const categoryListColumn = [
@@ -32,9 +9,9 @@ export const categoryListColumn = [
     cell: (info) => info.getValue(),
   }),
 
-  columnHelper.accessor('title', {
+  columnHelper.accessor('locale', {
     header: () => 'title',
-    cell: (info) => info.renderValue(),
+    cell: (info) => info.getValue()[0]?.title,
   }),
   columnHelper.accessor((row) => row.slug, {
     id: 'slug',
@@ -47,11 +24,7 @@ export const categoryListColumn = [
   }),
   columnHelper.accessor('parent', {
     header: () => 'Parent Title',
-    cell: (info) => (
-      <div>
-        <ColumnOfParent current={info.getValue()} />
-      </div>
-    ),
+    cell: (info) => info.getValue()?.locale[0]?.title ?? 'No Parent',
   }),
   columnHelper.accessor('subCategories', {
     header: () => 'Sub Categories',
@@ -61,9 +34,9 @@ export const categoryListColumn = [
         <div className='group'>
           <div>{categories.length}</div>
           <div className='absolute hidden flex-col gap-2  bg-white shadow group-hover:flex'>
-            {info.renderValue()?.map((subCategory) => (
-              <div className='px-2' key={subCategory.title}>
-                {subCategory.title}
+            {categories?.map((subCategory) => (
+              <div className='px-2' key={subCategory.locale[0]?.title}>
+                {subCategory.locale[0]?.title}
               </div>
             ))}
           </div>

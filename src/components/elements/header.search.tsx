@@ -45,7 +45,7 @@ export const HeaderSearch = () => {
               key={item.id}
               href={`/product/${item.id}`}
             >
-              {item.name}
+              {item.locale[0]?.name}
             </Link>
           ))}
         </div>

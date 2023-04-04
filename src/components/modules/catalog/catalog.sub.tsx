@@ -21,7 +21,7 @@ export const SubCatalog: FC<SubCatalogProps> = ({
               className='block font-semibold hover:text-orange-400'
               onClick={onSelectCategory}
             >
-              {subCategory.title}
+              {subCategory.locale[0]?.title}
             </Link>
             {subCategory.subCategories.map((lvl3Category) => (
               <Link
@@ -30,7 +30,7 @@ export const SubCatalog: FC<SubCatalogProps> = ({
                 onClick={onSelectCategory}
                 className='block  text-sm hover:text-orange-400'
               >
-                {lvl3Category.title}
+                {lvl3Category.locale[0]?.title}
               </Link>
             ))}
           </div>

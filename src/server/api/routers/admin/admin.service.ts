@@ -3,8 +3,6 @@ import { v4 } from 'uuid'
 import { type z } from 'zod'
 import { prisma } from '~/server/db'
 import { minioClient } from '~/server/minio'
-import { type getCategoriesSchema } from '../category/category.dto'
-import { categoryService } from '../category/category.service'
 import {
   type createCategorySchema,
   type createProductSchema,
@@ -26,13 +24,6 @@ const deleteCategory = async (categoryId: number) => {
     where: {
       id: categoryId,
     },
-    include: {
-      subCategories: {
-        select: {
-          title: true,
-        },
-      },
-    },
   })
 }
 
@@ -42,8 +33,21 @@ const createCategory = async (input: z.infer<typeof createCategorySchema>) => {
   try {
     const category = await prisma.category.create({
       data: {
-        title: input.title,
-        slug: input.slug || input.title.replaceAll(' ', '-'),
+        locale: {
+          createMany: {
+            data: [
+              {
+                lang: 'EN',
+                title: input.titleEn,
+              },
+              {
+                lang: 'RU',
+                title: input.titleRu,
+              },
+            ],
+          },
+        },
+        slug: input.slug || input.titleEn.replaceAll(' ', '-'),
         image: input.image,
 
         parentId: input.parentId,
@@ -71,10 +75,25 @@ const createProduct = async (input: z.infer<typeof createProductSchema>) => {
 
   const product = await prisma.product.create({
     data: {
-      name: input.name,
+      locale: {
+        createMany: {
+          data: [
+            {
+              lang: 'EN',
+              description: input.description,
+              name: input.name,
+            },
+            {
+              lang: 'RU',
+              description: input.descriptionRu,
+              name: input.nameRu,
+            },
+          ],
+        },
+      },
       categoryId: input.categoryId,
       image: input.image,
-      description: input.description,
+
       price: input.price,
       FieldValue: {
         connectOrCreate: input.ProductProperty.map((item) => {
@@ -95,22 +114,7 @@ const createProduct = async (input: z.infer<typeof createProductSchema>) => {
   return product
 }
 
-const getCategories = async (input: z.infer<typeof getCategoriesSchema>) => {
-  return await prisma.category.findMany({
-    where: categoryService.getCategoryArgsWhere(input),
-    include: {
-      subCategories: {
-        select: {
-          title: true,
-        },
-      },
-      parent: true,
-    },
-  })
-}
-
 export const adminService = {
-  getCategories,
   deleteCategory,
   createCategory,
   getProductPropertyTitle,

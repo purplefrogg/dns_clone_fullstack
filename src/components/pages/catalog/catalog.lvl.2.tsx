@@ -15,13 +15,15 @@ export const Catalog_lvl_2: FC<Props> = ({ categorySlug }) => {
   return (
     <div className='flex flex-col gap-4'>
       <Head>
-        <title>catalog of {category.title}.</title>
-        <meta name='description' content={category.title} />
+        <title>catalog of {category.locale[0]?.title}</title>
+        <meta name='description' content={category.locale[0]?.title} />
       </Head>
       <BreadCrumbs crumbs={crumbs} />
       {data && (
         <>
-          <h1 className='text-3xl font-semibold'>{category?.title}</h1>
+          <h1 className='text-3xl font-semibold'>
+            {category.locale[0]?.title}
+          </h1>
           <CategoryItems categories={data.category?.subCategories} />
         </>
       )}

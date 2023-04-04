@@ -8,7 +8,7 @@ type Props =
 
 export const FilterField: FC<Props> = ({ about, FieldValue }) => {
   const router = useRouter()
-  const { slug, title } = about
+  const { slug, locale } = about
   const changeHandler = (value: string) => {
     const query = router.query[slug]
     if (query) {
@@ -29,7 +29,7 @@ export const FilterField: FC<Props> = ({ about, FieldValue }) => {
 
   return (
     <div>
-      <h3>{title}</h3>
+      <h3>{locale[0]?.title}</h3>
       <div className='flex flex-wrap gap-4'>
         {FieldValue.map((value) => {
           const checked = router.query[slug]?.includes(value.value)

@@ -40,11 +40,11 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
           src={product.image[0]}
           priority
           width={120}
-          alt={product.name}
+          alt={product.locale[0]?.name ?? ''}
         />
       </Link>
       <div className='flex flex-col gap-2'>
-        <h3 className='text-center'>{product.name}</h3>
+        <h3 className='text-center'>{product.locale[0]?.name}</h3>
         <div className='flex  items-center justify-between'>
           <span className='text-lg'>{product.price}</span>
           <div

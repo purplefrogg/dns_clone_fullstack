@@ -8,11 +8,13 @@ interface Props {
 export const ProductPropertyItem: FC<Props> = ({ property }) => (
   <div>
     <div className='' key={property.id}>
-      <h3 className='text-lg font-semibold'>{property.title.title}</h3>
+      <h3 className='text-lg font-semibold'>
+        {property.title.locale[0]?.title}
+      </h3>
       {property.field.map((field) => (
         <div className='flex gap-4' key={field.id}>
           <div className='w-64 border-b-2 border-dotted '>
-            {field.about?.title}
+            {field.about.locale[0]?.title}
           </div>
           <span>{field.FieldValue[0]?.value}</span>
         </div>

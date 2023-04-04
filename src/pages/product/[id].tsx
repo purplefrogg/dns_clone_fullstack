@@ -12,10 +12,15 @@ import { ssg } from '~/utils/ssg'
 export async function getStaticProps(
   context: GetStaticPropsContext<{ id: string }>
 ) {
-  const id = context.params?.id as string
+  console.log('getStaticProps', context)
+
+  const id = context.params?.id ?? 0
 
   // prefetch `post.byId`
-  await ssg.product.getById.prefetch(+id)
+  await ssg.product.getById.prefetch({
+    id: +id,
+    lang: context.locale as 'ru' | 'en',
+  })
 
   return {
     props: {
@@ -26,18 +31,32 @@ export async function getStaticProps(
     revalidate: 1,
   }
 }
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async ({
+  locales: initLocales,
+}) => {
   const products = await prisma.product.findMany({
     select: {
       id: true,
     },
   })
+  console.log('getStaticPaths products', products)
+
+  const paths = []
+  const locales = initLocales ?? ['en']
+  for (const product of products) {
+    for (const locale of locales) {
+      paths.push({
+        params: {
+          id: product.id.toString(),
+        },
+        locale,
+      })
+    }
+  }
+  console.log('getStaticPaths paths', paths)
+
   return {
-    paths: products.map((post) => ({
-      params: {
-        id: post.id.toString(),
-      },
-    })),
+    paths,
     fallback: 'blocking',
   }
 }

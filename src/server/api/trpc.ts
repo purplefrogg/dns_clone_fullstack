@@ -5,14 +5,18 @@ import superjson from 'superjson'
 import { getServerSession } from 'next-auth'
 import { authOptions } from './auth'
 import { type Session } from 'next-auth'
+import { type language } from '@prisma/client'
 
 interface CreateInnerContextOptions extends Partial<CreateNextContextOptions> {
   session: Session | null
+  lang: language
 }
 
 export function createContextInner(opts?: CreateInnerContextOptions) {
   return {
     prisma,
+    lang: opts?.lang || 'EN',
+    session: opts?.session,
     ...opts,
   }
 }
@@ -21,11 +25,16 @@ export const createTRPCContext = async ({
   res,
 }: CreateNextContextOptions) => {
   const session = await getServerSession(req, res, authOptions)
+  const lang = req.headers?.['x-language']
+    ? req.headers?.['x-language']
+    : req.headers.referer?.split('/')[3]
+  const language = lang === 'ru' ? 'RU' : 'EN'
 
   return createContextInner({
     req,
     res,
     session,
+    lang: language,
   })
 }
 

@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useEffect, type FC } from 'react'
 import { BreadCrumbs } from '~/components/elements/breadCrumbs'
 import { Image } from '~/components/elements/imageWrapper'
@@ -12,7 +13,11 @@ import { ProductPropertyList } from './product.property.list'
 
 export const Product: FC<{ id: number }> = ({ id }) => {
   const [recentOpened, setRecentOpened] = useAtom(recentOpenedItems)
-  const { data, isError } = api.product.getById.useQuery(id)
+  const router = useRouter()
+  const { data, isError } = api.product.getById.useQuery({
+    id,
+    lang: router.locale as 'en' | 'ru',
+  })
   const text = useTranslate({
     nameSpace: 'product',
     keys: ['features', 'description'],
@@ -34,34 +39,34 @@ export const Product: FC<{ id: number }> = ({ id }) => {
   return (
     <div className='flex flex-col gap-4'>
       <Head>
-        <title>{product.name}</title>
-        <meta name='description' content={product.description} />
+        <title>{product.locale[0]?.name}</title>
+        <meta name='description' content={product.locale[0]?.name} />
       </Head>
       <BreadCrumbs crumbs={crumbs} />
-      <h1 className='text-2xl font-semibold'>{product.name}</h1>
+      <h1 className='text-2xl font-semibold'>{product.locale[0]?.name}</h1>
       <div className='block-element flex gap-2'>
         <Image
           width={500}
           height={500}
           className='h-96 w-[500px] object-cover'
-          alt={product.name + ' image'}
+          alt={product.locale[0]?.name ?? '' + ' image'}
           src={product.image[0]}
         />
         <div className='flex-1'>
-          {product.name}
+          {product.locale[0]?.name}
           <ProductBuy id={product.id} price={product.price} />
         </div>
       </div>
       <div className='block-element flex flex-col gap-4 p-4'>
         <h2 className='text-xl font-semibold '>
-          {text.features} {product.name}
+          {text.features} {product.locale[0]?.name}
         </h2>
         <ProductPropertyList properties={properties} />
       </div>
 
       <div className='block-element flex flex-col gap-4'>
         <h2 className='text-lg font-semibold'>{text.description}</h2>
-        <p>{product.description}</p>
+        <p>{product.locale[0]?.description}</p>
       </div>
     </div>
   )

@@ -11,7 +11,8 @@ export const ProductListColumns = [
     footer: (info) => info.column.id,
   }),
 
-  columnHelper.accessor('name', {
+  columnHelper.accessor((key) => key.locale[0]?.name, {
+    id: 'name',
     header: () => 'Name',
     cell: (info) => info.renderValue(),
   }),
@@ -24,11 +25,12 @@ export const ProductListColumns = [
     id: 'category',
     cell: (info) => {
       const category = info.getValue()
-      return <i>{category ? category.title : 'not selected'}</i>
+      return <i>{category ? category.slug : 'not selected'}</i>
     },
     header: () => <span>Category</span>,
   }),
-  columnHelper.accessor('description', {
+  columnHelper.accessor((key) => key.locale[0]?.description, {
+    id: 'description',
     header: () => 'Description',
     cell: (info) => info.renderValue(),
   }),

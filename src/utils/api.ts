@@ -1,4 +1,4 @@
-import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
+import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import superjson from 'superjson'
@@ -20,6 +20,7 @@ export const api = createTRPCNext<AppRouter>({
             keepPreviousData: true,
             retry: false,
             refetchOnMount: true,
+            abortOnUnmount: true,
             refetchOnWindowFocus: false,
           },
         },
@@ -36,18 +37,27 @@ export const api = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
 
           headers() {
+            const header = {}
+
+            Object.assign(header, {
+              'Accept-Language': ctx?.res?.getHeader('language'),
+            })
+
             if (ctx?.req) {
               const {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 connection: _connection,
                 ...headers
               } = ctx?.req?.headers
-              return {
+
+              Object.assign(header, {
                 ...headers,
+                'x-language': ctx?.res?.getHeader('content-language'),
                 'x-ssr': '1',
-              }
+              })
             }
-            return {}
+
+            return header
           },
         }),
       ],
@@ -59,13 +69,3 @@ export const api = createTRPCNext<AppRouter>({
 export type RouterInputs = inferRouterInputs<AppRouter>
 
 export type RouterOutputs = inferRouterOutputs<AppRouter>
-
-export const trpcVanilla = createTRPCProxyClient<AppRouter>({
-  transformer: superjson,
-
-  links: [
-    httpBatchLink({
-      url: `http://localhost:3000/api/trpc`,
-    }),
-  ],
-})
