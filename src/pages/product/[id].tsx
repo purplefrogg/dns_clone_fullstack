@@ -8,29 +8,6 @@ import { prisma } from '~/server/db'
 import { Product } from '~/components/pages/product/product'
 
 import { ssg } from '~/utils/ssg'
-
-export async function getStaticProps(
-  context: GetStaticPropsContext<{ id: string }>
-) {
-  console.log('getStaticProps', context)
-
-  const id = context.params?.id ?? 0
-
-  // prefetch `post.byId`
-  await ssg.product.getById.prefetch({
-    id: +id,
-    lang: context.locale as 'ru' | 'en',
-  })
-
-  return {
-    props: {
-      trpcState: ssg.dehydrate(),
-
-      id,
-    },
-    revalidate: 1,
-  }
-}
 export const getStaticPaths: GetStaticPaths = async ({
   locales: initLocales,
 }) => {
@@ -39,7 +16,6 @@ export const getStaticPaths: GetStaticPaths = async ({
       id: true,
     },
   })
-  console.log('getStaticPaths products', products)
 
   const paths = []
   const locales = initLocales ?? ['en']
@@ -53,17 +29,40 @@ export const getStaticPaths: GetStaticPaths = async ({
       })
     }
   }
-  console.log('getStaticPaths paths', paths)
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: false,
+  }
+}
+export async function getStaticProps(
+  context: GetStaticPropsContext<{ id: string }>
+) {
+  if (!context.params?.id) {
+    return null
+  }
+  const id = context.params.id
+
+  // prefetch `post.byId
+
+  await ssg.product.getById.prefetch({
+    id: +id,
+    lang: context.locale as 'ru' | 'en',
+  })
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+
+      id,
+    },
+    revalidate: 1,
   }
 }
 
 const Page: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
   props
 ) => {
+  if (!props.id) return null
   return <Product id={+props.id} />
 }
 

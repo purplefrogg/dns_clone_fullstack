@@ -14,6 +14,7 @@ import { ProductPropertyList } from './product.property.list'
 export const Product: FC<{ id: number }> = ({ id }) => {
   const [recentOpened, setRecentOpened] = useAtom(recentOpenedItems)
   const router = useRouter()
+
   const { data, isError } = api.product.getById.useQuery({
     id,
     lang: router.locale as 'en' | 'ru',
