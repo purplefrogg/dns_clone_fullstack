@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   type ColumnDef,
   getCoreRowModel,
@@ -7,15 +8,14 @@ import {
 import { type FC } from 'react'
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<unknown, any>[]
+  columns: ColumnDef<any, any>[]
   data: unknown[]
 }
 
 export const Table: FC<Props> = ({ columns, data }) => {
   const table = useReactTable({
     data,
-    columns: columns,
+    columns: columns as ColumnDef<unknown, any>[],
     getCoreRowModel: getCoreRowModel(),
   })
 

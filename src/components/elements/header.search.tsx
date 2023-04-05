@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
-import { TbMoodEmpty } from 'react-icons/Tb'
+import { TbMoodEmpty } from 'react-icons/tb'
 import { useTranslate } from '../hooks/useTrans'
 export const HeaderSearch = () => {
   const text = useTranslate({
