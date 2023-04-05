@@ -39,7 +39,6 @@ export const createPropertyFieldSchema = z.object({
   titleRu: z.string(),
   description: z.string(),
   descriptionRu: z.string(),
-  value: z.string(),
   slug: z.string(),
   propertyId: z.number(),
 })

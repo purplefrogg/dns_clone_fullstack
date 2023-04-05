@@ -54,33 +54,34 @@ export const categoryRouter = createTRPCRouter({
   getProducts: publicProcedure
     .input(getProductsSchema)
     .query(async ({ input, ctx }) => {
+      const productWhereInput = {
+        price: {
+          gte: input.minPrice,
+          lte: input.maxPrice,
+        },
+
+        AND: input.filter.map((filter) => ({
+          FieldValue: {
+            some: {
+              field: {
+                about: {
+                  slug: filter.key,
+                },
+              },
+              value: {
+                in: filter.value,
+              },
+            },
+          },
+        })),
+      }
       const category = await ctx.prisma.category.findUniqueOrThrow({
         where: {
           slug: input.slug,
         },
         include: {
           products: {
-            where: {
-              price: {
-                gte: input.minPrice,
-                lte: input.maxPrice,
-              },
-
-              AND: input.filter.map((filter) => ({
-                FieldValue: {
-                  some: {
-                    field: {
-                      about: {
-                        slug: filter.key,
-                      },
-                    },
-                    value: {
-                      in: filter.value,
-                    },
-                  },
-                },
-              })),
-            },
+            where: productWhereInput,
             select: {
               id: true,
               price: true,
@@ -174,6 +175,7 @@ export const categoryRouter = createTRPCRouter({
         where: { id: category.id },
         include: {
           products: {
+            where: productWhereInput,
             include: {
               locale: {
                 where: {

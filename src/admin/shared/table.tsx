@@ -7,14 +7,15 @@ import {
 import { type FC } from 'react'
 
 interface Props {
-  columns: ColumnDef<any, any>[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  columns: ColumnDef<unknown, any>[]
   data: unknown[]
 }
 
 export const Table: FC<Props> = ({ columns, data }) => {
   const table = useReactTable({
     data,
-    columns: columns as ColumnDef<unknown, any>[],
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
   })
 

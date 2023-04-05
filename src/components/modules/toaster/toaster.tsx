@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { type ToastType, addToastAtom, ToastListAtom } from './toaster.store'

@@ -40,7 +40,9 @@ export const getCrumbs = async ({
     },
   })
 
-  const crumbs: CrumbType[] = [{ text: 'Catalog', to: '/catalog' }]
+  const crumbs: CrumbType[] = [
+    { text: lang === 'EN' ? 'Catalog' : 'Каталог', to: '/catalog' },
+  ]
   const parent = category?.parent?.parent
   if (parent)
     crumbs.push({

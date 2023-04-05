@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { type FC, useState } from 'react'
 
 export const ImageProperty: FC<{ setImage: (img: string) => void }> = ({
