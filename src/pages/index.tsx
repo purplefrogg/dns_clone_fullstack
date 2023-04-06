@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <meta name='description' content='home page' />
       </Head>
       <div className='mt-2 flex'>
-        <div className='min-w-[224px]'>
+        <div className='z-20 h-40 min-w-[224px]'>
           <CatalogCategories />
         </div>
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus

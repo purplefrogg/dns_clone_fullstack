@@ -14,7 +14,7 @@ export const RecentOpened: FC = () => {
   return (
     <div className='block-element flex flex-col gap-4'>
       <h2 className='text-2xl'>{text.recentlyOpened}</h2>
-      <div className='flex gap-4'>
+      <div className='flex gap-4  overflow-x-auto  p-2'>
         {data.map((product) => (
           <RecentOpenedItem
             deleteHandler={(id) => deleteItem(id)}

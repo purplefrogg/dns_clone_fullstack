@@ -46,11 +46,18 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
     >
       <label className='flex justify-between  gap-2'>
         {text['form.email']}
-        <input autoComplete='username' type='email' name='email' required />
+        <input
+          className='border'
+          autoComplete='username'
+          type='email'
+          name='email'
+          required
+        />
       </label>
       <label className='flex justify-between  gap-2'>
         {text['form.password']}
         <input
+          className='border'
           autoComplete='current-password'
           type='password'
           name='password'

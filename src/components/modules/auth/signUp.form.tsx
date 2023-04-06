@@ -1,6 +1,7 @@
-import { type FC } from 'react'
+import { type InputHTMLAttributes, type FC } from 'react'
 import { useTranslate } from '~/components/hooks/useTrans'
 import { api } from '~/utils/api'
+import { toast } from '../toaster/toaster'
 
 export const SignUpForm: FC<{ closeWindow: () => void }> = ({
   closeWindow,
@@ -17,8 +18,13 @@ export const SignUpForm: FC<{ closeWindow: () => void }> = ({
     ],
   })
   const { mutate, error } = api.auth.signUp.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       closeWindow()
+      toast({
+        message: 'success',
+        type: 'success',
+      })
+      console.log(data)
     },
   })
   const submitHandler = (inputs: { [k: string]: FormDataEntryValue }) => {
@@ -29,6 +35,52 @@ export const SignUpForm: FC<{ closeWindow: () => void }> = ({
       email: inputs.email as string,
     })
   }
+  const inputs: {
+    title: string
+    props: InputHTMLAttributes<HTMLInputElement>
+  }[] = [
+    {
+      title: text['form.name'],
+      props: {
+        required: true,
+        name: 'name',
+        type: 'text',
+      },
+    },
+    {
+      title: text['form.surname'],
+      props: {
+        required: true,
+        name: 'surname',
+        type: 'text',
+      },
+    },
+    {
+      title: text['form.phone'],
+      props: {
+        type: 'number',
+        name: 'phone',
+        required: true,
+      },
+    },
+    {
+      title: text['form.password'],
+      props: {
+        required: true,
+        name: 'password',
+        type: 'password',
+        minLength: 3,
+      },
+    },
+    {
+      title: text['form.email'],
+      props: {
+        required: true,
+        name: 'email',
+        type: 'email',
+      },
+    },
+  ]
   return (
     <form
       onSubmit={(e) => {
@@ -42,26 +94,12 @@ export const SignUpForm: FC<{ closeWindow: () => void }> = ({
         e.stopPropagation()
       }}
     >
-      <label className='flex justify-between gap-2'>
-        {text['form.name']}
-        <input type='text' name='name' required />
-      </label>
-      <label className='flex justify-between  gap-2'>
-        {text['form.surname']}
-        <input type='text' name='surname' required />
-      </label>
-      <label className='flex justify-between  gap-2'>
-        {text['form.phone']}
-        <input type='number' name='phone' required />
-      </label>
-      <label className='flex justify-between  gap-2'>
-        {text['form.password']}
-        <input type='password' name='password' required minLength={3} />
-      </label>
-      <label className='flex justify-between  gap-2'>
-        {text['form.email']}
-        <input type='email' name='email' required />
-      </label>
+      {inputs.map((input) => (
+        <label key={input.title} className='flex justify-between  gap-2'>
+          {input.title}
+          <input className='border' {...input.props} />
+        </label>
+      ))}
       {error && <div className='text-red-500'>{error.message}</div>}
       <button type='submit'>{text['form.continue']}</button>
     </form>

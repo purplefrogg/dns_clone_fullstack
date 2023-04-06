@@ -22,7 +22,7 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
   const router = useRouter()
   const isInCart = cart.includes(product.id)
   return (
-    <div className='block-element flex   flex-col justify-between gap-2'>
+    <div className='block-element relative flex w-48 flex-col justify-between  gap-2   '>
       <button
         className='absolute self-end rounded-full p-2 hover:bg-neutral-200'
         onClick={() => deleteHandler(product.id)}
@@ -31,7 +31,7 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
       </button>
       <Link
         rel='prefetch'
-        className=' flex items-center justify-center self-center'
+        className='flex items-center justify-center self-center'
         href={`product/${product.id}`}
       >
         <Image
@@ -44,7 +44,7 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
         />
       </Link>
       <div className='flex flex-col gap-2'>
-        <h3 className='text-center'>{product.locale[0]?.name}</h3>
+        <h3 className='truncate text-center'>{product.locale[0]?.name}</h3>
         <div className='flex  items-center justify-between'>
           <span className='text-lg'>{product.price}</span>
           <div
