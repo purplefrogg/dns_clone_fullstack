@@ -12,14 +12,14 @@ export const CatalogCategories = () => {
   const { data, error } = api.category.getAll.useQuery()
 
   return (
-    <>
+    <div className='  z-50'>
       <CatalogBackground
         hide={() => setSubCategory(null)}
         isHide={!subCategory}
       />
       <div
         className={cn(
-          'z-10 flex gap-4  rounded-lg bg-white p-2',
+          'z-30 flex gap-4  rounded-lg bg-white p-2',
           subCategory ? 'absolute max-h-96 w-full max-w-6xl' : ''
         )}
       >
@@ -41,6 +41,6 @@ export const CatalogCategories = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }

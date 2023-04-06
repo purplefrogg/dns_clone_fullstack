@@ -41,7 +41,7 @@ export const Header = () => {
     },
   ] as const
   return (
-    <div className='sticky top-0 bg-white shadow'>
+    <div className='sticky top-0 z-20 bg-white shadow'>
       <div className='m-auto flex max-w-6xl gap-4 p-2 '>
         <div className='flex gap-4 rounded-lg bg-orange-400 px-4 py-2 text-white'>
           <Link className='text-3xl font-bold ' href={'/'}>
@@ -50,7 +50,7 @@ export const Header = () => {
           <ButtonShowCatalog title={text['header.catalog']} />
         </div>
         <HeaderSearch />
-        <nav className='each flex items-center gap-2 [&>*]:w-20 [&>*]:flex-1'>
+        <nav className='each hidden items-center gap-2 lg:flex [&>*]:w-20 [&>*]:flex-1'>
           {navItems.map((item) => (
             <NavItem href={item.link} icon={item.icon} key={item.title}>
               {item.title}
@@ -93,7 +93,7 @@ const ButtonShowCatalog: FC<{ title: string }> = ({ title }) => {
       onClick={() => {
         setSubCategory(-1)
       }}
-      className='flex items-center justify-center gap-2 rounded bg-orange-500 px-2'
+      className='hidden items-center justify-center gap-2 rounded bg-orange-500 px-2 md:flex'
     >
       {title} <IoIosArrowDown />
     </button>

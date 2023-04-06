@@ -10,7 +10,7 @@ export const CatalogBackground: FC<Props> = ({ hide, isHide }) => {
   return (
     <div
       onClick={() => hide()}
-      className={'fixed top-0 right-0 h-full w-full  bg-black opacity-30'}
+      className={'fixed top-0 right-0  z-20 h-full w-full  bg-black opacity-30'}
     ></div>
   )
 }

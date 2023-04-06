@@ -26,7 +26,7 @@ export const ProductItem: FC<ProductItemProps> = ({ product }) => {
     >
       <Image
         src={product.image[0]}
-        className='h-32 w-44'
+        className='h-32 w-32'
         priority
         alt={product.locale[0]?.name ?? ''}
         width={160}

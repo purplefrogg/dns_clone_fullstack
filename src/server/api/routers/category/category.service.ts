@@ -95,7 +95,11 @@ const getCategory = async ({
 
           subCategories: {
             include: {
-              locale: true,
+              locale: {
+                where: {
+                  lang,
+                },
+              },
             },
           },
         },
