@@ -21,7 +21,6 @@ export const HeaderSearch = () => {
       clearTimeout(cancel)
     }
   }, [refetch, search])
-
   return (
     <div className='group relative flex flex-1'>
       <input

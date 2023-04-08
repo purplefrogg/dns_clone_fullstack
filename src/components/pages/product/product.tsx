@@ -45,7 +45,7 @@ export const Product: FC<{ id: number }> = ({ id }) => {
       </Head>
       <BreadCrumbs crumbs={crumbs} />
       <h1 className='text-2xl font-semibold'>{product.locale[0]?.name}</h1>
-      <div className='block-element flex gap-2'>
+      <div className='block-element flex flex-col gap-2 md:flex-row'>
         <Image
           width={500}
           height={500}

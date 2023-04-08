@@ -36,12 +36,18 @@ export const MobileNav = () => {
     },
   ]
   return (
-    <div className='fixed bottom-0 flex w-full justify-between gap-2 bg-white md:hidden'>
-      {navItems.map((item) => (
-        <div onClick={item.onClickHandler} key={item.title}>
-          {item.link ? <Link href={item.link}>{item.title}</Link> : item.title}
-        </div>
-      ))}
+    <div className='h-8'>
+      <div className='fixed bottom-0 flex w-full justify-between gap-2 bg-white md:hidden'>
+        {navItems.map((item) => (
+          <div onClick={item.onClickHandler} key={item.title}>
+            {item.link ? (
+              <Link href={item.link}>{item.title}</Link>
+            ) : (
+              item.title
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

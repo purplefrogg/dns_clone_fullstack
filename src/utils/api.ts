@@ -12,6 +12,7 @@ const getBaseUrl = () => {
 }
 
 export const api = createTRPCNext<AppRouter>({
+  ssr: true,
   config({ ctx }) {
     return {
       queryClientConfig: {
@@ -19,7 +20,8 @@ export const api = createTRPCNext<AppRouter>({
           queries: {
             keepPreviousData: true,
             retry: false,
-            refetchOnMount: true,
+            refetchOnMount: false,
+            retryOnMount: false,
             abortOnUnmount: true,
             refetchOnWindowFocus: false,
           },
@@ -63,7 +65,6 @@ export const api = createTRPCNext<AppRouter>({
       ],
     }
   },
-  ssr: true,
 })
 
 export type RouterInputs = inferRouterInputs<AppRouter>

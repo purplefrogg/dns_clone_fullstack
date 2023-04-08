@@ -5,13 +5,15 @@ import * as Accordion from '@radix-ui/react-accordion'
 import Link from 'next/link'
 import { IoCloseOutline } from 'react-icons/io5'
 import { useTranslate } from '~/components/hooks/useTrans'
+import { useBlockScroll } from '~/components/hooks/useBlockScroll'
 
 export const FloatCatalogMobile = () => {
   const [, setSubCategory] = useAtom(subCategoryAtom)
-  const { data, error } = api.category.getAll.useQuery()
+  const { data } = api.category.getAll.useQuery()
   const text = useTranslate({
     keys: ['header.catalog'],
   })
+  useBlockScroll(!!setSubCategory)
   return (
     <div className='fixed z-20 h-full w-full bg-white p-2 md:hidden'>
       <div className='flex justify-between'>
@@ -56,32 +58,3 @@ export const FloatCatalogMobile = () => {
     </div>
   )
 }
-//  ;<Accordion.Root
-//    className='AccordionRoot'
-//    type='single'
-//    defaultValue='item-1'
-//    collapsible
-//  >
-//    <Accordion.Item className='AccordionItem' value='item-1'>
-//      <AccordionTrigger>Is it accessible?</AccordionTrigger>
-//      <AccordionContent>
-//        Yes. It adheres to the WAI-ARIA design pattern.
-//      </AccordionContent>
-//    </Accordion.Item>
-
-//    <Accordion.Item className='AccordionItem' value='item-2'>
-//      <AccordionTrigger>Is it unstyled?</AccordionTrigger>
-//      <AccordionContent>
-//        Yes. It's unstyled by default, giving you freedom over the look and feel.
-//      </AccordionContent>
-//    </Accordion.Item>
-
-//    <Accordion.Item className='AccordionItem' value='item-3'>
-//      <AccordionTrigger>Can it be animated?</AccordionTrigger>
-//      <Accordion.Content className='AccordionContent'>
-//        <div className='AccordionContentText'>
-//          Yes! You can animate the Accordion with CSS or JavaScript.
-//        </div>
-//      </Accordion.Content>
-//    </Accordion.Item>
-//  </Accordion.Root>

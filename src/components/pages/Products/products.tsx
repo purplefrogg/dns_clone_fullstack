@@ -6,8 +6,12 @@ import { type FC } from 'react'
 import { Filter } from './components/filter/filter'
 import { OrderProperty } from './components/orderProperty/orderProperty'
 import { PriceProperty } from './components/priceProperty/priceProperty'
-import { useAtom } from 'jotai'
-import { maxPriceAtom, minPriceAtom } from './components/filter/filter.store'
+import { useAtom, useSetAtom } from 'jotai'
+import {
+  FilterHiddenAtom,
+  maxPriceAtom,
+  minPriceAtom,
+} from './components/filter/filter.store'
 import { ProductList } from './components/productList/productList'
 
 export const Products: FC = () => {
@@ -45,18 +49,23 @@ export const Products: FC = () => {
       },
     }
   )
+  const hideFilter = useSetAtom(FilterHiddenAtom)
 
   if (isError) return <div>{error.data?.code}</div>
   if (!data) return <div>loading...</div>
-
   return (
     <>
       <BreadCrumbs crumbs={data.crumbs} />
+      <div className='flex justify-between md:hidden'>
+        <OrderProperty />
+        <button onClick={() => hideFilter(false)}>filters</button>
+      </div>
       <div className='flex gap-4'>
         <Filter filter={data?.properties}>
           <PriceProperty />
           <OrderProperty />
         </Filter>
+
         <ProductList
           productCount={data.productCount}
           products={data.products}

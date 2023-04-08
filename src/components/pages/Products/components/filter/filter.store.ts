@@ -1,4 +1,5 @@
 import { atom } from 'jotai'
+export const FilterHiddenAtom = atom(true)
 
 export const maxPriceAtom = atom(0, (get, set, value: number) => {
   set(maxPriceAtom, value)

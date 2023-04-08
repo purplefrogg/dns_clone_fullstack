@@ -1,20 +1,28 @@
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
 import { type HTMLProps, type FC } from 'react'
+import { useBlockScroll } from '~/components/hooks/useBlockScroll'
+import { useIsMobile } from '~/components/hooks/useIsMobile'
 import { useTranslate } from '~/components/hooks/useTrans'
 import { type RouterOutputs } from '~/utils/api'
-import { priceRangeAtom } from './filter.store'
+import { cn } from '~/utils/cn'
+import { FilterHiddenAtom, priceRangeAtom } from './filter.store'
 import { FilterField } from './filterField'
 
 interface FilterProps extends HTMLProps<HTMLDivElement> {
   filter: RouterOutputs['category']['getProducts']['properties']
 }
+export const Filter: FC<FilterProps> = ({
+  children,
 
-export const Filter: FC<FilterProps> = ({ children, filter: filters }) => {
+  filter: filters,
+}) => {
   const router = useRouter()
+  const [hidden, setHidden] = useAtom(FilterHiddenAtom)
   const [priceRange] = useAtom(priceRangeAtom)
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setHidden(true)
     router.query.minPrice = priceRange[0]?.toString()
     router.query.maxPrice = priceRange[1]?.toString()
     router.query.page = '1'
@@ -32,10 +40,19 @@ export const Filter: FC<FilterProps> = ({ children, filter: filters }) => {
     })
   }
   const text = useTranslate({ nameSpace: 'filter', keys: ['reset', 'submit'] })
-
+  const isMobile = useIsMobile()
+  useBlockScroll(!hidden && isMobile)
   return (
     <form
-      className='flex w-64 flex-col gap-4 rounded-md bg-white p-3'
+      onReset={() => {
+        setHidden(true)
+      }}
+      className={cn(
+        isMobile
+          ? 'absolute flex h-full w-full flex-col gap-4 overflow-scroll overscroll-contain rounded-md bg-white p-3'
+          : 'hidden w-64 flex-col gap-4 rounded-md bg-white p-3 md:flex',
+        hidden && 'hidden'
+      )}
       onSubmit={submitHandler}
     >
       {children}

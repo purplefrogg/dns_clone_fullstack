@@ -3,18 +3,50 @@ import { IoIosArrowDown, IoIosHeartEmpty } from 'react-icons/io'
 import { useAtom } from 'jotai'
 import { subCategoryAtom } from '../modules/catalog/catalog'
 import { SignControl } from '../modules/auth/signControl'
-import { HeaderSearch } from './header.search'
 import { NavItem } from './header.navItem'
 import { IoStatsChartOutline } from 'react-icons/io5'
 import { CartButton } from '../pages/cart/cart.button'
-import { type FC } from 'react'
+import { type PropsWithChildren, type FC } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslate } from '../hooks/useTrans'
 import { cn } from '~/utils/cn'
+import { HeaderSearch } from './header.search'
 
-export const Header = () => {
+const HeaderLocale = () => {
   const router = useRouter()
 
+  return (
+    <div
+      className={
+        'group flex flex-col justify-center gap-1 hover:text-orange-400'
+      }
+    >
+      <a
+        className={cn(router.locale === 'en' && 'hidden')}
+        href={router.asPath}
+      >
+        en
+      </a>
+      <a
+        className={cn(router.locale === 'ru' && 'hidden')}
+        href={`/ru/${router.asPath}`}
+      >
+        ru
+      </a>
+    </div>
+  )
+}
+type HeaderElements = {
+  Search: JSX.Element
+  Locale: JSX.Element
+}
+
+type HeaderType = ((
+  props: PropsWithChildren & Partial<HeaderElements>
+) => JSX.Element) &
+  HeaderElements
+
+export const Header: HeaderType = ({ children, Locale, Search }) => {
   const text = useTranslate({
     keys: [
       'header.dns',
@@ -49,7 +81,8 @@ export const Header = () => {
           </Link>
           <ButtonShowCatalog title={text['header.catalog']} />
         </div>
-        <HeaderSearch />
+        {Search}
+
         <nav className='each hidden items-center gap-2 lg:flex [&>*]:w-20 [&>*]:flex-1'>
           {navItems.map((item) => (
             <NavItem href={item.link} icon={item.icon} key={item.title}>
@@ -62,29 +95,13 @@ export const Header = () => {
             signOut={text['header.sign-out']}
           />
         </nav>
-        <div
-          className={
-            'group flex flex-col justify-center gap-1 hover:text-orange-400'
-          }
-        >
-          <a
-            className={cn(router.locale === 'en' && 'hidden')}
-            href={router.asPath}
-          >
-            en
-          </a>
-          <a
-            className={cn(router.locale === 'ru' && 'hidden')}
-            href={`/ru/${router.asPath}`}
-          >
-            ru
-          </a>
-        </div>
+        {Locale}
       </div>
     </div>
   )
 }
-
+Header.Search = <HeaderSearch />
+Header.Locale = <HeaderLocale />
 const ButtonShowCatalog: FC<{ title: string }> = ({ title }) => {
   const [, setSubCategory] = useAtom(subCategoryAtom)
 
