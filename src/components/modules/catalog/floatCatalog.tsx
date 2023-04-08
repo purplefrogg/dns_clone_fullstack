@@ -14,7 +14,7 @@ export const FloatCatalog = () => {
     <>
       {subCategory && <FloatCatalogMobile />}
       {!isHomePage && subCategory && (
-        <div className='sticky top-16 mx-auto hidden  w-full max-w-6xl md:block'>
+        <div className='sticky top-16 z-20 mx-auto hidden  w-full max-w-6xl md:block'>
           <div className=' z-10 w-full  max-w-6xl  text-black'>
             <CatalogCategories />
           </div>
