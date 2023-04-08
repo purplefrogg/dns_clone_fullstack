@@ -5,7 +5,6 @@ import * as Accordion from '@radix-ui/react-accordion'
 import Link from 'next/link'
 import { IoCloseOutline } from 'react-icons/io5'
 import { useTranslate } from '~/components/hooks/useTrans'
-import { useBlockScroll } from '~/components/hooks/useBlockScroll'
 
 export const FloatCatalogMobile = () => {
   const [, setSubCategory] = useAtom(subCategoryAtom)
@@ -13,7 +12,6 @@ export const FloatCatalogMobile = () => {
   const text = useTranslate({
     keys: ['header.catalog'],
   })
-  useBlockScroll(!!setSubCategory)
   return (
     <div className='fixed z-20 h-full w-full bg-white p-2 md:hidden'>
       <div className='flex justify-between'>

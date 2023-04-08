@@ -58,7 +58,7 @@ export const Products: FC = () => {
       <BreadCrumbs crumbs={data.crumbs} />
       <div className='flex justify-between md:hidden'>
         <OrderProperty />
-        <button onClick={() => hideFilter(false)}>filters</button>
+        <button onClick={() => hideFilter((p) => !p)}>filters</button>
       </div>
       <div className='flex gap-4'>
         <Filter filter={data?.properties}>

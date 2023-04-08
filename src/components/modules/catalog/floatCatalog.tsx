@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/router'
+import { useBlockScroll } from '~/components/hooks/useBlockScroll'
 import { CatalogCategories, subCategoryAtom } from './catalog'
 import { FloatCatalogMobile } from './floatCatalog.mobile'
 
@@ -7,6 +8,8 @@ export const FloatCatalog = () => {
   const router = useRouter()
   const isHomePage = router.pathname === '/'
   const [subCategory] = useAtom(subCategoryAtom)
+  useBlockScroll(!!subCategory)
+
   return (
     <>
       {subCategory && <FloatCatalogMobile />}

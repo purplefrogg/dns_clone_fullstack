@@ -9,7 +9,6 @@ import { type Session } from 'next-auth'
 import { Toaster } from '~/components/modules/toaster/toaster'
 import { useIsMobile } from '~/components/hooks/useIsMobile'
 import dynamic from 'next/dynamic'
-
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -33,6 +32,7 @@ const MyApp = function ({
         )
       )
     : dynamic(import('~/components/layouts/layout').then((mod) => mod.Layout))
+
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
   return (
     <SessionProvider session={session}>

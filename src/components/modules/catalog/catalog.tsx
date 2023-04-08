@@ -12,7 +12,7 @@ export const CatalogCategories = () => {
   const { data, error } = api.category.getAll.useQuery()
 
   return (
-    <div className='  z-50'>
+    <div className='z-50'>
       <CatalogBackground
         hide={() => setSubCategory(null)}
         isHide={!subCategory}
