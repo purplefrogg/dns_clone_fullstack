@@ -4,8 +4,7 @@ let userAgent = false
 
 export const useIsMobile = () => {
   if (userAgent) return true
-  const utils = api.useContext()
-  console.log(utils.ssrState)
+
   const userAgentServer =
     api.useContext().ssrContext?.req?.headers['user-agent']
   if (userAgentServer)
@@ -23,5 +22,6 @@ export const useIsMobile = () => {
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
       )
     )
+
   return userAgent
 }

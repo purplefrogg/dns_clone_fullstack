@@ -7,8 +7,7 @@ import { type ReactElement, type ReactNode } from 'react'
 import { SessionProvider } from 'next-auth/react'
 import { type Session } from 'next-auth'
 import { Toaster } from '~/components/modules/toaster/toaster'
-import { useIsMobile } from '~/components/hooks/useIsMobile'
-import dynamic from 'next/dynamic'
+import { Layout } from '~/components/layouts/layout'
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -19,26 +18,17 @@ type AppPropsWithLayout<T> = AppProps<T> & {
 type AppPropsType = {
   session: Session | null | undefined
 }
+
 const MyApp = function ({
   Component,
 
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout<AppPropsType>) {
-  const isMobile = useIsMobile()
-  const Layout = isMobile
-    ? dynamic(
-        import('~/components/layouts/layout.mobile').then(
-          (mod) => mod.MobileLayout
-        )
-      )
-    : dynamic(import('~/components/layouts/layout').then((mod) => mod.Layout))
-
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
   return (
     <SessionProvider session={session}>
       <Provider>
         <Toaster />
-
         {getLayout(<Component {...pageProps} />)}
       </Provider>
     </SessionProvider>

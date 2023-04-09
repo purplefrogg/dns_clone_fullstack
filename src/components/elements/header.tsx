@@ -46,7 +46,7 @@ type HeaderType = ((
 ) => JSX.Element) &
   HeaderElements
 
-export const Header: HeaderType = ({ children, Locale, Search }) => {
+export const Header: HeaderType = ({ Locale, Search }) => {
   const text = useTranslate({
     keys: [
       'header.dns',
@@ -102,6 +102,7 @@ export const Header: HeaderType = ({ children, Locale, Search }) => {
 }
 Header.Search = <HeaderSearch />
 Header.Locale = <HeaderLocale />
+
 const ButtonShowCatalog: FC<{ title: string }> = ({ title }) => {
   const [, setSubCategory] = useAtom(subCategoryAtom)
 
