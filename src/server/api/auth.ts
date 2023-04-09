@@ -2,6 +2,7 @@ import { prisma } from '~/server/db'
 import { compare } from 'bcrypt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { type Session, type NextAuthOptions } from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
 
 export const authOptions: NextAuthOptions = {
   jwt: {
@@ -20,6 +21,13 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
+    signIn({ account, user }) {
+      if (account?.provider === 'google') {
+        user.role = 'ADMIN'
+      }
+      return true
+    },
+
     session: ({ session, token }): Session => {
       if (token) {
         session.user = {
@@ -33,6 +41,10 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     CredentialsProvider({
       name: 'Next Auth',
       credentials: {

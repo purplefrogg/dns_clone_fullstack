@@ -29,6 +29,7 @@ const MyApp = function ({
   const getLayout =
     Component.getLayout ??
     ((page) => <Layout isMobile={isMobile}>{page}</Layout>)
+
   return (
     <SessionProvider session={session}>
       <Provider>

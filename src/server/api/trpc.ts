@@ -25,6 +25,8 @@ export const createTRPCContext = async ({
   res,
 }: CreateNextContextOptions) => {
   const session = await getServerSession(req, res, authOptions)
+  console.log(session)
+
   const lang = req.headers?.['x-language']
     ? req.headers?.['x-language']
     : req.headers.referer?.split('/')[3]

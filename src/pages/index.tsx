@@ -6,6 +6,7 @@ import { useTranslate } from '~/components/hooks/useTrans'
 
 const Home: NextPage = () => {
   const { title } = useTranslate({ keys: ['title'] })
+
   return (
     <>
       <Head>

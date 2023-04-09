@@ -9,7 +9,8 @@ declare global {
 
       MINIO_ACCESS_KEY: string
       MINIO_SECRET_KEY: string
-
+      GOOGLE_CLIENT_ID: string
+      GOOGLE_CLIENT_SECRET: string
       NEXT_PUBLIC_STATIC_URL: string
     }
   }

@@ -11,7 +11,7 @@ const FormTabs: FC<{ closeWindow: () => void }> = ({ closeWindow }) => {
   })
 
   return (
-    <Tabs.Root className='h-64 w-96 rounded bg-white p-4' defaultValue={'tab1'}>
+    <Tabs.Root className='h-64 w-96 rounded bg-white p-4' defaultValue={'tab2'}>
       <Tabs.List className='flex justify-around'>
         <Tabs.Trigger
           className='  border-black p-2 text-base data-[state=active]:border-b-2'
