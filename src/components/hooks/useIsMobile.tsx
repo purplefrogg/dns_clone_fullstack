@@ -13,9 +13,8 @@ export const useIsMobile = () => {
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
       )
     )
-
-  const userAgentClient =
-    typeof window === 'undefined' ? '' : navigator.userAgent
+  if (typeof window === 'undefined') return userAgent
+  const userAgentClient = navigator.userAgent
   if (userAgentClient)
     userAgent = Boolean(
       userAgentClient.match(

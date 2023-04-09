@@ -49,7 +49,7 @@ export const Filter: FC<FilterProps> = ({
       }}
       className={cn(
         isMobile
-          ? 'absolute flex h-full w-full max-w-6xl flex-col gap-4 overflow-scroll overscroll-contain rounded-md bg-white p-3'
+          ? 'absolute flex h-full w-full max-w-6xl flex-col gap-4 overflow-scroll overscroll-contain rounded-md bg-white p-3 pb-48'
           : 'hidden w-64 flex-col gap-4 rounded-md bg-white p-3 md:flex',
         hidden && 'hidden'
       )}

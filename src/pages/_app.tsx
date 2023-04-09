@@ -8,6 +8,7 @@ import { SessionProvider } from 'next-auth/react'
 import { type Session } from 'next-auth'
 import { Toaster } from '~/components/modules/toaster/toaster'
 import { Layout } from '~/components/layouts/layout'
+import { useIsMobile } from '../components/hooks/useIsMobile'
 export type NextPageWithLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
@@ -24,7 +25,10 @@ const MyApp = function ({
 
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout<AppPropsType>) {
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
+  const isMobile = useIsMobile()
+  const getLayout =
+    Component.getLayout ??
+    ((page) => <Layout isMobile={isMobile}>{page}</Layout>)
   return (
     <SessionProvider session={session}>
       <Provider>
