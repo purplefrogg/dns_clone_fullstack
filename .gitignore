@@ -17,7 +17,6 @@
 /out/
 next-env.d.ts
 
-.pnpm-lock.yaml
 
 # production
 /build
