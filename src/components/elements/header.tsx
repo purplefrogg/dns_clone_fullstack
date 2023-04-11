@@ -90,10 +90,7 @@ export const Header: HeaderType = ({ Locale, Search }) => {
             </NavItem>
           ))}
           <CartButton title={text['header.cart']} />
-          <SignControl
-            signIn={text['header.sign-in']}
-            signOut={text['header.sign-out']}
-          />
+          <SignControl />
         </nav>
         {Locale}
       </div>
