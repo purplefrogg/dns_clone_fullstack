@@ -18,13 +18,12 @@ export const SignUpForm: FC<{ closeWindow: () => void }> = ({
     ],
   })
   const { mutate, error } = api.auth.signUp.useMutation({
-    onSuccess: (data) => {
+    onSuccess: () => {
       closeWindow()
       toast({
         message: 'success',
         type: 'success',
       })
-      console.log(data)
     },
   })
   const submitHandler = (inputs: { [k: string]: FormDataEntryValue }) => {

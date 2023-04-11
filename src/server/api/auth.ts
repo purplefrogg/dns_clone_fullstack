@@ -3,11 +3,19 @@ import { compare } from 'bcrypt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { type Session, type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import EmailProvider from 'next-auth/providers/email'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
 export const authOptions: NextAuthOptions = {
+  pages: {
+    error: '/auth/error',
+    signIn: '/auth/signIn',
+  },
   jwt: {
     maxAge: 15 * 24 * 30 * 60, // 15 days
   },
+  session: { strategy: 'jwt' },
+  adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     jwt: ({ token, user }) => {
@@ -21,12 +29,6 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    signIn({ account, user }) {
-      if (account?.provider === 'google') {
-        user.role = 'ADMIN'
-      }
-      return true
-    },
 
     session: ({ session, token }): Session => {
       if (token) {
@@ -39,14 +41,36 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
+    signIn: ({ account, user }) => {
+      if (account?.provider === 'google') {
+        user.role = 'ADMIN'
+      }
+
+      return true
+    },
   },
+
   providers: [
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+
+      type: 'email',
+      from: process.env.EMAIL_FROM,
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     CredentialsProvider({
-      name: 'Next Auth',
+      type: 'credentials',
       credentials: {
         email: {
           label: 'email',
@@ -55,6 +79,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: 'Password', type: 'password' },
       },
+
       async authorize(credentials) {
         const user = await prisma.user.findFirst({
           where: {
@@ -64,14 +89,15 @@ export const authOptions: NextAuthOptions = {
         if (!user) {
           return null
         }
-        const validPassword = await compare(
-          credentials?.password ?? '',
-          user.password
-        )
-        if (!validPassword) {
-          return null
+        if (user.password) {
+          const validPassword = await compare(
+            credentials?.password ?? '',
+            user.password
+          )
+          if (!validPassword) {
+            return null
+          }
         }
-
         return {
           id: user.id,
           email: user.email,

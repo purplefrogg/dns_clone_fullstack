@@ -2,6 +2,7 @@ import { signIn } from 'next-auth/react'
 import { type FC, useState } from 'react'
 import { useTranslate } from '~/components/hooks/useTrans'
 import { FcGoogle } from 'react-icons/fc'
+import { z } from 'zod'
 type SignInReturnType = {
   error: string | undefined
 
@@ -18,6 +19,7 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
     keys: ['form.password', 'form.email', 'form.continue'],
   })
   const [error, setError] = useState<string | null>(null)
+  const [email, setEmail] = useState('')
   const signInHandler = async (email: string, password: string) => {
     const signInReturn: SignInReturnType = (await signIn('credentials', {
       redirect: false,
@@ -31,19 +33,26 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
       setError(signInReturn.error)
     }
   }
+  const signInEmailHandler = async (email: string) => {
+    const verifiedEmail = z.string().email().safeParse(email)
+    if (!verifiedEmail.success) {
+      return setError('email must be correct')
+    }
+    const signInReturn: SignInReturnType = (await signIn('email', {
+      redirect: false,
+      email,
+    })) as SignInReturnType
+
+    if (signInReturn.ok) {
+      setError('check your mail')
+    }
+    if (signInReturn.error) {
+      setError(signInReturn.error)
+    }
+  }
+
   return (
     <div className='flex flex-col gap-4 pt-4'>
-      <button
-        className='flex items-center justify-center gap-4 rounded border p-2 text-lg'
-        onClick={() => {
-          void signIn('google', {
-            redirect: false,
-          })
-        }}
-      >
-        <FcGoogle size={30} />
-        Sign Up with Google
-      </button>
       <form
         autoComplete='on'
         onSubmit={(e) => {
@@ -64,6 +73,8 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
             autoComplete='username'
             type='email'
             name='email'
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
             required
           />
         </label>
@@ -78,11 +89,27 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
             minLength={3}
           />
         </label>
-        {error && (
-          <div className='text-red-500'>Email or password are incorrect</div>
-        )}
+        {error && <div className='text-center text-red-500'>{error}</div>}
         <button type='submit'>{text['form.continue']}</button>
       </form>
+      <button
+        type='button'
+        className='flex items-center justify-center gap-4 rounded border p-2 text-lg'
+        onClick={() => void signInEmailHandler(email)}
+      >
+        forgot password?
+      </button>
+      <button
+        className='flex items-center justify-center gap-4 rounded border p-2 text-lg'
+        onClick={() => {
+          void signIn('google', {
+            redirect: false,
+          })
+        }}
+      >
+        <FcGoogle size={30} />
+        Sign Up with Google
+      </button>
     </div>
   )
 }

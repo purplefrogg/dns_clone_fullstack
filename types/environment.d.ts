@@ -9,9 +9,16 @@ declare global {
 
       MINIO_ACCESS_KEY: string
       MINIO_SECRET_KEY: string
+      NEXT_PUBLIC_STATIC_URL: string
+
       GOOGLE_CLIENT_ID: string
       GOOGLE_CLIENT_SECRET: string
-      NEXT_PUBLIC_STATIC_URL: string
+
+      EMAIL_SERVER_HOST: string
+      EMAIL_SERVER_PORT: number
+      EMAIL_SERVER_USER: string
+      EMAIL_SERVER_PASSWORD: string
+      EMAIL_FROM: string
     }
   }
 }

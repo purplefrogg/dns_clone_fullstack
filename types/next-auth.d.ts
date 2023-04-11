@@ -3,7 +3,7 @@ type UserRole = 'ADMIN' | 'USER'
 declare module 'next-auth' {
   interface User {
     id: number
-    name: string
+    name: string | null
     email: string
     role: UserRole
   }
@@ -11,7 +11,7 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: number
-      name: string
+      name: string | null
       email: string
       role: UserRole
       // ...other properties
@@ -25,7 +25,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     /** OpenID ID Token */
     id: number
-    name: string
+    name: string | null
     email: string
     role: UserRole
   }
