@@ -1,7 +1,6 @@
 import { type GetServerSideProps, type NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import { signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import { authOptions } from '~/server/api/auth'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -22,10 +21,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const Profile: NextPage = () => {
   const { data } = useSession()
-  const router = useRouter()
   const signOutHandler = () => {
     void signOut()
-    void router.push('/')
   }
   return (
     <div>

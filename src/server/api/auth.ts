@@ -5,6 +5,7 @@ import { type Session, type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { TRPCError } from '@trpc/server'
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -89,14 +90,18 @@ export const authOptions: NextAuthOptions = {
         if (!user) {
           return null
         }
-        if (user.password) {
-          const validPassword = await compare(
-            credentials?.password ?? '',
-            user.password
-          )
-          if (!validPassword) {
-            return null
-          }
+        if (!user.password) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+          })
+        }
+
+        const validPassword = await compare(
+          credentials?.password ?? '',
+          user.password
+        )
+        if (!validPassword) {
+          return null
         }
         return {
           id: user.id,
