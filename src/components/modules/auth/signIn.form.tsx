@@ -19,6 +19,7 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
     keys: ['form.password', 'form.email', 'form.continue'],
   })
   const [error, setError] = useState<string | null>(null)
+  const [disabled, setDisabled] = useState(false)
   const [email, setEmail] = useState('')
   const signInHandler = async (email: string, password: string) => {
     const signInReturn: SignInReturnType = (await signIn('credentials', {
@@ -38,17 +39,19 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
     if (!verifiedEmail.success) {
       return setError('email must be correct')
     }
+    setError('loading...')
+    setDisabled(true)
     const signInReturn: SignInReturnType = (await signIn('email', {
       redirect: false,
       email,
     })) as SignInReturnType
-
     if (signInReturn.ok) {
       setError('check your mail')
     }
     if (signInReturn.error) {
-      setError(signInReturn.error)
+      setError('verification was failed, try again')
     }
+    setDisabled(false)
   }
 
   return (
@@ -93,8 +96,9 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
         <button type='submit'>{text['form.continue']}</button>
       </form>
       <button
+        disabled={disabled}
         type='button'
-        className='flex items-center justify-center gap-4 rounded border p-2 text-lg'
+        className='flex items-center justify-center gap-4 rounded border p-2 text-lg disabled:text-neutral-600'
         onClick={() => void signInEmailHandler(email)}
       >
         forgot password?
