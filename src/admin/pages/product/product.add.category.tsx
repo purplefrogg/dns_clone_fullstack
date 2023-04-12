@@ -1,11 +1,10 @@
-import { type UseFormRegister } from 'react-hook-form'
-import { api, type RouterInputs } from '~/utils/api'
-type Inputs = RouterInputs['admin']['createProduct']
+import { type FC, type InputHTMLAttributes } from 'react'
+import { api } from '~/utils/api'
 
 export const CategoryField = ({
-  register,
+  Select,
 }: {
-  register: UseFormRegister<Inputs>
+  Select: FC<InputHTMLAttributes<HTMLInputElement>>
 }) => {
   const { data: categories } = api.admin.getCategories.useQuery({
     onlyOneLevel: {
@@ -15,18 +14,13 @@ export const CategoryField = ({
   return (
     <label className='flex'>
       <span className='w-32'>categoryId</span>
-      <select
-        {...register('categoryId', {
-          valueAsNumber: true,
-          required: 'category is required',
-        })}
-      >
+      <Select>
         {categories?.map((category) => (
           <option key={category.id} value={category.id}>
             {category.locale[0]?.title}
           </option>
         ))}
-      </select>
+      </Select>
     </label>
   )
 }

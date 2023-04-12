@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 
-import { type InputHTMLAttributes, type FC } from 'react'
+import { type InputHTMLAttributes, type FC, useEffect } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { ImageProperty } from '~/admin/shared/imageProperty'
 import { InputField } from '~/admin/shared/inputField'
 import { api, type RouterInputs } from '~/utils/api'
-import { CategoryField } from './product.add.category'
 import { ProductProperties } from './product.add.properties'
 import { PropertyAdd } from './product.add.property'
 
@@ -20,6 +19,7 @@ export const ProductAdd: FC = () => {
       void utils.admin.getProductList.invalidate()
     },
   })
+
   const {
     register,
     handleSubmit,
@@ -35,6 +35,11 @@ export const ProductAdd: FC = () => {
     }
     mutate(data)
   }
+  const { data: categories } = api.admin.getCategories.useQuery({
+    onlyOneLevel: {
+      level: '3',
+    },
+  })
   const inputs: ({
     title: keyof InputOmit
     Input: (props: InputHTMLAttributes<HTMLInputElement>) => JSX.Element
@@ -106,11 +111,14 @@ export const ProductAdd: FC = () => {
       ),
     },
   ]
-  const categoryId = watch('categoryId')
+  const categoryId = watch('categoryId') as number | undefined
 
+  useEffect(() => {
+    setValue('categoryId', categories?.[0]?.id || 0)
+  }, [categories, setValue])
   return (
-    <div>
-      <h1>Add Product</h1>
+    <div className='flex max-w-sm flex-col gap-2'>
+      <h1 className='text-2xl'>Add Product</h1>
       <form className='flex flex-col gap-2'>
         {inputs.map((input) => (
           <InputField {...input} key={input.title} />
@@ -118,11 +126,27 @@ export const ProductAdd: FC = () => {
 
         <ImageProperty setImage={(img: string) => setValue('image', img)} />
       </form>
-      <CategoryField register={register} />
-      {!!categoryId && (
+
+      <label className='flex'>
+        <span className='w-32'>categoryId</span>
+        <select
+          {...register('categoryId', {
+            valueAsNumber: true,
+
+            required: 'category is required',
+          })}
+        >
+          {categories?.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.locale[0]?.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      {categoryId && (
         <ProductProperties setValue={setValue} categoryId={categoryId} />
       )}
-      <PropertyAdd categoryId={categoryId} />
+      {categoryId && <PropertyAdd categoryId={categoryId} />}
       {isSubmitSuccessful && (
         <span className='text-green-400'>successful created {submitCount}</span>
       )}

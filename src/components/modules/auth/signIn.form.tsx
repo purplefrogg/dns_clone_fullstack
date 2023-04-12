@@ -93,7 +93,9 @@ export const SignInForm: FC<{ closeWindow: () => void }> = ({
           />
         </label>
         {error && <div className='text-center text-red-500'>{error}</div>}
-        <button type='submit'>{text['form.continue']}</button>
+        <button className='border p-2 text-lg' type='submit'>
+          {text['form.continue']}
+        </button>
       </form>
       <button
         disabled={disabled}

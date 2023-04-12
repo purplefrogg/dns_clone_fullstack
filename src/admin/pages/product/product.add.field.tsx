@@ -97,16 +97,28 @@ export const FieldAdd: FC<{ propertyId: number }> = ({ propertyId }) => {
   ]
   return (
     <div>
-      {!adding && <h1 onClick={() => setAdding(true)}>Add Property Field</h1>}
+      {!adding && (
+        <button className='border p-2' onClick={() => setAdding(true)}>
+          Add Property Field
+        </button>
+      )}
       {adding && (
-        <form onSubmit={handleSubmit(addField)}>
+        <form className='flex flex-col gap-2' onSubmit={handleSubmit(addField)}>
           {inputs.map((input) => (
             <InputField key={input.title} {...input} />
           ))}
-          <button type='submit'>add</button>
-          <button onClick={() => setAdding(false)} type='reset'>
-            cancel
-          </button>
+          <div className='flex flex-1 gap-4'>
+            <button className='flex-1 border p-2 text-green-500' type='submit'>
+              add
+            </button>
+            <button
+              className='flex-1 border p-2 text-red-500'
+              onClick={() => setAdding(false)}
+              type='reset'
+            >
+              cancel
+            </button>
+          </div>
         </form>
       )}
     </div>

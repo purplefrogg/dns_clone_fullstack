@@ -15,8 +15,8 @@ export const InputField: FC<InputFieldProps> = ({
   ...inputProps
 }) => {
   return (
-    <label className='flex'>
-      <span className='w-32'>{title}</span>
+    <label className='flex justify-between gap-2'>
+      <span className='flex-1 border-b border-dashed '>{title}</span>
       <Input
         className={cn('border border-gray-300', className)}
         {...inputProps}

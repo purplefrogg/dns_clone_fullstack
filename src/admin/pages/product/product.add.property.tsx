@@ -53,15 +53,24 @@ export const PropertyAdd: FC<{ categoryId: number }> = ({ categoryId }) => {
   ]
   return (
     <div>
-      {!adding && <h1 onClick={() => setAdding(true)}>Add Property</h1>}
+      {!adding && (
+        <button className='border p-2' onClick={() => setAdding(true)}>
+          Add Property
+        </button>
+      )}
       {adding && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {inputs.map((input) => (
             <InputField {...input} key={input.title} />
           ))}
-
-          <button type='submit'>add</button>
-          <button onClick={() => setAdding(false)}>cancel</button>
+          <div className='flex flex-1'>
+            <button className='border p-1' type='submit'>
+              add
+            </button>
+            <button className='border' onClick={() => setAdding(false)}>
+              cancel
+            </button>
+          </div>
         </form>
       )}
     </div>
