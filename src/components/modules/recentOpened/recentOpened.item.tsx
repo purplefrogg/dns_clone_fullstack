@@ -22,7 +22,7 @@ export const RecentOpenedItem: FC<RecentOpenedItemProps> = ({
   const router = useRouter()
   const isInCart = cart.includes(product.id)
   return (
-    <div className='block-element relative flex w-48 flex-col justify-between  gap-2   '>
+    <div className='block-element relative flex w-48 min-w-max flex-col justify-between  gap-2   '>
       <button
         className='absolute self-end rounded-full p-2 hover:bg-neutral-200'
         onClick={() => deleteHandler(product.id)}
