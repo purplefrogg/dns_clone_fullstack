@@ -29,11 +29,7 @@ export const ProductListColumns = [
     },
     header: () => <span>Category</span>,
   }),
-  columnHelper.accessor((key) => key.locale[0]?.description, {
-    id: 'description',
-    header: () => 'Description',
-    cell: (info) => info.renderValue(),
-  }),
+
   columnHelper.accessor('id', {
     id: 'delete',
     header: () => '',

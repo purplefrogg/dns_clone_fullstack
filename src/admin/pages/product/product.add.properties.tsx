@@ -17,7 +17,7 @@ export const ProductProperties: FC<{
         return (
           <div className='gap4 flex' key={property.id}>
             <span className='w-36'>{property.title.locale[0]?.title}</span>
-            <div>
+            <div className='flex flex-1 flex-col'>
               {property.field.map((item) => (
                 <div className='flex gap-2' key={item.id}>
                   {item.about.locale[0]?.title}
@@ -32,8 +32,12 @@ export const ProductProperties: FC<{
                     list={item.about.slug}
                   />
                   <select
-                    onChange={() => {
+                    onChange={(e) => {
                       setValue(`ProductProperty.${item.id}.fieldId`, item.id)
+                      setValue(
+                        `ProductProperty.${item.id}.value`,
+                        e.currentTarget.value
+                      )
                     }}
                     id={item.about.slug}
                   >

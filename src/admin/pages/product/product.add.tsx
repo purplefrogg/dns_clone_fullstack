@@ -14,7 +14,7 @@ type InputOmit = Omit<Inputs, 'image' | 'categoryId' | 'ProductProperty'>
 export const ProductAdd: FC = () => {
   const utils = api.useContext()
 
-  const { mutate } = api.admin.createProduct.useMutation({
+  const { mutate, status } = api.admin.createProduct.useMutation({
     onSuccess: () => {
       void utils.admin.getProductList.invalidate()
     },
@@ -25,7 +25,7 @@ export const ProductAdd: FC = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitSuccessful, submitCount },
+    formState: { errors },
   } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (data.ProductProperty) {
@@ -132,7 +132,6 @@ export const ProductAdd: FC = () => {
         <select
           {...register('categoryId', {
             valueAsNumber: true,
-
             required: 'category is required',
           })}
         >
@@ -147,9 +146,7 @@ export const ProductAdd: FC = () => {
         <ProductProperties setValue={setValue} categoryId={categoryId} />
       )}
       {categoryId && <PropertyAdd categoryId={categoryId} />}
-      {isSubmitSuccessful && (
-        <span className='text-green-400'>successful created {submitCount}</span>
-      )}
+      {status !== 'idle' && <span className='text-green-400'>{status}</span>}
       <button
         className='rounded bg-green-400 p-2  text-white'
         onClick={handleSubmit(onSubmit)}
