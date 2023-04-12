@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
     },
     signIn: ({ account, user }) => {
       if (account?.provider === 'google') {
-        user.role = 'ADMIN'
+        user.role = 'USER'
       }
 
       return true
