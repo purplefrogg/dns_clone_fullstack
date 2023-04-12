@@ -32,19 +32,14 @@ export const ProductProperties: FC<{
                     list={item.about.slug}
                   />
                   <select
-                    onChange={(e) => {
+                    onChange={() => {
                       setValue(`ProductProperty.${item.id}.fieldId`, item.id)
-
-                      setValue(
-                        `ProductProperty.${item.id}.valueId`,
-                        +e.currentTarget.value
-                      )
                     }}
                     id={item.about.slug}
                   >
                     <option>not select</option>
-                    {item.FieldValue.map(({ id, value }) => (
-                      <option key={id} value={id}>
+                    {item.FieldValue.map(({ value }) => (
+                      <option key={value} value={value}>
                         {value}
                       </option>
                     ))}

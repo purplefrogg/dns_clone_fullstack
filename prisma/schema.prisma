@@ -110,8 +110,7 @@ model FieldAboutTranslation {
 }
 
 model FieldValue {
-    id      Int       @id @default(autoincrement())
-    value   String
+    value   String    @id @unique
     Product Product[]
     fieldId Int
     field   Field     @relation(fields: [fieldId], references: [id], onDelete: Cascade)

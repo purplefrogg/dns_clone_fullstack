@@ -99,7 +99,7 @@ const createProduct = async (input: z.infer<typeof createProductSchema>) => {
         connectOrCreate: input.ProductProperty.map((item) => {
           return {
             where: {
-              id: item.valueId || 0,
+              value: item.value,
             },
             create: {
               fieldId: item.fieldId,

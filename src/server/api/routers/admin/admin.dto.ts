@@ -17,15 +17,10 @@ export const createProductSchema = z.object({
   description: z.string(),
   price: z.number(),
   ProductProperty: z.array(
-    z
-      .object({
-        valueId: z.number().optional(),
-        value: z.string().optional(),
-        fieldId: z.number(),
-      })
-      .refine((data) => data.valueId || data.value, {
-        message: 'You must provide value or valueId',
-      })
+    z.object({
+      value: z.string(),
+      fieldId: z.number(),
+    })
   ),
 })
 export const createPropertySchema = z.object({

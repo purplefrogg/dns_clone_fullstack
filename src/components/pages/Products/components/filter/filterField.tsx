@@ -40,7 +40,7 @@ export const FilterField: FC<Props> = ({ about, FieldValue }) => {
               value={value.value}
               changeHandler={changeHandler}
               title={value.value}
-              key={value.id}
+              key={value.value}
             />
           )
         })}
