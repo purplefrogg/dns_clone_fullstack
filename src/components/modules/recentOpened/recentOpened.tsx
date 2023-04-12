@@ -11,6 +11,7 @@ export const RecentOpened: FC = () => {
   if (!data) {
     return <div>loading...</div>
   }
+  if (!data.length) return null
   return (
     <div className='block-element flex flex-col gap-4'>
       <h2 className='text-2xl'>{text.recentlyOpened}</h2>

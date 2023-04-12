@@ -117,7 +117,7 @@ export const ProductAdd: FC = () => {
     setValue('categoryId', categories?.[0]?.id || 0)
   }, [categories, setValue])
   return (
-    <div className='flex max-w-sm flex-col gap-2'>
+    <div className='flex max-w-xl flex-col gap-2'>
       <h1 className='text-2xl'>Add Product</h1>
       <form className='flex flex-col gap-2'>
         {inputs.map((input) => (

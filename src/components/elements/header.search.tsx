@@ -22,7 +22,7 @@ export const HeaderSearch = () => {
     }
   }, [refetch, search])
   return (
-    <div className='group relative flex flex-1'>
+    <div className='group relative  hidden flex-1 lg:flex'>
       <input
         type='text'
         onChange={(e) => setSearch(e.target.value)}

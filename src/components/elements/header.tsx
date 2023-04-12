@@ -74,7 +74,7 @@ export const Header: HeaderType = ({ Locale, Search }) => {
   ] as const
   return (
     <div className='sticky top-0 z-20 bg-white shadow'>
-      <div className='m-auto flex max-w-6xl gap-4 p-2 '>
+      <div className='m-auto flex max-w-6xl justify-between gap-4  p-2'>
         <div className='flex gap-4 rounded-lg bg-orange-400 px-4 py-2 text-white'>
           <Link className='text-3xl font-bold ' href={'/'}>
             {text['header.dns']}
@@ -82,17 +82,18 @@ export const Header: HeaderType = ({ Locale, Search }) => {
           <ButtonShowCatalog title={text['header.catalog']} />
         </div>
         {Search}
-
-        <nav className='each hidden items-center gap-2 lg:flex [&>*]:w-20 [&>*]:flex-1'>
-          {navItems.map((item) => (
-            <NavItem href={item.link} icon={item.icon} key={item.title}>
-              {item.title}
-            </NavItem>
-          ))}
-          <CartButton title={text['header.cart']} />
-          <SignControl />
-        </nav>
-        {Locale}
+        <div className='flex gap-4'>
+          <nav className='each hidden items-center gap-2 md:flex [&>*]:w-20 [&>*]:flex-1'>
+            {navItems.map((item) => (
+              <NavItem href={item.link} icon={item.icon} key={item.title}>
+                {item.title}
+              </NavItem>
+            ))}
+            <CartButton title={text['header.cart']} />
+            <SignControl />
+          </nav>
+          {Locale}
+        </div>
       </div>
     </div>
   )

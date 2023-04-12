@@ -30,7 +30,7 @@ export const Layout: FC<PropsWithChildren & { isMobile: boolean }> = ({
         <title>{title}</title>
       </Head>
       <Header
-        Search={isMobile ? <div className='flex-1'></div> : Header.Search}
+        Search={isMobile ? undefined : Header.Search}
         Locale={Header.Locale}
       />
       <FloatCatalog />
