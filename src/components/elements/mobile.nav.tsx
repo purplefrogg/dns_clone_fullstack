@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai'
 import { AiOutlineHome, AiOutlineUnorderedList } from 'react-icons/ai'
 import { BsCart3 } from 'react-icons/bs'
-import { VscAccount } from 'react-icons/vsc'
 import { useTranslate } from '../hooks/useTrans'
+import { SignControl } from '../modules/auth/signControl'
 import { subCategoryAtom } from '../modules/catalog/catalog'
 import { NavItem } from './header.navItem'
 
@@ -43,12 +43,6 @@ export const MobileNav = () => {
 
       link: '/cart',
     },
-    {
-      title: text['header.profile'],
-      Icon: VscAccount,
-
-      link: '/profile',
-    },
   ]
   return (
     <div className='h-16'>
@@ -65,6 +59,7 @@ export const MobileNav = () => {
             {item.title}
           </NavItem>
         ))}
+        <SignControl />
       </div>
     </div>
   )
