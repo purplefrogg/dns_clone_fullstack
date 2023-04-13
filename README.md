@@ -1,6 +1,6 @@
 # E-Commerce Fullstack App
 
-dns-clone-fullstack.vercel.app
+[visit the app](dns-clone-fullstack.vercel.app)
 
 ## prisma + nextjs + react + typescript + tailwindcss + postgresql
 
