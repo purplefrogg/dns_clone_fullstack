@@ -1,10 +1,6 @@
-создайте файл .env внутри
-вставьте DATABASE_URL="postgresql://[login]:[password]@localhost:5432/mydb?schema=public"
-это url для postgres
-
-npm run dev для запуска
-
 # E-Commerce Fullstack App
+
+dns-clone-fullstack.vercel.app
 
 ## prisma + nextjs + react + typescript + tailwindcss + postgresql
 
