@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router'
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
+import { AiOutlineArrowDown } from 'react-icons/ai'
 import { type RouterOutputs } from '~/utils/api'
+import { cn } from '~/utils/cn'
 import { FilterFieldInput } from './filterFieldInput'
 
 type Props =
@@ -26,11 +28,29 @@ export const FilterField: FC<Props> = ({ about, FieldValue }) => {
     }
     void router.push({ pathname: router.pathname, query: router.query })
   }
-
+  const [collapsed, setCollapsed] = useState(true)
   return (
-    <div>
-      <h3>{locale[0]?.title}</h3>
-      <div className='flex flex-wrap gap-4'>
+    <div className='flex flex-col gap-2'>
+      <button
+        className='flex items-center justify-between rounded text-start hover:text-neutral-700'
+        onClick={() => setCollapsed((p) => !p)}
+      >
+        {locale[0]?.title}
+        <AiOutlineArrowDown
+          className={cn(
+            'transition-transform',
+            collapsed && 'rotate-180',
+            !collapsed && 'rotate-0'
+          )}
+        />
+      </button>
+
+      <div
+        className={cn(
+          'flex flex-wrap gap-4 overflow-hidden',
+          collapsed && 'h-0'
+        )}
+      >
         {FieldValue.map((value) => {
           const checked = router.query[slug]?.includes(value.value)
 

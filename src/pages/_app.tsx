@@ -26,6 +26,7 @@ const MyApp = function ({
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout<AppPropsType>) {
   const isMobile = useIsMobile()
+
   const getLayout =
     Component.getLayout ??
     ((page) => <Layout isMobile={isMobile}>{page}</Layout>)

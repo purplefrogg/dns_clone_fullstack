@@ -3,8 +3,6 @@ import { api } from '~/utils/api'
 let userAgent = false
 
 export const useIsMobile = () => {
-  if (userAgent) return true
-
   const userAgentServer =
     api.useContext().ssrContext?.req?.headers['user-agent']
   if (userAgentServer)
@@ -13,6 +11,7 @@ export const useIsMobile = () => {
         /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
       )
     )
+  if (userAgent) return true
   if (typeof window === 'undefined') return userAgent
   const userAgentClient = navigator.userAgent
   if (userAgentClient)

@@ -57,8 +57,13 @@ export const Filter: FC<FilterProps> = ({
     >
       {children}
       {filters.map((filter) => (
-        <div key={filter.id}>
-          {filter.title.locale[0]?.title}
+        <div
+          className='flex flex-col gap-2 rounded bg-neutral-50 p-2'
+          key={filter.id}
+        >
+          <span className='text-lg font-semibold'>
+            {filter.title.locale[0]?.title}
+          </span>
           {filter.field.map((field) => (
             <FilterField key={field.id} {...field} />
           ))}
