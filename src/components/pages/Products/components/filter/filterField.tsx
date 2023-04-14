@@ -32,6 +32,7 @@ export const FilterField: FC<Props> = ({ about, FieldValue }) => {
   return (
     <div className='flex flex-col gap-2'>
       <button
+        type='button'
         className='flex items-center justify-between rounded text-start hover:text-neutral-700'
         onClick={() => setCollapsed((p) => !p)}
       >

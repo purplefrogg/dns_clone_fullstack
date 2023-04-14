@@ -13,7 +13,7 @@ export const MinPrice: FC = () => {
         className='rounded border border-neutral-400'
         name='minPrice'
         type='number'
-        defaultValue={minPrice}
+        value={minPrice}
         onChange={(e) => {
           setMinPrice(+e.target.value)
         }}

@@ -163,12 +163,15 @@ export const categoryRouter = createTRPCRouter({
         categorySlug: category.slug,
         lang: ctx.lang,
       })
-      const productMaxPrice = Math.max(
-        ...category.products.map((product) => product.price)
-      )
-      const productMinPrice = Math.min(
-        ...category.products.map((product) => product.price)
-      )
+      const productMaxPrice =
+        category.products.length === 0
+          ? 0
+          : Math.max(...category.products.map((product) => product.price))
+      const productMinPrice =
+        category.products.length === 0
+          ? 0
+          : Math.min(...category.products.map((product) => product.price))
+
       const { page, orderDirection, orderType } = input
       const take = 4
       const paginatedProducts = await ctx.prisma.category.findUniqueOrThrow({

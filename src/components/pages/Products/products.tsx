@@ -44,8 +44,10 @@ export const Products: FC = () => {
     },
     {
       onSuccess: (data) => {
-        setMaxPrice(data.productMaxPrice ?? 0)
-        setMinPrice(data.productMinPrice ?? 0)
+        console.log(data)
+
+        setMaxPrice(data.productMaxPrice)
+        setMinPrice(data.productMinPrice)
       },
     }
   )

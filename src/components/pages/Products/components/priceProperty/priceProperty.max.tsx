@@ -15,7 +15,7 @@ export const MaxPrice: FC = () => {
         className='rounded border border-neutral-400'
         type='number'
         inputMode='numeric'
-        defaultValue={maxPrice}
+        value={maxPrice}
         onChange={(e) => setMaxPrice(+e.target.value)}
       />
     </label>
